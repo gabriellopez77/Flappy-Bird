@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../Dependencies/glm/glm.hpp"
+#include "../Dependencies/glm/gtc/matrix_transform.hpp"
 
 #include <iostream>
 

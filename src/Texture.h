@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../includes/stb/stb_image.h"
-#include "../includes/glad/glad.h"
+#include "../Dependencies/stb/stb_image.h"
+#include "../Dependencies/glad/glad.h"
 
 class Texture {
 public:

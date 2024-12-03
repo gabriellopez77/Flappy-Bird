@@ -1,8 +1,6 @@
-#include "../includes/glad/glad.h"
-#include "../includes/glfw/glfw3.h"
+#include "../Dependencies/glad/glad.h"
+#include "../Dependencies/glfw/glfw3.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 
