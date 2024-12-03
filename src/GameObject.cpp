@@ -26,59 +26,59 @@ void GameObject::update() {
 	force += mass * gravity;
 
 	velocity += force * mass * gb::deltaTime;
-	position += force * gb::deltaTime;
+	position += velocity * gb::deltaTime;
 
 
-	// fricao do ar
-	//if (force.x > 0) {
-	//	force.x += -0.5f;
-	//	if (force.x < 0)
-	//		force.x = 0;
-	//}
+	//fricao do ar
+	if (velocity.x > 0) {
+		velocity.x += -0.5f;
+		if (velocity.x < 0)
+			velocity.x = 0;
+	}
 
-	//if (force.x < 0) {
-	//	force.x += 0.5f;
-	//	if (force.x > 0)
-	//		force.x = 0;
-	//}
-	//if (force.y > 0) {
-	//	force.y += -0.5f;
-	//	if (force.y < 0)
-	//		force.y = 0;
-	//}
+	if (velocity.x < 0) {
+		velocity.x += 0.5f;
+		if (velocity.x > 0)
+			velocity.x = 0;
+	}
+	if (velocity.y > 0) {
+		velocity.y += -0.5f;
+		if (velocity.y < 0)
+			velocity.y = 0;
+	}
 
-	//if (force.y < 0) {
-	//	force.y += 0.5f;
-	//	if (force.y > 0)
-	//		force.y = 0;
-	//}
+	if (velocity.y < 0) {
+		velocity.y += 0.5f;
+		if (velocity.y > 0)
+			velocity.y = 0;
+	}
 
 	// define a velocidade maxima
-	if (force.x > maxSpeed)
-		force.x = maxSpeed;
+	if (velocity.x > maxSpeed)
+		velocity.x = maxSpeed;
 
-	else if (force.x < -maxSpeed)
-		force.x = -maxSpeed;
+	else if (velocity.x < -maxSpeed)
+		velocity.x = -maxSpeed;
 
 	// bordas
 	if (position.x > gb::windowX - 100) {
 		position.x = gb::windowX - 100;
-		force.x = -force.x;
+		velocity.x = -velocity.x;
 	}
 
-	else if (position.x < 0) {
+	if (position.x < 0) {
 		position.x = 0;
-		force.x = -force.x;
+		velocity.x = -velocity.x;
 	}
 
 	if (position.y > gb::windowY - 100) {
 		position.y = gb::windowY - 100;
-		force.y = -force.y;
+		velocity.y += -velocity.y;
 	}
 
-	else if (position.y < 0) {
+	if (position.y < 0) {
 		position.y = 0;
-		force.y = -force.y;
+		velocity.y = -velocity.y;
 	}
 
 	model = glm::mat4(1.f);
@@ -90,9 +90,17 @@ void GameObject::checkCollisionPlayer(Player* obj) {
 	hipo = sqrt(powf(obj->position.x - position.x, 2) + powf(obj->position.y - position.y, 2));
 
 	if (hipo <= this->radius || hipo <= obj->radius) {
-		glm::vec2 tempforce = force;
-		force = obj->force;
-		obj->force = tempforce;
+		glm::vec2 velNorm = glm::normalize(velocity);
+		glm::vec2 objVelNorm = glm::normalize(obj->velocity);
+
+		if (velNorm == objVelNorm) {
+			std::cout << "E IGUAL\n";
+		}
+		glm::vec2 tempVelocity = velocity;
+		velocity = obj->velocity;
+		obj->velocity = tempVelocity;
+
+
 	}
 }
 

@@ -37,8 +37,8 @@ public:
 
 	bool isColored;
 
-	float mass = 100.5f;
-	glm::vec2 force = {0.f, 0.f};
+	float mass = 10.f;
+	glm::vec2 force = { 0.f, 0.f };
 	glm::vec2 velocity{ 0.f, 0.f };
 	glm::vec2 gravity = glm::vec2(0.f, 9.81);
 

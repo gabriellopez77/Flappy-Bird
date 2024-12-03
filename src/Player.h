@@ -25,10 +25,10 @@ public:
 
 
 	float maxSpeed = 1000.f;
-	float Xspeed = 1000.f;
-	float Yspeed = 10000.f;
+	float Xspeed = 900.f;
+	float Yspeed = 900.f;
 	float radius;
-	float mass = 100.f;
+	float mass = 10.f;
 
 	unsigned int textureID;
 };

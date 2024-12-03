@@ -80,7 +80,7 @@ int main() {
 	Texture texture3 = Texture("assets/textures/face.png", GL_RGBA);
 
 
-	Player player = Player(&shader, 90.f);
+	Player player = Player(&shader, 95.f);
 	player.textureID = texture3.ID;
 
 	glm::vec2 cubePosition = { 450, 250 };
@@ -107,15 +107,15 @@ int main() {
 		}
 
 		GameObject::checkCollisionGlobal(&player);
-		//cube->checkCollisionPlayer(&player);
+		cube->checkCollisionPlayer(&player);
+		//std::cout << "velocity" << player.velocity.y << '\n';
+		std::cout << "position " << player.position.y << '\n';
+
 		player.update();
 		player.draw();
-
-		for (int i = 0; i < GameObject::objects.size(); i++) {
-
-			GameObject::objects[i]->update();
-			GameObject::objects[i]->draw();
-		}
+		
+		cube->update();
+		cube->draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

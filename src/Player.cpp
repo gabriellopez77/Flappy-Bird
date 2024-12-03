@@ -21,86 +21,90 @@ void Player::draw() {
 void Player::update() {
 	// aplica as forcas
 
-	//force.y += mass * 9.81f;
+	force.y += mass * 9.81f;
 	velocity += force * mass * gb::deltaTime;
-	position += force * gb::deltaTime;
+	position += velocity * gb::deltaTime;
 
 
 	// fricao do ar
-	if (force.x > 0) {
-		force.x += -0.5f;
-		if (force.x < 0)
-			force.x = 0;
+	if (velocity.x > 0) {
+		velocity.x += -0.5f;
+		if (velocity.x < 0)
+			velocity.x = 0;
 	}
 
-	if (force.x < 0) {
-		force.x += 0.5f;
-		if (force.x > 0)
-			force.x = 0;
+	if (velocity.x < 0) {
+		velocity.x += 0.5f;
+		if (velocity.x > 0)
+			velocity.x = 0;
 	}
-	if (force.y > 0) {
-		force.y += -0.5f;
-		if (force.y < 0)
-			force.y = 0;
+	if (velocity.y > 0) {
+		velocity.y += -0.5f;
+		if (velocity.y < 0)
+			velocity.y = 0;
 	}
 
-	if (force.y < 0) {
-		force.y += 0.5f;
-		if (force.y > 0)
-			force.y = 0;
+	if (velocity.y < 0) {
+		velocity.y += 0.5f;
+		if (velocity.y > 0)
+			velocity.y = 0;
 	}
 
 
 	// define a velocidade maxima
-	if (force.x > maxSpeed)
-		force.x = maxSpeed;
+	if (velocity.x > maxSpeed)
+		velocity.x = maxSpeed;
 
-	else if (force.x < -maxSpeed)
-		force.x = -maxSpeed;
+	else if (velocity.x < -maxSpeed)
+		velocity.x = -maxSpeed;
 
 
-	if (force.y > maxSpeed)
-		force.y = maxSpeed;
+	if (velocity.y > maxSpeed)
+		velocity.y = maxSpeed;
 
-	else if (force.y < -maxSpeed)
-		force.y = -maxSpeed;
+	else if (velocity.y < -maxSpeed)
+		velocity.y = -maxSpeed;
 
 
 	// bordas
 	if (position.x > gb::windowX - 100) {
-		position.x = gb::windowX - 100;
-		force.x = -force.x;
+		position.x += gb::windowX - 100;
+		velocity.x = -velocity.x;
 	}
-	else if (position.x < 0) {
+
+	if (position.x < 0) {
 		position.x = 0;
-		force.x = -force.x;
+		velocity.x = -velocity.x;
 	}
 
-	if (position.y > gb::windowY - 100) {
-		position.y = gb::windowY - 100;
-		force.y = -force.y;
+	if (position.y + radius > gb::windowY) {
+		position.y = gb::windowY - radius;
+		velocity.y += -velocity.y;
 	}
 
-	else if (position.y < 0) {
+	if (position.y < 0) {
 		position.y = 0;
-		force.y = -force.y;
+		velocity.y = -velocity.y;
 	}
 }
 void Player::input(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		force.x += Xspeed * gb::deltaTime;
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		force.x += -Xspeed * gb::deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		position.y += 20.f;
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		velocity.x += Xspeed * gb::deltaTime;
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		velocity.x += -Xspeed * gb::deltaTime;
+
 	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		force.y += -Yspeed * gb::deltaTime;
+		velocity.y += -Yspeed * gb::deltaTime;
 
 	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		force.y += Yspeed * gb::deltaTime;
+		velocity.y += Yspeed * gb::deltaTime;
 
 }
