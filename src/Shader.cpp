@@ -1,5 +1,8 @@
 #include "Shader.h"
 
+#include "../Dependencies/glad/glad.h"
+#include "../Dependencies/glfw/glfw3.h"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>

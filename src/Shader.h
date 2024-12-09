@@ -1,10 +1,6 @@
 #pragma once
 
-#include "../Dependencies/glad/glad.h"
-#include "../Dependencies/glfw/glfw3.h"
-
 #include "../Dependencies/glm/glm.hpp"
-
 
 class Shader {
 public:

@@ -1,34 +1,27 @@
 #pragma once
 
+#include "../Dependencies/glm/glm.hpp"
 #include "../Dependencies/glad/glad.h"
 #include "../Dependencies/glfw/glfw3.h"
 
-#include "../Dependencies/glm/glm.hpp"
-#include "../Dependencies/glm/gtc/matrix_transform.hpp"
-
 #include "Shader.h"
 #include "global.h"
+#include "GameObject.h"
 
 
-class Player {
+class Player : public GameObject {
 public:
-	Player(Shader* shader, float radius);
+	Player(float radius, glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords);
 
 	void draw();
 	void input(GLFWwindow* window);
 	void update();
 
-	Shader* shader;
-	glm::vec2 position;
-	glm::vec2 force;
-	glm::vec2 velocity;
-
+	glm::ivec2 position = glm::ivec2(0.f);
+	glm::vec2 velocity = glm::vec2(0.f);
 
 	float maxSpeed = 1000.f;
 	float Xspeed = 900.f;
 	float Yspeed = 900.f;
 	float radius;
-	float mass = 10.f;
-
-	unsigned int textureID;
 };

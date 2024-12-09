@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Dependencies/stb/stb_image.h"
-#include "../Dependencies/glad/glad.h"
 
 class Texture {
 public:

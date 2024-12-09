@@ -1,126 +1,83 @@
 #include "GameObject.h"
 
+#include "../Dependencies/glad/glad.h"
+
+Texture* GameObject::texture = nullptr;
+Shader* GameObject::shader = nullptr;
+
+unsigned int GameObject::VAO = 0;
+unsigned int GameObject::VBO = 0;
+unsigned int GameObject::EBO = 0;
+unsigned int GameObject::VBO_TEX = 0;
+
+glm::mat4 GameObject::model = glm::mat4(1.f);
 std::vector<GameObject*> GameObject::objects = std::vector<GameObject*>();
 
-GameObject::GameObject(Shader* shader, Texture* texture, glm::vec2* position, glm::vec2* size, float radius, bool isColored) :
-	shader(shader),
-	texture(texture),
+const float GameObject::vertices[] = {
+//  position
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	0.0f, 1.0f,
+	1.0f, 1.0f,
+};
+
+const unsigned int GameObject::indices[6] = { 0, 1, 3, 3, 2, 0 };
+
+GameObject::GameObject(glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords) :
 	position(*position),
 	size(*size) {
 
-	this->radius = radius;
-	this->isColored = isColored;
+	this->texCoords = new float[8] {
+		292.f / 512, 55.0f / 512,
+		459.f / 512, 55.f / 512,
+		292.f / 512, 0.0f / 512,
+		459.f / 512, 0.0f  / 1512
+	};
 
 	objects.push_back(this);
 }
 
 void GameObject::draw() {
-	shader->setBool(shader->isColoredLoc, isColored);
 	shader->setMat4(shader->modelLoc, model);
-
 	texture->use();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+void GameObject::create() {
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+	glGenBuffers(1, &VBO_TEX);
+
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8, NULL, GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
 }
 void GameObject::update() {
 
-	force += mass * gravity;
-
-	velocity += force * mass * gb::deltaTime;
-	position += velocity * gb::deltaTime;
-
-
-	//fricao do ar
-	if (velocity.x > 0) {
-		velocity.x += -0.5f;
-		if (velocity.x < 0)
-			velocity.x = 0;
-	}
-
-	if (velocity.x < 0) {
-		velocity.x += 0.5f;
-		if (velocity.x > 0)
-			velocity.x = 0;
-	}
-	if (velocity.y > 0) {
-		velocity.y += -0.5f;
-		if (velocity.y < 0)
-			velocity.y = 0;
-	}
-
-	if (velocity.y < 0) {
-		velocity.y += 0.5f;
-		if (velocity.y > 0)
-			velocity.y = 0;
-	}
-
-	// define a velocidade maxima
-	if (velocity.x > maxSpeed)
-		velocity.x = maxSpeed;
-
-	else if (velocity.x < -maxSpeed)
-		velocity.x = -maxSpeed;
-
-	// bordas
-	if (position.x > gb::windowX - 100) {
-		position.x = gb::windowX - 100;
-		velocity.x = -velocity.x;
-	}
-
-	if (position.x < 0) {
-		position.x = 0;
-		velocity.x = -velocity.x;
-	}
-
-	if (position.y > gb::windowY - 100) {
-		position.y = gb::windowY - 100;
-		velocity.y += -velocity.y;
-	}
-
-	if (position.y < 0) {
-		position.y = 0;
-		velocity.y = -velocity.y;
-	}
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position, 0.f));
 	model = glm::scale(model, glm::vec3(size, 0.f));
 }
 
-void GameObject::checkCollisionPlayer(Player* obj) {
-	hipo = sqrt(powf(obj->position.x - position.x, 2) + powf(obj->position.y - position.y, 2));
-
-	if (hipo <= this->radius || hipo <= obj->radius) {
-		glm::vec2 velNorm = glm::normalize(velocity);
-		glm::vec2 objVelNorm = glm::normalize(obj->velocity);
-
-		if (velNorm == objVelNorm) {
-			std::cout << "E IGUAL\n";
-		}
-		glm::vec2 tempVelocity = velocity;
-		velocity = obj->velocity;
-		obj->velocity = tempVelocity;
-
-
-	}
-}
-
-
 void GameObject::checkCollision(GameObject* obj) {
-	hipo = sqrt(powf(obj->position.x - position.x, 2) + powf(obj->position.y - position.y, 2));
-
-	if (hipo <= this->radius || hipo <= obj->radius) {
-		glm::vec2 tempforce = velocity;
-		velocity = obj->force;
-		obj->velocity = tempforce;
-	}
-}
-
-void GameObject::checkCollisionGlobal(Player* player) {
-	for (int i = 0; i < GameObject::objects.size(); i++) {
-		for (int j = i + 1; j < GameObject::objects.size(); j++) {
-			GameObject::objects[i]->checkCollisionPlayer(player);
-			GameObject::objects[i]->checkCollision(GameObject::objects[j]);
-
-		}
-	}
+	//hipo = sqrt(powf(obj->position.x - position.x, 2) + powf(obj->position.y - position.y, 2));
 }

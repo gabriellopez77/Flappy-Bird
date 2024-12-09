@@ -7,40 +7,30 @@
 
 #include "Shader.h"
 #include "Texture.h"
-#include "player.h"
 #include "vector"
 
 class GameObject {
 public:
-	GameObject(Shader* shader, Texture* texture, glm::vec2* position, glm::vec2* size, float radius, bool isColored);
+	GameObject(glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords);
+
 	void draw();
 	void update();
-	void checkCollisionPlayer(Player* obj);
 	void checkCollision(GameObject* obj1);
-	static void checkCollisionGlobal(Player* player);
+	static void create();
 
-	glm::mat4 model;
-
-	glm::vec2 position;
+	glm::ivec2 position;
 	glm::vec2 size;
+	glm::vec4 texCoordsNormalized = glm::vec4(0.f);
 
-	Texture* texture;
-	Shader* shader;
+	static Texture* texture;
+	static Shader* shader;
 
-	float const maxSpeed = 1000;
-	float const speed = 450;
-	
-	float cat1;
-	float cat2;
-	float hipo;
-	float radius;
-
-	bool isColored;
-
-	float mass = 10.f;
-	glm::vec2 force = { 0.f, 0.f };
-	glm::vec2 velocity{ 0.f, 0.f };
-	glm::vec2 gravity = glm::vec2(0.f, 9.81);
-
+	float* texCoords;
 	static std::vector<GameObject*> objects;
+
+protected:
+	static unsigned int VAO, VBO, EBO, VBO_TEX;
+	static const float vertices[8];
+	static const unsigned int indices[6];
+	static glm::mat4 model;
 };

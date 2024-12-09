@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+#include "../Dependencies/glad/glad.h"
+
 #include "iostream"
 
 Texture::Texture(const char* texturePath, int textureFormat) {
