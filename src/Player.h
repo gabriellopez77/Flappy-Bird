@@ -15,7 +15,7 @@ public:
 
 	void draw();
 	void input(GLFWwindow* window);
-	void update();
+	void update() override;
 
 	glm::ivec2 position = glm::ivec2(0.f);
 	glm::vec2 velocity = glm::vec2(0.f);

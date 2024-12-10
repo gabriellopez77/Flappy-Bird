@@ -2,7 +2,6 @@
 #include "../Dependencies/glfw/glfw3.h"
 
 
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
 #include "Texture.h"
@@ -49,18 +48,23 @@ int main() {
 	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
 	GameObject::create();
 
-	//min: 200
-	//max: 450
-
+	Pipe::pipe_bottom.reserve(10);
+	Pipe::pipe_top.reserve(10);
 
 
 	Player player = Player(63.f, 2, 487, 20, 20);
 	player.size = glm::ivec2(80.f);
 
+	GameObject background1 = GameObject(0, 0, 144, 256);
+	background1.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
+
+	GameObject background2 = GameObject(0,0, 144, 256);
+	background2.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
+	background2.position = glm::ivec2(background1.position.x + GAME_WIDTH, 0);
 
 	GameObject ground = GameObject(292, 0, 168, 56);
-	ground.size = glm::ivec2(gb::windowX, 160);
-	ground.position = glm::ivec2(0, gb::windowY - 160);
+	ground.size = glm::ivec2(GAME_WIDTH, 160);
+	ground.position = glm::ivec2(0, GAME_HEIGHT - 160);
 
 
 
@@ -79,22 +83,30 @@ int main() {
 		player.input(window);
 
 
-		player.update();
-		player.draw();
-		ground.update();
-		ground.draw();
 
 		delay += gb::deltaTime;
 
 		if (delay >= 1.f) {
 			Pipe::genPipes();
 			delay = 0.f;
-			std::cout << Pipe::pipe_top.size() << '\n';
-			std::cout << Pipe::pipe_bottom.size() << '\n';
 		}
 
+		background1.position.x--;
+		background2.position.x--;
+
+		if (background1.position.x + GAME_WIDTH <= 0)
+			background1.position.x = background2.position.x + GAME_WIDTH;
+
+		else if (background2.position.x + GAME_WIDTH <= 0)
+			background2.position.x = background1.position.x + GAME_WIDTH;
+
+		background1.draw();
+		background2.draw();
 		Pipe::updatePipes();
 		Pipe::drawPipes();
+		player.update();
+		player.draw();
+		ground.draw();
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();

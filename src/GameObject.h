@@ -14,7 +14,7 @@ public:
 	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
 	void draw();
-	void update();
+	virtual void update() {}
 	void checkCollision(GameObject* obj1);
 	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	static void create();

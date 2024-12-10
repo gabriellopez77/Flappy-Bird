@@ -8,6 +8,7 @@ class Pipe : public GameObject {
 public:
 	Pipe(char type, int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	char type;
+	bool remove = false;
 
 	static std::vector<Pipe*> pipe_bottom;
 	static std::vector<Pipe*> pipe_top;

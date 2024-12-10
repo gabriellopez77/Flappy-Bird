@@ -71,10 +71,6 @@ void GameObject::draw() {
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
-void GameObject::update() {
-
-
-}
 
 void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight) {
 
