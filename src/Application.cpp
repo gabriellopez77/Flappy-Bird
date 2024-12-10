@@ -2,13 +2,16 @@
 #include "../Dependencies/glfw/glfw3.h"
 
 
-#include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
 #include "Texture.h"
 #include "Player.h"
 #include "GameObject.h"
+#include "Pipe.h"
+
+#include <iostream>
+#include <random>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
@@ -24,7 +27,7 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(gb::windowX, gb::windowY, "2D game", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(gb::windowX, gb::windowY, "Flappy Bird - v0.0.1", NULL, NULL);
 
 	// cria o contexto atual
 	glfwMakeContextCurrent(window);
@@ -35,29 +38,35 @@ int main() {
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+	// callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
-
-
 
 
 	GameObject::shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 	GameObject::shader->use();
 
+	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
 	GameObject::create();
 
-	framebuffer_size_callback(window, gb::windowX, gb::windowY);
+	//min: 200
+	//max: 450
 
-	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
 
-	glm::ivec2 cubePosition = { 450, 250 };
-	glm::vec2 cubeSize = { 100, 100 };
-	glm::vec4 texCoords = glm::vec4(292, 459, 55, 55);
 
-	GameObject ground = GameObject(&cubePosition, &cubeSize, texCoords);
-	Player player = Player(90.f, &cubePosition, &cubeSize, texCoords);
+	Player player = Player(63.f, 2, 487, 20, 20);
+	player.size = glm::ivec2(80.f);
 
+
+	GameObject ground = GameObject(292, 0, 168, 56);
+	ground.size = glm::ivec2(gb::windowX, 160);
+	ground.position = glm::ivec2(0, gb::windowY - 160);
+
+
+
+	float delay = 0.f;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
+	framebuffer_size_callback(window, gb::windowX, gb::windowY);
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -66,13 +75,27 @@ int main() {
 		gb::deltaTime = currentFrame - gb::lastFrame;
 		gb::lastFrame = currentFrame;
 
-
+		// inputs
 		player.input(window);
+
 
 		player.update();
 		player.draw();
-		
+		ground.update();
+		ground.draw();
 
+		delay += gb::deltaTime;
+
+		if (delay >= 1.f) {
+			Pipe::genPipes();
+			delay = 0.f;
+			std::cout << Pipe::pipe_top.size() << '\n';
+			std::cout << Pipe::pipe_bottom.size() << '\n';
+		}
+
+		Pipe::updatePipes();
+		Pipe::drawPipes();
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

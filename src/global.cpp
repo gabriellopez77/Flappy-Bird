@@ -4,6 +4,6 @@ namespace gb {
 	float deltaTime = 0.f;
 	float lastFrame = 0.f;
 
-	int windowX = 800;
-	int windowY = 600;
+	int windowX = 450;
+	int windowY = 650;
 }

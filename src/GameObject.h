@@ -11,22 +11,22 @@
 
 class GameObject {
 public:
-	GameObject(glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords);
+	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
 	void draw();
 	void update();
 	void checkCollision(GameObject* obj1);
+	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	static void create();
 
-	glm::ivec2 position;
-	glm::vec2 size;
+	glm::ivec2 position = glm::ivec2(0.f);
+	glm::ivec2 size = glm::ivec2();
 	glm::vec4 texCoordsNormalized = glm::vec4(0.f);
 
 	static Texture* texture;
 	static Shader* shader;
 
-	float* texCoords;
-	static std::vector<GameObject*> objects;
+	float texCoords[8]{ 0.f };
 
 protected:
 	static unsigned int VAO, VBO, EBO, VBO_TEX;

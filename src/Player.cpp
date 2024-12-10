@@ -4,7 +4,13 @@
 
 
 #include "iostream"
-Player::Player(float radius, glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords) : GameObject(position, size, texCoords) {
+Player::Player(
+	float radius,
+	int spriteX,
+	int spriteY,
+	int spriteWidth,
+	int spriteHeight
+) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight) {
 	this->position = glm::vec2(gb::windowX /2 - 50, gb::windowY /2 - 50);
 
 	this->radius = radius;
@@ -23,27 +29,22 @@ void Player::draw() {
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+float delay = 0.f;
 void Player::update() {
-	// aplica as forcas
 
+	// aplica as forcas
 	velocity.y += 40;
 	position += velocity * gb::deltaTime;
 
+	delay += gb::deltaTime;
 
-
-	// define a velocidade maxima
-	if (velocity.x > maxSpeed)
-		velocity.x = maxSpeed;
-
-	else if (velocity.x < -maxSpeed)
-		velocity.x = -maxSpeed;
-
-
-	if (velocity.y > maxSpeed)
-		velocity.y = maxSpeed;
-
-	else if (velocity.y < -maxSpeed)
-		velocity.y = -maxSpeed;
+	if (delay <= 0.33)
+		setNormalizedTexUV(2, 487, 20, 20);
+	else if (delay > 0.33f && delay <= 0.66f)
+		setNormalizedTexUV(30, 487, 20, 20);
+	else if (delay > 0.66f && delay <= 1.f)
+		setNormalizedTexUV(58, 487, 20, 20);
+	else delay = 0.f;
 
 
 	// bordas
@@ -53,8 +54,8 @@ void Player::update() {
 	if (position.x < 0)
 		position.x = 0;
 
-	if (position.y > gb::windowY - radius) {
-		position.y = gb::windowY - radius;
+	if (position.y > gb::windowY - radius - 160) {
+		position.y = gb::windowY - radius - 160;
 		velocity.y = 0.f;
 	}
 

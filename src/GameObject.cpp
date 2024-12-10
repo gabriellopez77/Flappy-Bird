@@ -11,7 +11,6 @@ unsigned int GameObject::EBO = 0;
 unsigned int GameObject::VBO_TEX = 0;
 
 glm::mat4 GameObject::model = glm::mat4(1.f);
-std::vector<GameObject*> GameObject::objects = std::vector<GameObject*>();
 
 const float GameObject::vertices[] = {
 //  position
@@ -23,29 +22,16 @@ const float GameObject::vertices[] = {
 
 const unsigned int GameObject::indices[6] = { 0, 1, 3, 3, 2, 0 };
 
-GameObject::GameObject(glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords) :
-	position(*position),
-	size(*size) {
+GameObject::GameObject(
+	int spriteX,
+	int spriteY,
+	int spriteWidth,
+	int spriteHeight
+) {
 
-	this->texCoords = new float[8] {
-		292.f / 512, 55.0f / 512,
-		459.f / 512, 55.f / 512,
-		292.f / 512, 0.0f / 512,
-		459.f / 512, 0.0f  / 1512
-	};
-
-	objects.push_back(this);
+	setNormalizedTexUV(spriteX, spriteY, spriteWidth, spriteHeight);
 }
 
-void GameObject::draw() {
-	shader->setMat4(shader->modelLoc, model);
-	texture->use();
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
-
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
 void GameObject::create() {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -70,12 +56,32 @@ void GameObject::create() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 }
-void GameObject::update() {
 
+void GameObject::draw() {
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position, 0.f));
 	model = glm::scale(model, glm::vec3(size, 0.f));
+
+	shader->setMat4(shader->modelLoc, model);
+	glBindTexture(GL_TEXTURE_2D, texture->ID);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+void GameObject::update() {
+
+
+}
+
+void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight) {
+
+	texCoords[0] = spriteX / 512.f;					 texCoords[7] = (spriteY + spriteHeight) / 512.f;
+	texCoords[2] = (spriteX + spriteWidth) / 512.f;	 texCoords[5] = (spriteY + spriteHeight) / 512.f;
+	texCoords[4] = spriteX / 512.f;					 texCoords[3] = spriteY / 512.f;
+	texCoords[6] = (spriteX + spriteWidth) / 512.f;   texCoords[1] = spriteY / 512.f;
 }
 
 void GameObject::checkCollision(GameObject* obj) {

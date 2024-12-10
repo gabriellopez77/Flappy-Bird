@@ -11,7 +11,7 @@
 
 class Player : public GameObject {
 public:
-	Player(float radius, glm::ivec2* position, glm::vec2* size, glm::vec4 texCoords);
+	Player(float radius, int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
 	void draw();
 	void input(GLFWwindow* window);
