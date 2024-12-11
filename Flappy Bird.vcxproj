@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -139,7 +139,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\global.cpp" />
-    <ClCompile Include="src\objects\Pipe.cpp" />
+    <ClCompile Include="src\objects\Pipes.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -440,7 +440,7 @@
     <ClInclude Include="Dependencies\stb\stb_image.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\global.h" />
-    <ClInclude Include="src\objects\Pipe.h" />
+    <ClInclude Include="src\objects\Pipes.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />

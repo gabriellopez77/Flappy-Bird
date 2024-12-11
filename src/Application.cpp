@@ -7,10 +7,9 @@
 #include "Texture.h"
 #include "Player.h"
 #include "GameObject.h"
-#include "objects/Pipe.h"
+#include "objects/Pipes.h"
 
 #include <iostream>
-#include <random>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
@@ -48,8 +47,7 @@ int main() {
 	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
 	GameObject::create();
 
-	Pipe::pipe_bottom.reserve(10);
-	Pipe::pipe_top.reserve(10);
+	gb::pipes.reserve(10);
 
 
 	Player player = Player(63.f, 2, 487, 20, 20);
@@ -84,13 +82,11 @@ int main() {
 
 		// inputs
 		player.input(window);
-		money.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
-		player.setAnimatedSprite(2, 487, 20, 20, 3, 0.3f);
 
 
 		delay += gb::deltaTime;
 		if (delay >= 3.f) {
-			Pipe::genPipes();
+			gb::pipes.push_back(new Pipes());
 			delay = 0.f;
 		}
 
@@ -105,8 +101,8 @@ int main() {
 
 		background1.draw();
 		background2.draw();
-		Pipe::updatePipes();
-		Pipe::drawPipes();
+		Pipes::updatePipes();
+		Pipes::drawPipes();
 		player.update();
 		player.draw();
 		ground.draw();

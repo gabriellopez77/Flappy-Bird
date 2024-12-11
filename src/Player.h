@@ -13,11 +13,12 @@ class Player : public GameObject {
 public:
 	Player(float radius, int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
-	void draw();
+	void draw() override;
 	void input(GLFWwindow* window);
 	void update() override;
 
 	glm::ivec2 position = glm::ivec2(0.f);
+	glm::ivec2 size = glm::ivec2(0.f);
 	glm::vec2 velocity = glm::vec2(0.f);
 
 	float maxSpeed = 1000.f;

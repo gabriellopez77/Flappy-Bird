@@ -52,6 +52,8 @@ void Player::update() {
 		position.y = 0;
 		velocity.y = 0;
 	}
+
+	setAnimatedSprite(2, 487, 20, 20, 3, 0.3f);
 }
 bool pressed = false;
 void Player::input(GLFWwindow* window) {

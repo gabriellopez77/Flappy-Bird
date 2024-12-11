@@ -13,15 +13,15 @@ class GameObject {
 public:
 	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
-	void draw();
+	virtual void draw();
 	virtual void update() {}
 	void checkCollision(GameObject* obj1);
 	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	static void create();
 	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
 
-	glm::ivec2 position = glm::ivec2(0.f);
-	glm::ivec2 size = glm::ivec2();
+	glm::ivec2 position =			glm::ivec2(0);
+	glm::ivec2 size =				glm::ivec2(0);
 	glm::vec4 texCoordsNormalized = glm::vec4(0.f);
 
 	static Texture* texture;

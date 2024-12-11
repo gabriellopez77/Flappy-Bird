@@ -6,4 +6,6 @@ namespace gb {
 
 	int windowX = 450;
 	int windowY = 650;
+
+	std::vector<Pipes*> pipes = std::vector<Pipes*>();
 }
