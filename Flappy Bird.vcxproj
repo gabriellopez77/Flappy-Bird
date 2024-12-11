@@ -139,7 +139,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\global.cpp" />
-    <ClCompile Include="src\Pipe.cpp" />
+    <ClCompile Include="src\objects\Pipe.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -440,7 +440,7 @@
     <ClInclude Include="Dependencies\stb\stb_image.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\global.h" />
-    <ClInclude Include="src\Pipe.h" />
+    <ClInclude Include="src\objects\Pipe.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />

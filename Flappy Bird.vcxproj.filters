@@ -42,7 +42,7 @@
     <ClCompile Include="Dependencies\glm\glm.cppm">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipe.cpp">
+    <ClCompile Include="src\objects\Pipe.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
@@ -941,7 +941,7 @@
     <ClInclude Include="Dependencies\stb\stb_image.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pipe.h">
+    <ClInclude Include="src\objects\Pipe.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>

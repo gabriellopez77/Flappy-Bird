@@ -18,6 +18,7 @@ public:
 	void checkCollision(GameObject* obj1);
 	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	static void create();
+	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
 
 	glm::ivec2 position = glm::ivec2(0.f);
 	glm::ivec2 size = glm::ivec2();
@@ -29,6 +30,8 @@ public:
 	float texCoords[8]{ 0.f };
 
 protected:
+	int animationStage = 0;
+	float animationDelay = 0.f;
 	static unsigned int VAO, VBO, EBO, VBO_TEX;
 	static const float vertices[8];
 	static const unsigned int indices[6];

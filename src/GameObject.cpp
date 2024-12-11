@@ -2,6 +2,8 @@
 
 #include "../Dependencies/glad/glad.h"
 
+#include "global.h"
+
 Texture* GameObject::texture = nullptr;
 Shader* GameObject::shader = nullptr;
 
@@ -78,6 +80,19 @@ void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, i
 	texCoords[2] = (spriteX + spriteWidth) / 512.f;	 texCoords[5] = (spriteY + spriteHeight) / 512.f;
 	texCoords[4] = spriteX / 512.f;					 texCoords[3] = spriteY / 512.f;
 	texCoords[6] = (spriteX + spriteWidth) / 512.f;   texCoords[1] = spriteY / 512.f;
+}
+
+void GameObject::setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay) {
+	animationDelay += gb::deltaTime;
+
+	if (animationDelay >= delay) {
+		setNormalizedTexUV(spriteX += (spriteWidth * animationStage), spriteY, spriteWidth, spriteHeight);
+		animationDelay = 0.f;
+		animationStage++;
+
+		if (animationStage == imagesCount)
+			animationStage = 0;
+	}
 }
 
 void GameObject::checkCollision(GameObject* obj) {

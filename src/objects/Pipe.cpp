@@ -1,6 +1,6 @@
 #include "Pipe.h"
 
-#include "global.h"
+#include "../global.h"
 
 #include <random>
 
@@ -52,6 +52,7 @@ void Pipe::genPipes() {
 	Pipe* bottom = new Pipe(0, 84, 323, 26, 160);
 	bottom->size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);
 	bottom->position = glm::ivec2(GAME_WIDTH, rand_num(gen));
+
 
 	Pipe* top = new Pipe(1, 56, 323, 26, 160);
 	top->size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);

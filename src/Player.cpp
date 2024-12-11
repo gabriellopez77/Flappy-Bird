@@ -29,22 +29,11 @@ void Player::draw() {
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-float delay = 0.f;
 void Player::update() {
 
 	// aplica as forcas
 	velocity.y += 40;
 	position += velocity * gb::deltaTime;
-
-	delay += gb::deltaTime;
-
-	if (delay <= 0.33)
-		setNormalizedTexUV(2, 487, 20, 20);
-	else if (delay > 0.33f && delay <= 0.66f)
-		setNormalizedTexUV(30, 487, 20, 20);
-	else if (delay > 0.66f && delay <= 1.f)
-		setNormalizedTexUV(58, 487, 20, 20);
-	else delay = 0.f;
 
 
 	// bordas
@@ -72,7 +61,7 @@ void Player::input(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		if (!pressed) {
 			pressed = true;
-			velocity.y = -750.f;
+			velocity.y = -650.f;
 		}
 	}
 	else pressed = false;

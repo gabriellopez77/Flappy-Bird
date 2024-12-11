@@ -7,7 +7,7 @@
 #include "Texture.h"
 #include "Player.h"
 #include "GameObject.h"
-#include "Pipe.h"
+#include "objects/Pipe.h"
 
 #include <iostream>
 #include <random>
@@ -66,6 +66,9 @@ int main() {
 	ground.size = glm::ivec2(GAME_WIDTH, 160);
 	ground.position = glm::ivec2(0, GAME_HEIGHT - 160);
 
+	GameObject money = GameObject(146, 258, 16, 16);
+	money.size = glm::ivec2(36);
+	money.position = glm::ivec2 (40, 40);
 
 
 	float delay = 0.f;
@@ -81,12 +84,12 @@ int main() {
 
 		// inputs
 		player.input(window);
-
+		money.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
+		player.setAnimatedSprite(2, 487, 20, 20, 3, 0.3f);
 
 
 		delay += gb::deltaTime;
-
-		if (delay >= 1.f) {
+		if (delay >= 3.f) {
 			Pipe::genPipes();
 			delay = 0.f;
 		}
@@ -107,6 +110,7 @@ int main() {
 		player.update();
 		player.draw();
 		ground.draw();
+		money.draw();
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
