@@ -10,6 +10,8 @@ namespace gb {
 	double mousePosX = 0;
 	double mousePosY = 0;
 
+	bool clicked = false;
+	int action = 0;
 	bool paused = true;
 
 	GLFWwindow* window = nullptr;

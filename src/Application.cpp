@@ -10,6 +10,7 @@
 #include "objects/Player.h"
 #include "objects/Pipes.h"
 #include "objects/Text.h"
+#include "objects/Button.h"
 
 #include <iostream>
 
@@ -47,7 +48,6 @@ int main() {
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_click_callback);
 
-
 	GameObject::shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 	GameObject::shader->use();
 
@@ -58,30 +58,30 @@ int main() {
 
 	GameObject title = GameObject(351, 91, 89, 24);
 	title.size = glm::ivec2(300, 100);
-	title.position = glm::ivec2(GAME_WIDTH /2 - title.size.x /2, 50);
+	title.position = glm::ivec2(SCREEN_WIDTH /2 - title.size.x /2, 50);
 
-	GameObject play_button = GameObject(354, 118, 59, 29);
-	play_button.size = glm::ivec2(200, 100);
-	play_button.position = glm::ivec2(GAME_WIDTH / 2 - play_button.size.x /2, GAME_HEIGHT - 300);
+	Button play_button = Button(354, 118, 52, 29);
+	play_button.size = glm::ivec2(156, 87);
+	play_button.position = glm::ivec2(SCREEN_WIDTH / 2 - play_button.size.x /2, SCREEN_HEIGHT - 300);
 
 	player = new Player(63.f, 2, 487, 20, 20);
 	player->size = glm::ivec2(PLAYER_SIZE);
-	player->position = glm::vec2(50, 300);
+	player->position = PLAYER_START_POSITION;
 
 	GameObject background1 = GameObject(0, 0, 144, 256);
-	background1.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
+	background1.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
 
 	GameObject background2 = GameObject(0,0, 144, 256);
-	background2.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
-	background2.position = glm::ivec2(background1.position.x + GAME_WIDTH, 0);
+	background2.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
+	background2.position = glm::ivec2(background1.position.x + SCREEN_WIDTH, 0);
 
 	GameObject ground1 = GameObject(292, 0, 168, 56);
-	ground1.size = glm::ivec2(GAME_WIDTH, 160);
-	ground1.position = glm::ivec2(0, GAME_HEIGHT - 160);
+	ground1.size = glm::ivec2(SCREEN_WIDTH, 160);
+	ground1.position = glm::ivec2(0, SCREEN_HEIGHT - 160);
 
 	GameObject ground2 = GameObject(292, 0, 168, 56);
-	ground2.size = glm::ivec2(GAME_WIDTH, 160);
-	ground2.position = glm::ivec2(ground1.position.x + GAME_WIDTH, GAME_HEIGHT - 160);
+	ground2.size = glm::ivec2(SCREEN_WIDTH, 160);
+	ground2.position = glm::ivec2(ground1.position.x + SCREEN_WIDTH, SCREEN_HEIGHT - 160);
 
 	GameObject money = GameObject(194, 258, 16, 16);
 	money.size = glm::ivec2(48);
@@ -117,20 +117,20 @@ int main() {
 			background1.position.x -= BACKGROUND_SPEED;
 			background2.position.x -= BACKGROUND_SPEED;
 
-			if (background1.position.x + GAME_WIDTH <= 0)
-				background1.position.x = background2.position.x + GAME_WIDTH;
+			if (background1.position.x + SCREEN_WIDTH <= 0)
+				background1.position.x = background2.position.x + SCREEN_WIDTH;
 
-			else if (background2.position.x + GAME_WIDTH <= 0)
-				background2.position.x = background1.position.x + GAME_WIDTH;
+			else if (background2.position.x + SCREEN_WIDTH <= 0)
+				background2.position.x = background1.position.x + SCREEN_WIDTH;
 
 			ground1.position.x -= WORLD_SPEED;
 			ground2.position.x -= WORLD_SPEED;
 
-			if (ground1.position.x + GAME_WIDTH <= 0)
-				ground1.position.x = ground2.position.x + GAME_WIDTH;
+			if (ground1.position.x + SCREEN_WIDTH <= 0)
+				ground1.position.x = ground2.position.x + SCREEN_WIDTH;
 
-			else if (ground2.position.x + GAME_WIDTH <= 0)
-				ground2.position.x = ground1.position.x + GAME_WIDTH;
+			else if (ground2.position.x + SCREEN_WIDTH <= 0)
+				ground2.position.x = ground1.position.x + SCREEN_WIDTH;
 
 
 			Pipes::updatePipes();
@@ -146,11 +146,15 @@ int main() {
 		money.draw();
 		CoinCount.draw();
 
+
 		if (gb::paused) {
+			play_button.update();
 			play_button.draw();
 			title.draw();
 		}
-		
+		gb::clicked = false;
+		gb::action = 0;
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -170,6 +174,11 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !gb::paused)
-		player->input(gb::window, Action::JUMP);
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		gb::clicked = true;
+		gb::action = action;
+
+		if (!gb::paused)
+			player->input(gb::window, Action::JUMP);
+	}
 }

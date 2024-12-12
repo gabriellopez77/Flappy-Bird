@@ -11,13 +11,13 @@ Pipes::Pipes() :
 {
 	std::random_device rd;
 	std::mt19937 gen = std::mt19937(rd());
-	std::uniform_int_distribution rand_num(200, 450);
+	std::uniform_int_distribution rand_num(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT);
 
 	pipeTop.size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);
 	pipeBottom.size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);
 	coin.size = glm::ivec2(32);
 
-	pipeBottom.position = glm::ivec2(GAME_WIDTH, rand_num(gen));
+	pipeBottom.position = glm::ivec2(SCREEN_WIDTH, rand_num(gen));
 	pipeTop.position.y = (pipeBottom.position.y - 160) - PIPE_HEIGHT;
 }
 
