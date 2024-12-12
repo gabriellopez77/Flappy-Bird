@@ -9,14 +9,13 @@ Text::Text(
 	int spriteHeight
 ) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight) {
 
-
 }
 
 void Text::draw() {
 	tempPos = position;
 
 	for (int c = 0; c < text.size(); c++) {
-		int value = 0;
+		int value;
 		switch (text[c]) {
 			case '0': value = 0; break;
 			case '1': value = 1; break;
@@ -36,14 +35,13 @@ void Text::draw() {
 		model = glm::mat4(1.f);
 		model = glm::translate(model, glm::vec3(tempPos, 0.f));
 		model = glm::scale(model, glm::vec3(size, 0.f));
-
+		
 		shader->setMat4(shader->modelLoc, model);
 		glBindTexture(GL_TEXTURE_2D, texture->ID);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
-
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 		tempPos.x += size.x;
 	}
 }

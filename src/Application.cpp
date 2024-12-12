@@ -5,8 +5,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
 #include "Texture.h"
-#include "Player.h"
 #include "GameObject.h"
+#include "Global.h"
+#include "objects/Player.h"
 #include "objects/Pipes.h"
 #include "objects/Text.h"
 
@@ -16,8 +17,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 
-double mousePosX;
-double mousePosY;
 
 Player* player;
 int main() {
@@ -38,6 +37,10 @@ int main() {
 
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
 
 	// callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -62,7 +65,8 @@ int main() {
 	play_button.position = glm::ivec2(GAME_WIDTH / 2 - play_button.size.x /2, GAME_HEIGHT - 300);
 
 	player = new Player(63.f, 2, 487, 20, 20);
-	player->size = glm::ivec2(80.f);
+	player->size = glm::ivec2(PLAYER_SIZE);
+	player->position = glm::vec2(50, 300);
 
 	GameObject background1 = GameObject(0, 0, 144, 256);
 	background1.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
@@ -71,9 +75,13 @@ int main() {
 	background2.size = glm::ivec2(GAME_WIDTH, GAME_HEIGHT - 50);
 	background2.position = glm::ivec2(background1.position.x + GAME_WIDTH, 0);
 
-	GameObject ground = GameObject(292, 0, 168, 56);
-	ground.size = glm::ivec2(GAME_WIDTH, 160);
-	ground.position = glm::ivec2(0, GAME_HEIGHT - 160);
+	GameObject ground1 = GameObject(292, 0, 168, 56);
+	ground1.size = glm::ivec2(GAME_WIDTH, 160);
+	ground1.position = glm::ivec2(0, GAME_HEIGHT - 160);
+
+	GameObject ground2 = GameObject(292, 0, 168, 56);
+	ground2.size = glm::ivec2(GAME_WIDTH, 160);
+	ground2.position = glm::ivec2(ground1.position.x + GAME_WIDTH, GAME_HEIGHT - 160);
 
 	GameObject money = GameObject(194, 258, 16, 16);
 	money.size = glm::ivec2(48);
@@ -96,24 +104,33 @@ int main() {
 
 		// inputs
 		player->input(window, Action::EMPTY);
-		
+
 		if (!gb::paused) {
 			delay += gb::deltaTime;
-			if (delay >= 3.f) {
+			if (delay >= GEN_PIPES_DELAY) {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
 				player->coinCount++;
 				CoinCount.text = std::to_string(player->coinCount);
 			}
 
-			background1.position.x -= 0.7f;
-			background2.position.x -= 0.7f;
+			background1.position.x -= BACKGROUND_SPEED;
+			background2.position.x -= BACKGROUND_SPEED;
 
 			if (background1.position.x + GAME_WIDTH <= 0)
 				background1.position.x = background2.position.x + GAME_WIDTH;
 
 			else if (background2.position.x + GAME_WIDTH <= 0)
 				background2.position.x = background1.position.x + GAME_WIDTH;
+
+			ground1.position.x -= WORLD_SPEED;
+			ground2.position.x -= WORLD_SPEED;
+
+			if (ground1.position.x + GAME_WIDTH <= 0)
+				ground1.position.x = ground2.position.x + GAME_WIDTH;
+
+			else if (ground2.position.x + GAME_WIDTH <= 0)
+				ground2.position.x = ground1.position.x + GAME_WIDTH;
 
 
 			Pipes::updatePipes();
@@ -124,7 +141,8 @@ int main() {
 		background2.draw();
 		Pipes::drawPipes();
 		player->draw();
-		ground.draw();
+		ground1.draw();
+		ground2.draw();
 		money.draw();
 		CoinCount.draw();
 
@@ -148,10 +166,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-	glfwGetCursorPos(window, &mousePosX, &mousePosY);
+	glfwGetCursorPos(window, &gb::mousePosX, &gb::mousePosY);
 }
 
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !gb::paused)
 		player->input(gb::window, Action::JUMP);
 }

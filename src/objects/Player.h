@@ -4,9 +4,7 @@
 #include "../Dependencies/glad/glad.h"
 #include "../Dependencies/glfw/glfw3.h"
 
-#include "Shader.h"
-#include "global.h"
-#include "GameObject.h"
+#include "../GameObject.h"
 
 enum class Action : char { JUMP, EMPTY };
 class Player : public GameObject {
@@ -17,8 +15,6 @@ public:
 	void input(GLFWwindow* window, Action action);
 	void update() override;
 
-	glm::ivec2 position = glm::ivec2(0.f);
-	glm::ivec2 size = glm::ivec2(0.f);
 	glm::vec2 velocity = glm::vec2(0.f);
 
 	unsigned short coinCount = 0;

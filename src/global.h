@@ -6,8 +6,18 @@
 #define PIPE_WIDTH 90
 #define PIPE_HEIGHT 462
 
-#include "objects/Pipes.h"
+#define PLAYER_SIZE 60
+#define PLAYER_START_POSITION (50, 300)
+
+#define BACKGROUND_SPEED 0.8f
+#define WORLD_SPEED 2.7f
+#define GEN_PIPES_DELAY 2
+
+
 #include "../Dependencies/glfw/glfw3.h"
+
+#include "objects/Pipes.h"
+
 #include <vector>
 
 namespace gb {
@@ -16,6 +26,9 @@ namespace gb {
 
 	extern int windowX;
 	extern int windowY;
+
+	extern double mousePosX;
+	extern double mousePosY;
 
 	extern bool paused;
 

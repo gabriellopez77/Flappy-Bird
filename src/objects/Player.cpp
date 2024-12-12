@@ -2,8 +2,8 @@
 
 #include "../Dependencies/glm/gtc/matrix_transform.hpp"
 
+#include "../Global.h"
 
-#include "iostream"
 Player::Player(
 	float radius,
 	int spriteX,
@@ -11,8 +11,6 @@ Player::Player(
 	int spriteWidth,
 	int spriteHeight
 ) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight) {
-	this->position = glm::vec2(gb::windowX /2 - 50, gb::windowY /2 - 50);
-
 	this->radius = radius;
 }
 
@@ -53,7 +51,7 @@ void Player::update() {
 		velocity.y = 0;
 	}
 
-	setAnimatedSprite(2, 487, 20, 20, 3, 0.3f);
+	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 }
 
 bool pressed = false;
@@ -64,9 +62,7 @@ void Player::input(GLFWwindow* window, Action action) {
 			pressed = true;
 		}
 	}
-	else {
-		pressed = false;
-	}
+	else pressed = false;
 
 	if (action == Action::JUMP) {
 		velocity.y = -650.f;

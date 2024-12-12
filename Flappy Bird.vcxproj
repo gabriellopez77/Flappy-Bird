@@ -138,10 +138,10 @@
     <ClCompile Include="Dependencies\glm\glm.cppm" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
-    <ClCompile Include="src\global.cpp" />
+    <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\objects\Pipes.cpp" />
     <ClCompile Include="src\objects\Text.cpp" />
-    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\objects\Player.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
@@ -440,10 +440,10 @@
     <ClInclude Include="Dependencies\KHR\khrplatform.h" />
     <ClInclude Include="Dependencies\stb\stb_image.h" />
     <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\objects\Pipes.h" />
     <ClInclude Include="src\objects\Text.h" />
-    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\objects\Player.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>

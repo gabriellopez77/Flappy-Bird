@@ -2,7 +2,7 @@
 
 #include "../Dependencies/glad/glad.h"
 
-#include "global.h"
+#include "Global.h"
 
 Texture* GameObject::texture = nullptr;
 Shader* GameObject::shader = nullptr;

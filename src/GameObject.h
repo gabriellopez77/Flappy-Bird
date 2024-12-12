@@ -3,10 +3,8 @@
 #include "../Dependencies/glm/glm.hpp"
 #include "../Dependencies/glm/gtc/matrix_transform.hpp"
 
-
 #include "Shader.h"
 #include "Texture.h"
-#include "vector"
 
 class GameObject {
 public:
@@ -30,8 +28,9 @@ public:
 	float texCoords[8]{ 0.f };
 
 protected:
-	unsigned short animationStage = 0;
 	float animationDelay = 0.f;
+	unsigned short animationStage = 0;
+
 	static unsigned int VAO, VBO, EBO, VBO_TEX;
 	static const float vertices[8];
 	static const unsigned int indices[6];

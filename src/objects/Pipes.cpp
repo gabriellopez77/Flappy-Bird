@@ -1,9 +1,8 @@
 #include "Pipes.h"
 
-#include "../global.h"
+#include "../Global.h"
 
 #include <random>
-
 
 Pipes::Pipes() :
 	pipeTop(56, 323, 26, 160),
@@ -29,9 +28,9 @@ void Pipes::draw() {
 }
 
 void Pipes::update() {
-	pipeBottom.position.x--;
+	pipeBottom.position.x -= WORLD_SPEED;
 	pipeTop.position.x = pipeBottom.position.x;
-	coin.position = glm::ivec2(pipeBottom.position.x + 27, pipeBottom.position.y - 80 - 18);
+	coin.position = glm::ivec2(pipeBottom.position.x + 32, pipeBottom.position.y - 80 - 16);
 	coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
 }
 

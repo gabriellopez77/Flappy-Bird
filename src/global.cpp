@@ -1,4 +1,4 @@
-#include "global.h"
+#include "Global.h"
 
 namespace gb {
 	float deltaTime = 0.f;
@@ -7,7 +7,10 @@ namespace gb {
 	int windowX = 450;
 	int windowY = 650;
 
-	bool paused = false;
+	double mousePosX = 0;
+	double mousePosY = 0;
+
+	bool paused = true;
 
 	GLFWwindow* window = nullptr;
 
