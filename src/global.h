@@ -7,7 +7,7 @@
 #define PIPE_HEIGHT 462
 
 #include "objects/Pipes.h"
-
+#include "../Dependencies/glfw/glfw3.h"
 #include <vector>
 
 namespace gb {
@@ -16,6 +16,10 @@ namespace gb {
 
 	extern int windowX;
 	extern int windowY;
+
+	extern bool paused;
+
+	extern GLFWwindow* window;
 
 	extern std::vector<Pipes*> pipes;
 }

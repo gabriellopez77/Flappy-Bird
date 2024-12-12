@@ -13,14 +13,15 @@ class GameObject {
 public:
 	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
+	static void create();
 	virtual void draw();
 	virtual void update() {}
-	void checkCollision(GameObject* obj1);
-	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
-	static void create();
-	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
 
-	glm::ivec2 position =			glm::ivec2(0);
+	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
+	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
+	void checkCollision(GameObject* obj1);
+
+	glm::vec2 position =			glm::vec2(0);
 	glm::ivec2 size =				glm::ivec2(0);
 	glm::vec4 texCoordsNormalized = glm::vec4(0.f);
 
@@ -30,7 +31,7 @@ public:
 	float texCoords[8]{ 0.f };
 
 protected:
-	int animationStage = 0;
+	unsigned short animationStage = 0;
 	float animationDelay = 0.f;
 	static unsigned int VAO, VBO, EBO, VBO_TEX;
 	static const float vertices[8];

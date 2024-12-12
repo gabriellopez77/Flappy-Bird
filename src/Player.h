@@ -8,13 +8,13 @@
 #include "global.h"
 #include "GameObject.h"
 
-
+enum class Action : char { JUMP, EMPTY };
 class Player : public GameObject {
 public:
 	Player(float radius, int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
 	void draw() override;
-	void input(GLFWwindow* window);
+	void input(GLFWwindow* window, Action action);
 	void update() override;
 
 	glm::ivec2 position = glm::ivec2(0.f);

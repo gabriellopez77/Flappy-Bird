@@ -15,11 +15,12 @@ Player::Player(
 
 	this->radius = radius;
 }
+
 void Player::draw() {
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(this->position.x, this->position.y, 0.f));
 	model = glm::scale(model, glm::vec3(size, 0.f));
-
+	
 	shader->setMat4(shader->modelLoc, model);
 	texture->use();
 
@@ -30,7 +31,6 @@ void Player::draw() {
 }
 
 void Player::update() {
-
 	// aplica as forcas
 	velocity.y += 40;
 	position += velocity * gb::deltaTime;
@@ -55,18 +55,22 @@ void Player::update() {
 
 	setAnimatedSprite(2, 487, 20, 20, 3, 0.3f);
 }
-bool pressed = false;
-void Player::input(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+bool pressed = false;
+void Player::input(GLFWwindow* window, Action action) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		if (!pressed) {
+			gb::paused = !gb::paused;
 			pressed = true;
-			velocity.y = -650.f;
 		}
 	}
-	else pressed = false;
+	else {
+		pressed = false;
+	}
+
+	if (action == Action::JUMP) {
+		velocity.y = -650.f;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		this->position.x += Xspeed * gb::deltaTime;
