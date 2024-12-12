@@ -21,6 +21,8 @@ public:
 	glm::ivec2 size = glm::ivec2(0.f);
 	glm::vec2 velocity = glm::vec2(0.f);
 
+	unsigned short coinCount = 0;
+
 	float maxSpeed = 1000.f;
 	float Xspeed = 900.f;
 	float Yspeed = 900.f;

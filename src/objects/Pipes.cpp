@@ -16,7 +16,7 @@ Pipes::Pipes() :
 
 	pipeTop.size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);
 	pipeBottom.size = glm::ivec2(PIPE_WIDTH, PIPE_HEIGHT);
-	coin.size = glm::ivec2(36);
+	coin.size = glm::ivec2(32);
 
 	pipeBottom.position = glm::ivec2(GAME_WIDTH, rand_num(gen));
 	pipeTop.position.y = (pipeBottom.position.y - 160) - PIPE_HEIGHT;

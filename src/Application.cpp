@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "objects/Pipes.h"
+#include "objects/Text.h"
 
 #include <iostream>
 
@@ -75,8 +76,12 @@ int main() {
 	ground.position = glm::ivec2(0, GAME_HEIGHT - 160);
 
 	GameObject money = GameObject(194, 258, 16, 16);
-	money.size = glm::ivec2(40);
+	money.size = glm::ivec2(48);
 	money.position = glm::ivec2 (20, 30);
+
+	Text CoinCount = Text(0,0,0,0);
+	CoinCount.size = glm::ivec2(30, 37);
+	CoinCount.position = glm::ivec2(71, 35);
 
 	float delay = 0.f;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
@@ -97,6 +102,8 @@ int main() {
 			if (delay >= 3.f) {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
+				player->coinCount++;
+				CoinCount.text = std::to_string(player->coinCount);
 			}
 
 			background1.position.x -= 0.7f;
@@ -119,6 +126,7 @@ int main() {
 		player->draw();
 		ground.draw();
 		money.draw();
+		CoinCount.draw();
 
 		if (gb::paused) {
 			play_button.draw();
