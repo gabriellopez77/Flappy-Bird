@@ -1,5 +1,7 @@
 #include "Global.h"
 
+#include <random>
+
 namespace gb {
 	float deltaTime = 0.f;
 	float lastFrame = 0.f;
@@ -18,4 +20,13 @@ namespace gb {
 	GLFWwindow* window = nullptr;
 
 	std::vector<Pipes*> pipes = std::vector<Pipes*>();
+
+	const int randNum(const int min, const int max) {
+		static std::random_device rd;
+		static std::mt19937 gen = std::mt19937(rd());
+
+		std::uniform_int_distribution rand_num(min, max);
+
+		return rand_num(gen);
+	}
 }

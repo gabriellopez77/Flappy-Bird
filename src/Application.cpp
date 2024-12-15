@@ -20,7 +20,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 
 
 int main() {
-
 	glfwInit();
 	glfwInitHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -106,7 +105,7 @@ int main() {
 
 		if (!gb::paused) {
 			delay += gb::deltaTime;
-			if (delay >= GEN_PIPES_DELAY) {
+			if (delay >= PIPES_GEN_DELAY) {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
 			}
@@ -120,8 +119,8 @@ int main() {
 			else if (background2.position.x + SCREEN_WIDTH <= 0)
 				background2.position.x = background1.position.x + SCREEN_WIDTH;
 
-			ground1.position.x -= WORLD_SPEED * gb::deltaTime;
-			ground2.position.x -= WORLD_SPEED * gb::deltaTime;
+			ground1.position.x -= GROUND_SPEED * gb::deltaTime;
+			ground2.position.x -= GROUND_SPEED * gb::deltaTime;
 
 			if (ground1.position.x + SCREEN_WIDTH <= 0)
 				ground1.position.x = ground2.position.x + SCREEN_WIDTH;

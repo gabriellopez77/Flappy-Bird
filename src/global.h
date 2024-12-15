@@ -5,9 +5,9 @@
 #define SCREEN_WIDTH 450
 #define SCREEN_HEIGHT 650
 
-#define PIPE_WIDTH 90
-#define PIPE_HEIGHT 462
-#define PIPE_MIN_HEIGHT 200
+#define PIPE_SIZE_X 90
+#define PIPE_SIZE_Y 462
+#define PIPE_MIN_HEIGHT 230
 #define PIPE_MAX_HEIGHT 450
 #define PIPE_SPACING 200
 
@@ -17,9 +17,11 @@
 #define PLAYER_MIN_ROTATE -10
 #define GRAVITY 3000
 
+#define COIN_SIZE 32
+
 #define BACKGROUND_SPEED 60.f
-#define WORLD_SPEED 202.f
-#define GEN_PIPES_DELAY 2
+#define GROUND_SPEED 202.f
+#define PIPES_GEN_DELAY 2.f
 
 
 #include "../Dependencies/glfw/glfw3.h"
@@ -47,4 +49,6 @@ namespace gb {
 	extern GLFWwindow* window;
 
 	extern std::vector<Pipes*> pipes;
+
+	extern const int randNum(const int min, const int max);
 }
