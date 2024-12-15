@@ -9,14 +9,16 @@
 #define PIPE_HEIGHT 462
 #define PIPE_MIN_HEIGHT 200
 #define PIPE_MAX_HEIGHT 450
+#define PIPE_SPACING 200
 
 #define PLAYER_SIZE 60
 #define PLAYER_START_POSITION glm::vec2(100, 300)
 #define PLAYER_MAX_ROTATE 80
 #define PLAYER_MIN_ROTATE -10
+#define GRAVITY 3000
 
-#define BACKGROUND_SPEED 0.8f
-#define WORLD_SPEED 2.7f
+#define BACKGROUND_SPEED 60.f
+#define WORLD_SPEED 202.f
 #define GEN_PIPES_DELAY 2
 
 
@@ -39,6 +41,8 @@ namespace gb {
 	extern bool clicked;
 	extern int action;
 	extern bool paused;
+
+	extern void* player;
 
 	extern GLFWwindow* window;
 

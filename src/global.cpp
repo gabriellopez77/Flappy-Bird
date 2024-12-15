@@ -14,6 +14,7 @@ namespace gb {
 	int action = 0;
 	bool paused = true;
 
+	void* player = nullptr;
 	GLFWwindow* window = nullptr;
 
 	std::vector<Pipes*> pipes = std::vector<Pipes*>();

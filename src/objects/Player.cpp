@@ -34,12 +34,12 @@ void Player::draw() {
 
 void Player::update() {
 	// aplica as forcas
-	velocity.y += 40;
+	velocity.y += GRAVITY * gb::deltaTime;
 	position += velocity * gb::deltaTime;
 
 
 	// aplica a rotaçao do player
-	rotate += glm::normalize(velocity).y * 2.f;;
+	rotate += glm::normalize(velocity).y * 2.f * gb::deltaTime;
 	if (rotate > PLAYER_MAX_ROTATE)
 		rotate = PLAYER_MAX_ROTATE;
 	else if (rotate < PLAYER_MIN_ROTATE)

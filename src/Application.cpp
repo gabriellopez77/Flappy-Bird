@@ -19,7 +19,6 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 
 
-Player* player;
 int main() {
 
 	glfwInit();
@@ -63,8 +62,8 @@ int main() {
 	Button play_button = Button(354, 118, 52, 29);
 	play_button.size = glm::ivec2(156, 87);
 	play_button.position = glm::ivec2(SCREEN_WIDTH / 2 - play_button.size.x /2, SCREEN_HEIGHT - 300);
-
-	player = new Player(2, 487, 20, 20);
+	Player* player = new Player(2, 487, 20,20);
+	gb::player = player;
 	player->size = glm::ivec2(PLAYER_SIZE);
 	player->position = PLAYER_START_POSITION;
 
@@ -112,8 +111,8 @@ int main() {
 				delay = 0.f;
 			}
 
-			background1.position.x -= BACKGROUND_SPEED;
-			background2.position.x -= BACKGROUND_SPEED;
+			background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
+			background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
 
 			if (background1.position.x + SCREEN_WIDTH <= 0)
 				background1.position.x = background2.position.x + SCREEN_WIDTH;
@@ -121,8 +120,8 @@ int main() {
 			else if (background2.position.x + SCREEN_WIDTH <= 0)
 				background2.position.x = background1.position.x + SCREEN_WIDTH;
 
-			ground1.position.x -= WORLD_SPEED;
-			ground2.position.x -= WORLD_SPEED;
+			ground1.position.x -= WORLD_SPEED * gb::deltaTime;
+			ground2.position.x -= WORLD_SPEED * gb::deltaTime;
 
 			if (ground1.position.x + SCREEN_WIDTH <= 0)
 				ground1.position.x = ground2.position.x + SCREEN_WIDTH;
@@ -153,7 +152,6 @@ int main() {
 		ground2.draw();
 		money.draw();
 		CoinCount.draw();
-
 
 		if (gb::paused) {
 			play_button.update();
@@ -187,6 +185,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::action = action;
 
 		if (!gb::paused)
-			player->input(Action::JUMP);
+			((Player*)gb::player)->input(Action::JUMP);
 	}
 }

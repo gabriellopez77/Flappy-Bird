@@ -18,7 +18,7 @@ Pipes::Pipes() :
 	coin.size = glm::ivec2(32);
 
 	pipeBottom.position = glm::ivec2(SCREEN_WIDTH, rand_num(gen));
-	pipeTop.position.y = (pipeBottom.position.y - 160) - PIPE_HEIGHT;
+	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING) - PIPE_HEIGHT;
 }
 
 void Pipes::draw() {
@@ -29,9 +29,9 @@ void Pipes::draw() {
 }
 
 void Pipes::update() {
-	pipeBottom.position.x -= WORLD_SPEED;
+	pipeBottom.position.x -= WORLD_SPEED * gb::deltaTime;
 	pipeTop.position.x = pipeBottom.position.x;
-	coin.position = glm::ivec2(pipeBottom.position.x + 32, pipeBottom.position.y - 80 - 16);
+	coin.position = glm::ivec2(pipeBottom.position.x + 32, pipeBottom.position.y - PIPE_SPACING /2 - 16);
 	coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
 }
 
