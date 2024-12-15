@@ -14,4 +14,6 @@ public:
 	GameObject pipeTop;
 	GameObject coin;
 	GameObject pipeBottom;
+
+	bool coinVisible = true;
 };

@@ -64,7 +64,7 @@ int main() {
 	play_button.size = glm::ivec2(156, 87);
 	play_button.position = glm::ivec2(SCREEN_WIDTH / 2 - play_button.size.x /2, SCREEN_HEIGHT - 300);
 
-	player = new Player(63.f, 2, 487, 20, 20);
+	player = new Player(2, 487, 20, 20);
 	player->size = glm::ivec2(PLAYER_SIZE);
 	player->position = PLAYER_START_POSITION;
 
@@ -103,15 +103,13 @@ int main() {
 		gb::lastFrame = currentFrame;
 
 		// inputs
-		player->input(window, Action::EMPTY);
+		player->input(Action::EMPTY);
 
 		if (!gb::paused) {
 			delay += gb::deltaTime;
 			if (delay >= GEN_PIPES_DELAY) {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
-				player->coinCount++;
-				CoinCount.text = std::to_string(player->coinCount);
 			}
 
 			background1.position.x -= BACKGROUND_SPEED;
@@ -135,6 +133,16 @@ int main() {
 
 			Pipes::updatePipes();
 			player->update();
+
+			for (auto obj : gb::pipes) {
+				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
+					player->coinCount++;
+					CoinCount.text = std::to_string(player->coinCount);
+
+					obj->coinVisible = false;
+					std::cout << "COLIDIU\n";
+				}
+			}
 		}
 
 		background1.draw();
@@ -179,6 +187,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::action = action;
 
 		if (!gb::paused)
-			player->input(gb::window, Action::JUMP);
+			player->input(Action::JUMP);
 	}
 }

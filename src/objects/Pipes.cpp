@@ -24,7 +24,8 @@ Pipes::Pipes() :
 void Pipes::draw() {
 	pipeTop.draw();
 	pipeBottom.draw();
-	coin.draw();
+	if (coinVisible)
+		coin.draw();
 }
 
 void Pipes::update() {
