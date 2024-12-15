@@ -66,7 +66,6 @@ void GameObject::draw() {
 	model = glm::scale(model, glm::vec3(size, 0.f));
 
 	shader->setMat4(shader->modelLoc, model);
-	glBindTexture(GL_TEXTURE_2D, texture->ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
@@ -75,7 +74,6 @@ void GameObject::draw() {
 }
 
 void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight) {
-
 	texCoords[0] = spriteX / 512.f;					 texCoords[7] = (spriteY + spriteHeight) / 512.f;
 	texCoords[2] = (spriteX + spriteWidth) / 512.f;	 texCoords[5] = (spriteY + spriteHeight) / 512.f;
 	texCoords[4] = spriteX / 512.f;					 texCoords[3] = spriteY / 512.f;
@@ -93,8 +91,4 @@ void GameObject::setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, in
 		if (animationStage == imagesCount)
 			animationStage = 0;
 	}
-}
-
-void GameObject::checkCollision(GameObject* obj) {
-	//hipo = sqrt(powf(obj->position.x - position.x, 2) + powf(obj->position.y - position.y, 2));
 }

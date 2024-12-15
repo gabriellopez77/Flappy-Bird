@@ -24,7 +24,6 @@ void Player::draw() {
 	model = glm::scale(model, glm::vec3(size, 0.f));
 	
 	shader->setMat4(shader->modelLoc, model);
-	texture->use();
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
@@ -39,7 +38,7 @@ void Player::update() {
 
 
 	// aplica a rotaçao do player
-	rotate += glm::normalize(velocity).y * 2.f * gb::deltaTime;
+	rotate += glm::normalize(velocity).y * 170.f * gb::deltaTime;
 	if (rotate > PLAYER_MAX_ROTATE)
 		rotate = PLAYER_MAX_ROTATE;
 	else if (rotate < PLAYER_MIN_ROTATE)
@@ -64,10 +63,12 @@ void Player::update() {
 
 	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 }
+
 bool Player::checkCollision(const GameObject* obj) const {
 	return (obj->position.x >= position.x && obj->position.x + obj->size.x <= position.x + size.x &&
 			obj->position.y >= position.y && obj->position.y + obj->size.y <= position.y + size.y);
 }
+
 void Player::input(Action action) {
 	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		if (!pressed) {

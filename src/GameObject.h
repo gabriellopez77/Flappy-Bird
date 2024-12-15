@@ -16,7 +16,6 @@ public:
 
 	void setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
-	void checkCollision(GameObject* obj1);
 
 	glm::vec2 position =			glm::vec2(0);
 	glm::ivec2 size =				glm::ivec2(0);

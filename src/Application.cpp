@@ -50,6 +50,7 @@ int main() {
 	GameObject::shader->use();
 
 	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
+	GameObject::texture->use();
 	GameObject::create();
 
 	gb::pipes.reserve(5);
@@ -138,8 +139,13 @@ int main() {
 					CoinCount.text = std::to_string(player->coinCount);
 
 					obj->coinVisible = false;
+				}
+
+				if (player->checkCollision(&obj->pipeBottom)) {
+
 					std::cout << "COLIDIU\n";
 				}
+
 			}
 		}
 

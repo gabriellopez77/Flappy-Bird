@@ -37,7 +37,6 @@ void Text::draw() {
 		model = glm::scale(model, glm::vec3(size, 0.f));
 		
 		shader->setMat4(shader->modelLoc, model);
-		glBindTexture(GL_TEXTURE_2D, texture->ID);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

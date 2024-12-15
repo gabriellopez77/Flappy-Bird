@@ -15,10 +15,7 @@ Pipes::Pipes() :
 	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING) - PIPE_SIZE_Y;
 
 	coin.size = glm::ivec2(COIN_SIZE);
-	coin.position.y = gb::randNum(pipeTop.position.y - PIPE_SIZE_Y, pipeBottom.position.y + COIN_SIZE);
-
-	std::cout << pipeTop.position.y - PIPE_SIZE_Y << '\n';
-	std::cout << pipeBottom.position.y + COIN_SIZE << '\n';
+	coin.position.y = gb::randNum(pipeTop.position.y + PIPE_SIZE_Y, pipeBottom.position.y - COIN_SIZE);
 }
 
 void Pipes::draw() {
