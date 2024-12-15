@@ -18,9 +18,14 @@ Player::Player(
 
 void Player::draw() {
 	model = glm::mat4(1.f);
-	model = glm::translate(model, glm::vec3(this->position.x, this->position.y, 0.f));
+	model = glm::translate(model, glm::vec3(position.x, position.y, 0.f));
 	model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
+
+
+	model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
 	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
+
 	model = glm::scale(model, glm::vec3(size, 0.f));
 	
 	shader->setMat4(shader->modelLoc, model);
@@ -36,6 +41,8 @@ void Player::update() {
 	velocity.y += GRAVITY * gb::deltaTime;
 	position += velocity * gb::deltaTime;
 
+	collSize = size;
+	collPosition = position;
 
 	// aplica a rotaçao do player
 	rotate += glm::normalize(velocity).y * 170.f * gb::deltaTime;
@@ -45,12 +52,6 @@ void Player::update() {
 		rotate = PLAYER_MIN_ROTATE;
 
 	// bordas
-	if (position.x > gb::windowX - PLAYER_SIZE)
-		position.x = gb::windowX - PLAYER_SIZE;
-
-	if (position.x < 0)
-		position.x = 0;
-
 	if (position.y > gb::windowY - PLAYER_SIZE - 160) {
 		position.y = gb::windowY - PLAYER_SIZE - 160;
 		velocity.y = 0.f;
@@ -65,8 +66,8 @@ void Player::update() {
 }
 
 bool Player::checkCollision(const GameObject* obj) const {
-	return (obj->position.x >= position.x && obj->position.x + obj->size.x <= position.x + size.x &&
-			obj->position.y >= position.y && obj->position.y + obj->size.y <= position.y + size.y);
+	return (obj->collPosition.x >= collPosition.x && obj->collPosition.x + obj->collSize.x <= collPosition.x + collSize.x &&
+			obj->collPosition.y >= collPosition.y && obj->collPosition.y + obj->collSize.y <= collPosition.y + collSize.y);
 }
 
 void Player::input(Action action) {
@@ -82,10 +83,4 @@ void Player::input(Action action) {
 		velocity.y = -650.f;
 		rotate = 10;
 	}
-
-	if (glfwGetKey(gb::window, GLFW_KEY_D) == GLFW_PRESS)
-		this->position.x += Xspeed * gb::deltaTime;
-
-	if (glfwGetKey(gb::window, GLFW_KEY_A) == GLFW_PRESS)
-		this->position.x -= Xspeed * gb::deltaTime;
 }

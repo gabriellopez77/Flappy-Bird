@@ -77,7 +77,7 @@ void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, i
 	texCoords[0] = spriteX / 512.f;					 texCoords[7] = (spriteY + spriteHeight) / 512.f;
 	texCoords[2] = (spriteX + spriteWidth) / 512.f;	 texCoords[5] = (spriteY + spriteHeight) / 512.f;
 	texCoords[4] = spriteX / 512.f;					 texCoords[3] = spriteY / 512.f;
-	texCoords[6] = (spriteX + spriteWidth) / 512.f;   texCoords[1] = spriteY / 512.f;
+	texCoords[6] = (spriteX + spriteWidth) / 512.f;  texCoords[1] = spriteY / 512.f;
 }
 
 void GameObject::setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay) {

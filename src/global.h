@@ -9,6 +9,7 @@
 #define PIPE_SIZE_Y 462
 #define PIPE_MIN_HEIGHT 230
 #define PIPE_MAX_HEIGHT 450
+#define PIPES_GEN_DELAY 2.f
 #define PIPE_SPACING 200
 
 #define PLAYER_SIZE 60
@@ -21,7 +22,6 @@
 
 #define BACKGROUND_SPEED 60.f
 #define GROUND_SPEED 202.f
-#define PIPES_GEN_DELAY 2.f
 
 
 #include "../Dependencies/glfw/glfw3.h"

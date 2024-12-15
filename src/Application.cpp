@@ -62,6 +62,7 @@ int main() {
 	Button play_button = Button(354, 118, 52, 29);
 	play_button.size = glm::ivec2(156, 87);
 	play_button.position = glm::ivec2(SCREEN_WIDTH / 2 - play_button.size.x /2, SCREEN_HEIGHT - 300);
+
 	Player* player = new Player(2, 487, 20,20);
 	gb::player = player;
 	player->size = glm::ivec2(PLAYER_SIZE);
@@ -144,6 +145,7 @@ int main() {
 				if (player->checkCollision(&obj->pipeBottom)) {
 
 					std::cout << "COLIDIU\n";
+					std::cout << obj->pipeBottom.size.y << '\n';
 				}
 
 			}
