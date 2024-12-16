@@ -25,7 +25,7 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(gb::windowX, gb::windowY, "Flappy Bird - v0.0.1", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.3", NULL, NULL);
 	gb::window = window;
 
 	// cria o contexto opengl atual
@@ -101,13 +101,13 @@ int main() {
 
 	Text playerScore = Text(292, 158, 12, 18, 16);
 	playerScore.size = glm::ivec2(48, 72);
-	playerScore.position = glm::vec2(SCREEN_WIDTH /2, 120);
+	playerScore.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * playerScore.text.size()), 120);
 
 	float delay = 0.f;
 	float score_delay = 0.f;
 	int score = 0;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
-	framebuffer_size_callback(window, gb::windowX, gb::windowY);
+	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -131,8 +131,9 @@ int main() {
 			score_delay += gb::deltaTime;
 			if (score_delay >= 2.f) {
 				score_delay = 0.f;
-				score++;
+				score += 1;
 				playerScore.text = std::to_string(score);
+				playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
 			}
 			background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
 			background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;

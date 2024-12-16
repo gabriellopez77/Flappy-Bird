@@ -7,14 +7,14 @@
 
 #include <vector>
 
-#define SCREEN_WIDTH 450
-#define SCREEN_HEIGHT 650
+#define SCREEN_WIDTH 750
+#define SCREEN_HEIGHT 850
 
 #define PIPE_SIZE_X 90
 #define PIPE_SIZE_Y 462
-#define PIPE_MIN_HEIGHT 230
-#define PIPE_MAX_HEIGHT 450
-#define PIPES_GEN_DELAY 2.f
+#define PIPE_MIN_HEIGHT 250
+#define PIPE_MAX_HEIGHT 650
+#define PIPES_GEN_DELAY 1.6f
 #define PIPE_SPACING 200
 
 #define PLAYER_SIZE 60
@@ -26,7 +26,7 @@
 #define COIN_SIZE 32
 
 #define BACKGROUND_SPEED 60.f
-#define GROUND_SPEED 202.f
+#define GROUND_SPEED 230.f
 
 
 namespace gb {

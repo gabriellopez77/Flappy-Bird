@@ -19,12 +19,12 @@ Player::Player(
 void Player::draw() {
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.f));
-	model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
+	//model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
 
 
-	model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
-	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
-	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
+	//model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
+//	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+//	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
 
 	model = glm::scale(model, glm::vec3(size, 0.f));
 	
