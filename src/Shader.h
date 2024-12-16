@@ -11,12 +11,11 @@ public:
 	void setVec3(unsigned int uniformLocation, glm::vec3& value) const;
 	void setBool(unsigned int uniformLocation, bool value) const;
 	void setMat4(unsigned int uniformLocation, glm::mat4& matrix) const;
+	void setFloat(unsigned int uniformLocation, float value) const;
 
 	unsigned int ID;
 
 	unsigned int modelLoc;
-	unsigned int viewLoc;
 	unsigned int projectionLoc;
-	unsigned int colorLoc;
-	unsigned int isColoredLoc;
+	unsigned int alphaLoc;
 };

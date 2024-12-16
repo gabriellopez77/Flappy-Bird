@@ -6,9 +6,12 @@ Text::Text(
 	int spriteX,
 	int spriteY,
 	int spriteWidth,
-	int spriteHeight
-) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight) {
-
+	int spriteHeight,
+	char oneSpacing
+) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight)
+{
+	sprites = glm::ivec4(spriteX, spriteY, spriteWidth, spriteHeight);
+	this->oneSpacing = oneSpacing;
 }
 
 void Text::draw() {
@@ -30,7 +33,7 @@ void Text::draw() {
 			default: value = 10; break;
 		}
 
-		setNormalizedTexUV(138 + (6 * value), 323, 6, 7);
+		setNormalizedTexUV(sprites.x + (sprites.z * value), sprites.y, sprites.z, sprites.w);
 
 		model = glm::mat4(1.f);
 		model = glm::translate(model, glm::vec3(tempPos, 0.f));
@@ -41,6 +44,6 @@ void Text::draw() {
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-		tempPos.x += size.x;
+		tempPos.x += value == 1 ? size.x - oneSpacing : size.x;
 	}
 }

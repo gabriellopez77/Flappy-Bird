@@ -1,6 +1,11 @@
 #pragma once
 
 #include "../Dependencies/glm/glm.hpp"
+#include "../Dependencies/glfw/glfw3.h"
+
+#include "objects/Pipes.h"
+
+#include <vector>
 
 #define SCREEN_WIDTH 450
 #define SCREEN_HEIGHT 650
@@ -24,12 +29,6 @@
 #define GROUND_SPEED 202.f
 
 
-#include "../Dependencies/glfw/glfw3.h"
-
-#include "objects/Pipes.h"
-
-#include <vector>
-
 namespace gb {
 	extern float deltaTime;
 	extern float lastFrame;
@@ -45,6 +44,8 @@ namespace gb {
 	extern bool paused;
 
 	extern void* player;
+
+	extern GLFWcursor* cursorState;
 
 	extern GLFWwindow* window;
 

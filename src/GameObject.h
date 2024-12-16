@@ -19,7 +19,7 @@ public:
 	void setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay);
 
 	// transforms
-	glm::vec2 position =			glm::vec2(0);
+	glm::vec2 position =			glm::vec2(0.f);
 	glm::ivec2 size =				glm::ivec2(0);
 
 	// colisoes
@@ -30,6 +30,7 @@ public:
 	static Shader* shader;
 
 	float texCoords[8];
+	float alpha = 1.f;
 
 protected:
 

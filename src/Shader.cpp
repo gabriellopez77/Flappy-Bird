@@ -62,10 +62,8 @@ Shader::Shader(const char* vertPath, const char* fragPath) {
 	glDeleteShader(fragShader);
 
 	modelLoc = glGetUniformLocation(ID, "model");
-	viewLoc = glGetUniformLocation(ID, "view");
 	projectionLoc = glGetUniformLocation(ID, "projection");
-	colorLoc = glGetUniformLocation(ID, "color");
-	isColoredLoc = glGetUniformLocation(ID, "isColored");
+	alphaLoc = glGetUniformLocation(ID, "alpha");
 }
 void Shader::use() const {
 	glUseProgram(ID);
@@ -81,4 +79,8 @@ void Shader::setVec3(unsigned int uniformLocation, glm::vec3& vector) const {
 
 void Shader::setBool(unsigned int uniformLocation, bool value) const {
 	glUniform1i(uniformLocation, value);
+}
+
+void Shader::setFloat(unsigned int uniformLocation, float value) const {
+	glUniform1f(uniformLocation, value);
 }

@@ -60,12 +60,12 @@ void GameObject::create() {
 }
 
 void GameObject::draw() {
-
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position, 0.f));
 	model = glm::scale(model, glm::vec3(size, 0.f));
 
 	shader->setMat4(shader->modelLoc, model);
+	shader->setFloat(shader->alphaLoc, alpha);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);

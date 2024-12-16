@@ -6,9 +6,9 @@ class Button : public GameObject {
 public:
 	Button(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
 
-	bool clicked = false;
+	bool hover = false;
 
 	void update() override;
 
-	void checkMouseClick(double mouseX, double mouseY, int action);
+	bool checkMouseClick(double mouseX, double mouseY, int action) const;
 };

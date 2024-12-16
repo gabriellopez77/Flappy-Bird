@@ -7,11 +7,15 @@ out vec4 FragColor;
 uniform sampler2D myTexture;
 uniform vec3 color;
 uniform bool isColored;
+uniform float alpha;
+
+vec4 tex = texture(myTexture, TexCoord);
 
 void main()
 {
-	if (texture(myTexture, TexCoord).a < 0.1)
+	if (tex.a < 0.1f)
 		discard;
 
-	FragColor = texture(myTexture, TexCoord);
+	tex.a = alpha;
+	FragColor = tex;
 }

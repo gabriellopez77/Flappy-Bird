@@ -15,14 +15,17 @@ Button::Button(
 
 }
 void Button::update() {
-	checkMouseClick(gb::mousePosX, gb::mousePosY, gb::action);
 
-	if (clicked)
+	hover = checkMouseClick(gb::mousePosX, gb::mousePosY, gb::action);
+
+	if (hover)
+		gb::cursorState = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
+
+	if (gb::clicked && hover)
 		gb::paused = false;
 }
 
-void Button::checkMouseClick(const double mouseX, const double mouseY, const int action) {
-	this->clicked = mouseX >= position.x && mouseX <= position.x + size.x &&
-					mouseY >= position.y && mouseY <= position.y + size.y &&
-					action == GLFW_PRESS;
+bool Button::checkMouseClick(const double mouseX, const double mouseY, const int action) const {
+	return	mouseX >= position.x && mouseX <= position.x + size.x &&
+			mouseY >= position.y && mouseY <= position.y + size.y;
 }

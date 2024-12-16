@@ -2,11 +2,10 @@
 
 #include "../Dependencies/glm/glm.hpp"
 
-//#include "../Dependencies/glfw/glfw3.h"
-
 #include "../GameObject.h"
 
 enum class Action : char { JUMP, EMPTY };
+
 class Player : public GameObject {
 public:
 	Player(int spriteX, int spriteY, int spriteWidth, int spriteHeight);

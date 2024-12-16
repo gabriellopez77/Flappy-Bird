@@ -15,8 +15,8 @@
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
+void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
 
 
 int main() {
@@ -28,7 +28,7 @@ int main() {
 	GLFWwindow* window = glfwCreateWindow(gb::windowX, gb::windowY, "Flappy Bird - v0.0.1", NULL, NULL);
 	gb::window = window;
 
-	// cria o contexto atual
+	// cria o contexto opengl atual
 	glfwMakeContextCurrent(window);
 
 	// ativa o V-SYNC
@@ -37,14 +37,17 @@ int main() {
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+	// definiçoes do opengl
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// callbacks
+	// GLFW callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_click_callback);
+	glfwSetCursorPosCallback(window, mouse_move_callback);
 
 	GameObject::shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 	GameObject::shader->use();
@@ -53,7 +56,12 @@ int main() {
 	GameObject::texture->use();
 	GameObject::create();
 
+	// reserva o espaço dos pipes
 	gb::pipes.reserve(5);
+
+	GameObject screen_background = GameObject(292, 206, 16, 16);
+	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen_background.alpha = 0.5f;
 
 	GameObject title = GameObject(351, 91, 89, 24);
 	title.size = glm::ivec2(300, 100);
@@ -87,15 +95,24 @@ int main() {
 	money.size = glm::ivec2(48);
 	money.position = glm::ivec2 (20, 30);
 
-	Text CoinCount = Text(0,0,0,0);
-	CoinCount.size = glm::ivec2(30, 37);
+	Text CoinCount = Text(138, 323, 6, 7, 10);
+	CoinCount.size = glm::ivec2(30, 35);
 	CoinCount.position = glm::ivec2(71, 35);
 
+	Text playerScore = Text(292, 158, 12, 18, 16);
+	playerScore.size = glm::ivec2(48, 72);
+	playerScore.position = glm::vec2(SCREEN_WIDTH /2, 120);
+
 	float delay = 0.f;
+	float score_delay = 0.f;
+	int score = 0;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
 	framebuffer_size_callback(window, gb::windowX, gb::windowY);
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// define o ponteiro do mouse
+		gb::cursorState = glfwCreateStandardCursor(GLFW_CENTER_CURSOR);
 
 		// delta time
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -111,7 +128,12 @@ int main() {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
 			}
-
+			score_delay += gb::deltaTime;
+			if (score_delay >= 2.f) {
+				score_delay = 0.f;
+				score++;
+				playerScore.text = std::to_string(score);
+			}
 			background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
 			background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
 
@@ -120,6 +142,7 @@ int main() {
 
 			else if (background2.position.x + SCREEN_WIDTH <= 0)
 				background2.position.x = background1.position.x + SCREEN_WIDTH;
+
 
 			ground1.position.x -= GROUND_SPEED * gb::deltaTime;
 			ground2.position.x -= GROUND_SPEED * gb::deltaTime;
@@ -141,13 +164,6 @@ int main() {
 
 					obj->coinVisible = false;
 				}
-
-				if (player->checkCollision(&obj->pipeBottom)) {
-
-					std::cout << "COLIDIU\n";
-					std::cout << obj->pipeBottom.size.y << '\n';
-				}
-
 			}
 		}
 
@@ -159,14 +175,17 @@ int main() {
 		ground2.draw();
 		money.draw();
 		CoinCount.draw();
+		playerScore.draw();
 
 		if (gb::paused) {
+			screen_background.draw();
 			play_button.update();
 			play_button.draw();
 			title.draw();
 		}
 		gb::clicked = false;
 		gb::action = 0;
+		glfwSetCursor(window, gb::cursorState);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -182,7 +201,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
 	GameObject::shader->setMat4(GameObject::shader->projectionLoc, projection);
 }
 
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+void mouse_move_callback(GLFWwindow* window, double xpos, double ypos) {
 	glfwGetCursorPos(window, &gb::mousePosX, &gb::mousePosY);
 }
 

@@ -14,6 +14,8 @@ namespace gb {
 
 	bool clicked = false;
 	int action = 0;
+	GLFWcursor* cursorState = nullptr;
+
 	bool paused = true;
 
 	void* player = nullptr;
