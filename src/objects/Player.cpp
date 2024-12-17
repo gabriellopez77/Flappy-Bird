@@ -19,15 +19,14 @@ Player::Player(
 void Player::draw() {
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.f));
-	//model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
+	model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
 
 
-	//model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
-//	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
-//	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
+	model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
+	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
 
 	model = glm::scale(model, glm::vec3(size, 0.f));
-	
 	shader->setMat4(shader->modelLoc, model);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
@@ -41,19 +40,17 @@ void Player::update() {
 	velocity.y += GRAVITY * gb::deltaTime;
 	position += velocity * gb::deltaTime;
 
-	collSize = size;
-	collPosition = position;
 
 	// aplica a rotaçao do player
-	rotate += glm::normalize(velocity).y * 170.f * gb::deltaTime;
+	rotate += glm::normalize(velocity).y * 220.f * gb::deltaTime;
 	if (rotate > PLAYER_MAX_ROTATE)
 		rotate = PLAYER_MAX_ROTATE;
 	else if (rotate < PLAYER_MIN_ROTATE)
 		rotate = PLAYER_MIN_ROTATE;
 
 	// bordas
-	if (position.y > gb::windowY - PLAYER_SIZE - 160) {
-		position.y = gb::windowY - PLAYER_SIZE - 160;
+	if (position.y > gb::windowY - collSize.y - 165) {
+		position.y = gb::windowY - collSize.y - 165;
 		velocity.y = 0.f;
 	}
 
@@ -62,12 +59,15 @@ void Player::update() {
 		velocity.y = 0;
 	}
 
+	collPosition.x = position.x + 3;
+	collPosition.y = position.y + 5;
+
 	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 }
 
 bool Player::checkCollision(const GameObject* obj) const {
-	return (obj->collPosition.x >= collPosition.x && obj->collPosition.x + obj->collSize.x <= collPosition.x + collSize.x &&
-			obj->collPosition.y >= collPosition.y && obj->collPosition.y + obj->collSize.y <= collPosition.y + collSize.y);
+	return (collPosition.x + collSize.x >= obj->collPosition.x && collPosition.x <= obj->collPosition.x + obj->collSize.x &&
+			collPosition.y + collSize.y >= obj->collPosition.y && collPosition.y <= obj->collPosition.y + obj->collSize.y);
 }
 
 void Player::input(Action action) {

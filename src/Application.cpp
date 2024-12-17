@@ -11,6 +11,7 @@
 #include "objects/Pipes.h"
 #include "objects/Text.h"
 #include "objects/Button.h"
+#include "ui/Death_screen.h"
 
 #include <iostream>
 
@@ -75,6 +76,7 @@ int main() {
 	gb::player = player;
 	player->size = glm::ivec2(PLAYER_SIZE);
 	player->position = PLAYER_START_POSITION;
+	player->collSize = glm::vec2(50, 45);
 
 	GameObject background1 = GameObject(0, 0, 144, 256);
 	background1.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
@@ -84,11 +86,11 @@ int main() {
 	background2.position = glm::ivec2(background1.position.x + SCREEN_WIDTH, 0);
 
 	GameObject ground1 = GameObject(292, 0, 168, 56);
-	ground1.size = glm::ivec2(SCREEN_WIDTH, 160);
+	ground1.size = glm::ivec2(SCREEN_WIDTH, 168);
 	ground1.position = glm::ivec2(0, SCREEN_HEIGHT - 160);
 
 	GameObject ground2 = GameObject(292, 0, 168, 56);
-	ground2.size = glm::ivec2(SCREEN_WIDTH, 160);
+	ground2.size = glm::ivec2(SCREEN_WIDTH, 168);
 	ground2.position = glm::ivec2(ground1.position.x + SCREEN_WIDTH, SCREEN_HEIGHT - 160);
 
 	GameObject money = GameObject(194, 258, 16, 16);
@@ -103,9 +105,9 @@ int main() {
 	playerScore.size = glm::ivec2(48, 72);
 	playerScore.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * playerScore.text.size()), 120);
 
+	Death_screen death_screen = Death_screen();
 	float delay = 0.f;
 	float score_delay = 0.f;
-	int score = 0;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!glfwWindowShouldClose(window)) {
@@ -131,8 +133,8 @@ int main() {
 			score_delay += gb::deltaTime;
 			if (score_delay >= 2.f) {
 				score_delay = 0.f;
-				score += 1;
-				playerScore.text = std::to_string(score);
+				player->score += 1;
+				playerScore.text = std::to_string(player->score);
 				playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
 			}
 			background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
@@ -158,12 +160,19 @@ int main() {
 			Pipes::updatePipes();
 			player->update();
 
+
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
 					CoinCount.text = std::to_string(player->coinCount);
 
 					obj->coinVisible = false;
+				}
+
+				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
+					death_screen.coinCount_text->text = std::to_string(player->coinCount);
+					death_screen.playerScore_text->text = std::to_string(player->score);
+					gb::paused = true;
 				}
 			}
 		}
@@ -174,15 +183,17 @@ int main() {
 		player->draw();
 		ground1.draw();
 		ground2.draw();
-		money.draw();
-		CoinCount.draw();
-		playerScore.draw();
+		if (!gb::paused) {
+			money.draw();
+			CoinCount.draw();
+			playerScore.draw();
+		}
+
 
 		if (gb::paused) {
 			screen_background.draw();
-			play_button.update();
-			play_button.draw();
-			title.draw();
+			death_screen.update();
+			death_screen.draw();
 		}
 		gb::clicked = false;
 		gb::action = 0;

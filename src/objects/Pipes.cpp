@@ -33,13 +33,13 @@ void Pipes::update() {
 	coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
 
 	pipeBottom.collPosition = pipeBottom.position;
-	pipeBottom.collSize = pipeBottom.collSize;
+	pipeBottom.collSize = pipeBottom.size;
 
-	pipeTop.collPosition = pipeTop.collPosition;
-	pipeTop.collSize = pipeTop.collSize;
+	pipeTop.collPosition = pipeTop.position;
+	pipeTop.collSize = pipeTop.size;
 
 	coin.collPosition = coin.position;
-	coin.collSize = coin.collSize;
+	coin.collSize = coin.size;
 
 }
 

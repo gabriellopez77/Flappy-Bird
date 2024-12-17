@@ -5,10 +5,10 @@ in vec2 TexCoord;
 out vec4 FragColor;
 
 uniform sampler2D myTexture;
-uniform vec3 color;
-uniform bool isColored;
 uniform float alpha;
 
+
+vec4 boxColor = vec4(0.5f, 0.2f, 0.2f, 0.3f);
 vec4 tex = texture(myTexture, TexCoord);
 
 void main()
@@ -18,4 +18,5 @@ void main()
 
 	tex.a = alpha;
 	FragColor = tex;
+
 }

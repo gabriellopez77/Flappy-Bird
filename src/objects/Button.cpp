@@ -20,9 +20,6 @@ void Button::update() {
 
 	if (hover)
 		gb::cursorState = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
-
-	if (gb::clicked && hover)
-		gb::paused = false;
 }
 
 bool Button::checkMouseClick(const double mouseX, const double mouseY, const int action) const {

@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#define SCREEN_WIDTH 750
+#define SCREEN_WIDTH 950
 #define SCREEN_HEIGHT 850
 
 #define PIPE_SIZE_X 90
