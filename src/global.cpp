@@ -1,5 +1,7 @@
 #include "Global.h"
 
+#include "objects/Player.h"
+
 #include <random>
 
 namespace gb {
@@ -32,6 +34,19 @@ namespace gb {
 
 	// player
 	void* player = nullptr;
+	void playerKill() {
+		pipes.clear();
+		((Player*)player)->coinCount = 0;
+		((Player*)player)->score = 0;
+		((Player*)player)->position = PLAYER_START_POSITION;
+		((Player*)player)->rotate = 0.f;
+		((Player*)player)->scoreDelay = 0.f;
+		genPipesDelay = 0.f;
+		paused = false;
+		death_screen = false;
+		started = false;
+		onScreen = false;
+	}
 
 
 	// objects
@@ -39,8 +54,9 @@ namespace gb {
 
 
 	// outros
+	bool beforeStart = false;
 	float genPipesDelay = 0.f;
-	const int randNum(const int min, const int max) {
+	int randNum(const int min, const int max) {
 		static std::random_device rd;
 		static std::mt19937 gen = std::mt19937(rd());
 

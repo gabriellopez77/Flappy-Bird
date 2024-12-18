@@ -28,7 +28,7 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.3", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.5", NULL, NULL);
 	gb::window = window;
 
 	// cria o contexto opengl atual
@@ -113,7 +113,19 @@ int main() {
 		if (!gb::paused)
 			scene.update();
 
+		if (gb::beforeStart) {
+			player->position.x += 4.f;
+			if (player->position.x > (SCREEN_WIDTH / 2) - 150) {
+				player->position.x = (SCREEN_WIDTH / 2) -150;
+				gb::beforeStart = false;
+				gb::started = true;
 
+				playerScore.text = '0';
+				coinCount.text = '0';
+				gb::genPipesDelay = 0.f;
+				std::cout << "OPAA\n";
+			}
+		}
 		scene.drawBackground();
 
 		if (gb::started && !gb::paused) {
@@ -136,6 +148,11 @@ int main() {
 			Pipes::updatePipes();
 			player->update();
 
+			// desenha o hub
+			money.draw();
+			coinCount.draw();
+			playerScore.draw();
+
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
@@ -147,11 +164,7 @@ int main() {
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
 					death_screen.coinCount_text->text = std::to_string(player->coinCount);
 					death_screen.playerScore_text->text = std::to_string(player->score);
-					playerScore.text = '0';
-					coinCount.text = '0';
-					gb::genPipesDelay = 0.f;
 					gb::death_screen = true;
-					gb::paused = true;
 				}
 			}
 
@@ -161,6 +174,7 @@ int main() {
 		Pipes::drawPipes();
 		player->draw();
 		scene.drawGround();
+
 
 		if (gb::onScreen) {
 			screen_background.draw();
@@ -174,12 +188,6 @@ int main() {
 		if (gb::death_screen) {
 			death_screen.update();
 			death_screen.draw();
-		}
-
-		if (!gb::paused && gb::started) {
-			money.draw();
-			coinCount.draw();
-			playerScore.draw();
 		}
 
 
@@ -211,11 +219,11 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::action = action;
 
 		if (!gb::started && !gb::onScreen) {
-			gb::started = true;
+			gb::beforeStart = true;
 			gb::start_screen = false;
 		}
 
-		if (!gb::paused && !gb::onScreen)
+		if (!gb::paused && !gb::onScreen && !gb::beforeStart)
 			((Player*)gb::player)->input(Action::JUMP);
 	}
 }

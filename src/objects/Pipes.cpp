@@ -4,9 +4,9 @@
 
 #include <iostream>
 Pipes::Pipes() :
-	pipeBottom(84, 323, 26, 160),
 	pipeTop(56, 323, 26, 160),
-	coin(146, 258, 16, 16)
+	coin(146, 258, 16, 16),
+	pipeBottom(84, 323, 26, 160)
 {
 	pipeBottom.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 	pipeTop.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
@@ -41,7 +41,6 @@ void Pipes::update() {
 
 	coin.collPosition = coin.position;
 	coin.collSize = coin.size;
-
 }
 
 void Pipes::updatePipes() {

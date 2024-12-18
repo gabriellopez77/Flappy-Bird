@@ -58,6 +58,7 @@ namespace gb {
 
 	// player
 	extern void* player;
+	extern void playerKill();
 
 
 	// objects
@@ -65,6 +66,7 @@ namespace gb {
 
 
 	// outros
+	extern bool beforeStart;
 	extern float genPipesDelay;
-	extern const int randNum(const int min, const int max);
+	extern int randNum(const int min, const int max);
 }

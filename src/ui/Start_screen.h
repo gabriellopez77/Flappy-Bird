@@ -11,5 +11,6 @@ public:
 	void draw();
 
 	GameObject* gameTitle_image;
+	Button* brush_button;
 	Button* start_button;
 };

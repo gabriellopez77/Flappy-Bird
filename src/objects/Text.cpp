@@ -17,7 +17,7 @@ Text::Text(
 void Text::draw() {
 	tempPos = position;
 
-	for (int c = 0; c < text.size(); c++) {
+	for (auto c = 0; c < text.size(); c++) {
 		int value;
 		switch (text[c]) {
 			case '0': value = 0; break;

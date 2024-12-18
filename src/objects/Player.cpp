@@ -62,14 +62,12 @@ void Player::update() {
 		position.y = gb::windowY - collSize.y - 165;
 		velocity.y = 0.f;
 		gb::death_screen = true;
-		gb::paused = true;
 	}
 
 	if (position.y < 0) {
 		position.y = 0;
 		velocity.y = 0;
 		gb::death_screen = true;
-		gb::paused = true;
 	}
 
 	collPosition.x = position.x + 3;
