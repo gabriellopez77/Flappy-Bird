@@ -21,6 +21,7 @@ public:
 	float Xspeed = 900.f;
 	float Yspeed = 900.f;
 	float rotate = 0.f;
+	float scoreDelay = 0.f;
 	unsigned short coinCount = 0;
 	unsigned short score = 0;
 	bool pressed = false;

@@ -30,26 +30,40 @@
 
 
 namespace gb {
+	// dt
 	extern float deltaTime;
 	extern float lastFrame;
 
+
+	// window
 	extern int windowX;
 	extern int windowY;
-
-	extern double mousePosX;
-	extern double mousePosY;
-
-	extern bool clicked;
-	extern int action;
-	extern bool paused;
-
-	extern void* player;
-
-	extern GLFWcursor* cursorState;
-
 	extern GLFWwindow* window;
 
+
+	// mouse
+	extern bool clicked;
+	extern int action;
+	extern double mousePosX;
+	extern double mousePosY;
+	extern GLFWcursor* cursorState;
+
+
+	// interfaces
+	extern bool paused;
+	extern bool started;
+	extern bool onScreen;
+	extern bool start_screen;
+	extern bool death_screen;
+
+	// player
+	extern void* player;
+
+
+	// objects
 	extern std::vector<Pipes*> pipes;
 
+
+	// utils
 	extern const int randNum(const int min, const int max);
 }

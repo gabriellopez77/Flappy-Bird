@@ -11,7 +11,9 @@
 #include "objects/Pipes.h"
 #include "objects/Text.h"
 #include "objects/Button.h"
+#include "objects/Scenery.h"
 #include "ui/Death_screen.h"
+#include "ui/Start_screen.h"
 
 #include <iostream>
 
@@ -64,50 +66,30 @@ int main() {
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = 0.5f;
 
-	GameObject title = GameObject(351, 91, 89, 24);
-	title.size = glm::ivec2(300, 100);
-	title.position = glm::ivec2(SCREEN_WIDTH /2 - title.size.x /2, 50);
-
-	Button play_button = Button(354, 118, 52, 29);
-	play_button.size = glm::ivec2(156, 87);
-	play_button.position = glm::ivec2(SCREEN_WIDTH / 2 - play_button.size.x /2, SCREEN_HEIGHT - 300);
-
 	Player* player = new Player(2, 487, 20,20);
 	gb::player = player;
 	player->size = glm::ivec2(PLAYER_SIZE);
 	player->position = PLAYER_START_POSITION;
 	player->collSize = glm::vec2(50, 45);
 
-	GameObject background1 = GameObject(0, 0, 144, 256);
-	background1.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
-
-	GameObject background2 = GameObject(0,0, 144, 256);
-	background2.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
-	background2.position = glm::ivec2(background1.position.x + SCREEN_WIDTH, 0);
-
-	GameObject ground1 = GameObject(292, 0, 168, 56);
-	ground1.size = glm::ivec2(SCREEN_WIDTH, 168);
-	ground1.position = glm::ivec2(0, SCREEN_HEIGHT - 160);
-
-	GameObject ground2 = GameObject(292, 0, 168, 56);
-	ground2.size = glm::ivec2(SCREEN_WIDTH, 168);
-	ground2.position = glm::ivec2(ground1.position.x + SCREEN_WIDTH, SCREEN_HEIGHT - 160);
-
 	GameObject money = GameObject(194, 258, 16, 16);
 	money.size = glm::ivec2(48);
 	money.position = glm::ivec2 (20, 30);
 
-	Text CoinCount = Text(138, 323, 6, 7, 10);
-	CoinCount.size = glm::ivec2(30, 35);
-	CoinCount.position = glm::ivec2(71, 35);
+	Text coinCount = Text(138, 323, 6, 7, 10);
+	coinCount.size = glm::ivec2(30, 35);
+	coinCount.position = glm::ivec2(71, 35);
 
 	Text playerScore = Text(292, 158, 12, 18, 16);
 	playerScore.size = glm::ivec2(48, 72);
 	playerScore.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * playerScore.text.size()), 120);
 
+	Scenery scene = Scenery();
+	Start_screen start_screen = Start_screen();
 	Death_screen death_screen = Death_screen();
+
 	float delay = 0.f;
-	float score_delay = 0.f;
+
 	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!glfwWindowShouldClose(window)) {
@@ -124,47 +106,31 @@ int main() {
 		// inputs
 		player->input(Action::EMPTY);
 
-		if (!gb::paused) {
+
+		if (!gb::started) {
+			player->update();
+		}
+
+		if (!gb::paused)
+			scene.update();
+
+
+		scene.drawBackground();
+
+		if (gb::started && !gb::paused) {
+			// geração dos pipes
 			delay += gb::deltaTime;
 			if (delay >= PIPES_GEN_DELAY) {
 				gb::pipes.push_back(new Pipes());
 				delay = 0.f;
 			}
-			score_delay += gb::deltaTime;
-			if (score_delay >= 2.f) {
-				score_delay = 0.f;
-				player->score += 1;
-				playerScore.text = std::to_string(player->score);
-				playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
-			}
-			background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
-			background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
-
-			if (background1.position.x + SCREEN_WIDTH <= 0)
-				background1.position.x = background2.position.x + SCREEN_WIDTH;
-
-			else if (background2.position.x + SCREEN_WIDTH <= 0)
-				background2.position.x = background1.position.x + SCREEN_WIDTH;
-
-
-			ground1.position.x -= GROUND_SPEED * gb::deltaTime;
-			ground2.position.x -= GROUND_SPEED * gb::deltaTime;
-
-			if (ground1.position.x + SCREEN_WIDTH <= 0)
-				ground1.position.x = ground2.position.x + SCREEN_WIDTH;
-
-			else if (ground2.position.x + SCREEN_WIDTH <= 0)
-				ground2.position.x = ground1.position.x + SCREEN_WIDTH;
-
-
 			Pipes::updatePipes();
 			player->update();
-
 
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
-					CoinCount.text = std::to_string(player->coinCount);
+					coinCount.text = std::to_string(player->coinCount);
 
 					obj->coinVisible = false;
 				}
@@ -172,29 +138,39 @@ int main() {
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
 					death_screen.coinCount_text->text = std::to_string(player->coinCount);
 					death_screen.playerScore_text->text = std::to_string(player->score);
+					gb::death_screen = true;
 					gb::paused = true;
 				}
 			}
+
 		}
 
-		background1.draw();
-		background2.draw();
+
 		Pipes::drawPipes();
 		player->draw();
-		ground1.draw();
-		ground2.draw();
-		if (!gb::paused) {
+		scene.drawGround();
+
+		//if (gb::paus) {
+		//	screen_background.draw();
+		//}
+
+		if (gb::start_screen) {
+			start_screen.update();
+			start_screen.draw();
+		}
+		if (gb::death_screen) {
+			death_screen.update();
+			death_screen.draw();
+		}
+
+		if (!gb::paused && gb::started) {
 			money.draw();
-			CoinCount.draw();
+			coinCount.draw();
 			playerScore.draw();
 		}
 
 
-		if (gb::paused) {
-			screen_background.draw();
-			death_screen.update();
-			death_screen.draw();
-		}
+		gb::onScreen = false;
 		gb::clicked = false;
 		gb::action = 0;
 		glfwSetCursor(window, gb::cursorState);
@@ -221,6 +197,9 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
 		gb::action = action;
+
+		if (!gb::started)
+			gb::started = true;
 
 		if (!gb::paused)
 			((Player*)gb::player)->input(Action::JUMP);

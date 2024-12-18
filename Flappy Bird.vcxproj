@@ -141,6 +141,7 @@
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\objects\Button.cpp" />
     <ClCompile Include="src\objects\Pipes.cpp" />
+    <ClCompile Include="src\objects\Scenery.cpp" />
     <ClCompile Include="src\objects\Text.cpp" />
     <ClCompile Include="src\objects\Player.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -446,6 +447,7 @@
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\objects\Button.h" />
     <ClInclude Include="src\objects\Pipes.h" />
+    <ClInclude Include="src\objects\Scenery.h" />
     <ClInclude Include="src\objects\Text.h" />
     <ClInclude Include="src\objects\Player.h" />
     <ClInclude Include="src\Shader.h" />

@@ -36,7 +36,21 @@ void Player::draw() {
 }
 
 void Player::update() {
-	// aplica as forcas
+	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
+
+	if (!gb::started) {
+		position.y += cos(glfwGetTime() * 3.f);
+		return;
+	}
+	scoreDelay += gb::deltaTime;
+	if (scoreDelay >= 2.f) {
+		scoreDelay = 0.f;
+		score += 1;
+		//playerScore.text = std::to_string(player->score);
+		//playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
+	}
+
+	// aplica as forcas	
 	velocity.y += GRAVITY * gb::deltaTime;
 	position += velocity * gb::deltaTime;
 
@@ -48,21 +62,22 @@ void Player::update() {
 	else if (rotate < PLAYER_MIN_ROTATE)
 		rotate = PLAYER_MIN_ROTATE;
 
+
 	// bordas
 	if (position.y > gb::windowY - collSize.y - 165) {
 		position.y = gb::windowY - collSize.y - 165;
 		velocity.y = 0.f;
+		gb::death_screen = true;
 	}
 
 	if (position.y < 0) {
 		position.y = 0;
 		velocity.y = 0;
+		gb::death_screen = true;
 	}
 
 	collPosition.x = position.x + 3;
 	collPosition.y = position.y + 5;
-
-	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 }
 
 bool Player::checkCollision(const GameObject* obj) const {

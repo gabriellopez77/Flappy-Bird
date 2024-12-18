@@ -27,13 +27,17 @@ Death_screen::Death_screen() {
 
 void Death_screen::update() {
 	respawn_button->update();
+	gb::onScreen = true;
 
 	if (gb::clicked && respawn_button->hover) {
 		gb::pipes.clear();
 		((Player*)gb::player)->coinCount = 0;
 		((Player*)gb::player)->score = 0;
 		((Player*)gb::player)->position = PLAYER_START_POSITION;
+		((Player*)gb::player)->rotate = 0.f;
 		gb::paused = false;
+		gb::death_screen = false;
+		gb::started = false;
 	}
 }
 

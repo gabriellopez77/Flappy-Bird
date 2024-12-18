@@ -26,6 +26,7 @@ void Pipes::draw() {
 }
 
 void Pipes::update() {
+	// movimentação dos pipes
 	pipeBottom.position.x -= GROUND_SPEED * gb::deltaTime;
 	pipeTop.position.x = pipeBottom.position.x;
 
