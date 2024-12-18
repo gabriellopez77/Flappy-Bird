@@ -88,9 +88,8 @@ int main() {
 	Start_screen start_screen = Start_screen();
 	Death_screen death_screen = Death_screen();
 
-	float delay = 0.f;
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -119,11 +118,21 @@ int main() {
 
 		if (gb::started && !gb::paused) {
 			// geração dos pipes
-			delay += gb::deltaTime;
-			if (delay >= PIPES_GEN_DELAY) {
+			gb::genPipesDelay += gb::deltaTime;
+			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
 				gb::pipes.push_back(new Pipes());
-				delay = 0.f;
+				gb::genPipesDelay = 0.f;
 			}
+
+			player->scoreDelay += gb::deltaTime;
+			if (player->scoreDelay >= 2.f) {
+				player->scoreDelay = 0.f;
+				player->score++;
+				playerScore.text = std::to_string(player->score);
+				playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
+			}
+
+			// atualiza os pipes e o jogador
 			Pipes::updatePipes();
 			player->update();
 
@@ -138,6 +147,9 @@ int main() {
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
 					death_screen.coinCount_text->text = std::to_string(player->coinCount);
 					death_screen.playerScore_text->text = std::to_string(player->score);
+					playerScore.text = '0';
+					coinCount.text = '0';
+					gb::genPipesDelay = 0.f;
 					gb::death_screen = true;
 					gb::paused = true;
 				}
@@ -150,9 +162,10 @@ int main() {
 		player->draw();
 		scene.drawGround();
 
-		//if (gb::paus) {
-		//	screen_background.draw();
-		//}
+		if (gb::onScreen) {
+			screen_background.draw();
+		}
+
 
 		if (gb::start_screen) {
 			start_screen.update();
@@ -170,7 +183,6 @@ int main() {
 		}
 
 
-		gb::onScreen = false;
 		gb::clicked = false;
 		gb::action = 0;
 		glfwSetCursor(window, gb::cursorState);
@@ -198,10 +210,12 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::clicked = true;
 		gb::action = action;
 
-		if (!gb::started)
+		if (!gb::started && !gb::onScreen) {
 			gb::started = true;
+			gb::start_screen = false;
+		}
 
-		if (!gb::paused)
+		if (!gb::paused && !gb::onScreen)
 			((Player*)gb::player)->input(Action::JUMP);
 	}
 }

@@ -35,9 +35,12 @@ void Death_screen::update() {
 		((Player*)gb::player)->score = 0;
 		((Player*)gb::player)->position = PLAYER_START_POSITION;
 		((Player*)gb::player)->rotate = 0.f;
+		((Player*)gb::player)->scoreDelay = 0.f;
+		gb::genPipesDelay = 0.f;
 		gb::paused = false;
 		gb::death_screen = false;
 		gb::started = false;
+		gb::onScreen = false;
 	}
 }
 

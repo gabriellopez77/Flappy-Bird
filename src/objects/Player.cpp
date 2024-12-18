@@ -42,13 +42,7 @@ void Player::update() {
 		position.y += cos(glfwGetTime() * 3.f);
 		return;
 	}
-	scoreDelay += gb::deltaTime;
-	if (scoreDelay >= 2.f) {
-		scoreDelay = 0.f;
-		score += 1;
-		//playerScore.text = std::to_string(player->score);
-		//playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
-	}
+
 
 	// aplica as forcas	
 	velocity.y += GRAVITY * gb::deltaTime;
@@ -68,12 +62,14 @@ void Player::update() {
 		position.y = gb::windowY - collSize.y - 165;
 		velocity.y = 0.f;
 		gb::death_screen = true;
+		gb::paused = true;
 	}
 
 	if (position.y < 0) {
 		position.y = 0;
 		velocity.y = 0;
 		gb::death_screen = true;
+		gb::paused = true;
 	}
 
 	collPosition.x = position.x + 3;
@@ -86,7 +82,7 @@ bool Player::checkCollision(const GameObject* obj) const {
 }
 
 void Player::input(Action action) {
-	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS && !gb::onScreen && gb::started) {
 		if (!pressed) {
 			gb::paused = !gb::paused;
 			pressed = true;

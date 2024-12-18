@@ -38,7 +38,8 @@ namespace gb {
 	std::vector<Pipes*> pipes = std::vector<Pipes*>();
 
 
-	// utils
+	// outros
+	float genPipesDelay = 0.f;
 	const int randNum(const int min, const int max) {
 		static std::random_device rd;
 		static std::mt19937 gen = std::mt19937(rd());

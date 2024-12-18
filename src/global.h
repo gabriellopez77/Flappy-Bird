@@ -64,6 +64,7 @@ namespace gb {
 	extern std::vector<Pipes*> pipes;
 
 
-	// utils
+	// outros
+	extern float genPipesDelay;
 	extern const int randNum(const int min, const int max);
 }

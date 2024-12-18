@@ -8,7 +8,7 @@ Scenery::Scenery() {
 
 	background2 = new GameObject(0, 0, 144, 256);
 	background2->size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
-	background2->position = glm::ivec2(background1->position.x + SCREEN_WIDTH, 0);
+	background2->position = glm::ivec2(background1->position.x + SCREEN_WIDTH -5, 0);
 
 	ground1 = new GameObject(292, 0, 168, 56);
 	ground1->size = glm::ivec2(SCREEN_WIDTH, 168);

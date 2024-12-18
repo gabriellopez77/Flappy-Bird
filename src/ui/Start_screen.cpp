@@ -17,8 +17,8 @@ void Start_screen::update() {
 	gb::onScreen = true;
 
 	if (gb::clicked && start_button->hover) {
-		gb::started = true;
 		gb::start_screen = false;
+		gb::onScreen = false;
 	}
 }
 
