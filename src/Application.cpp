@@ -15,13 +15,14 @@
 #include "ui/Death_screen.h"
 #include "ui/Start_screen.h"
 #include "ui/DressingRoom.h"
+#include "ui/Hud_screen.h"
 
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
-
+void draw(InterfaceObject* inter);
 
 int main() {
 	glfwInit();
@@ -63,7 +64,7 @@ int main() {
 	// reserva o espaço dos pipes
 	gb::pipes.reserve(5);
 
-	GameObject screen_background = GameObject(292, 206, 16, 16);
+	GameObject screen_background(292, 206, 16, 16);
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = 0.5f;
 
@@ -73,22 +74,12 @@ int main() {
 	player->position = PLAYER_START_POSITION;
 	player->collSize = glm::vec2(50, 45);
 
-	GameObject money = GameObject(194, 258, 16, 16);
-	money.size = glm::ivec2(48);
-	money.position = glm::ivec2 (20, 30);
 
-	Text coinCount = Text(138, 323, 6, 7, 10);
-	coinCount.size = glm::ivec2(30, 35);
-	coinCount.position = glm::ivec2(71, 35);
-
-	Text playerScore = Text(292, 158, 12, 18, 16);
-	playerScore.size = glm::ivec2(48, 72);
-	playerScore.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * playerScore.text.size()), 120);
-
-	Scenery scene = Scenery();
-	Start_screen start_screen = Start_screen();
-	DressingRoom dressingRoom_screen = DressingRoom();
-	Death_screen death_screen = Death_screen();
+	Scenery scene;
+	Hud hud;
+	Start_screen start_screen;
+	DressingRoom dressingRoom_screen;
+	Death_screen death_screen;
 
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -122,10 +113,9 @@ int main() {
 				gb::beforeStart = false;
 				gb::started = true;
 
-				playerScore.text = '0';
-				coinCount.text = '0';
+				hud.score_text.text = '0';
+				hud.coinCount_text.text = '0';
 				gb::genPipesDelay = 0.f;
-				std::cout << "OPAA\n";
 			}
 		}
 		scene.drawBackground();
@@ -142,8 +132,8 @@ int main() {
 			if (player->scoreDelay >= 2.f) {
 				player->scoreDelay = 0.f;
 				player->score++;
-				playerScore.text = std::to_string(player->score);
-				playerScore.position.x = (SCREEN_WIDTH / 2) - (24 * playerScore.text.size());
+				hud.score_text.text = std::to_string(player->score);
+				hud.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud.score_text.text.size());
 			}
 
 			// atualiza os pipes e o jogador
@@ -151,21 +141,19 @@ int main() {
 			player->update();
 
 			// desenha o hub
-			money.draw();
-			coinCount.draw();
-			playerScore.draw();
+			hud.draw();
 
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
-					coinCount.text = std::to_string(player->coinCount);
+					hud.coinCount_text.text = std::to_string(player->coinCount);
 
 					obj->coinVisible = false;
 				}
 
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
-					death_screen.coinCount_text->text = std::to_string(player->coinCount);
-					death_screen.playerScore_text->text = std::to_string(player->score);
+					death_screen.coinCount_text.text = std::to_string(player->coinCount);
+					death_screen.playerScore_text.text = std::to_string(player->score);
 					gb::death_screen = true;
 				}
 			}
@@ -205,7 +193,9 @@ int main() {
 		glfwPollEvents();
 	}
 }
-
+void draw(InterfaceObject* inter) {
+	inter->draw();
+}
 void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
 	glViewport(0.f, 0.f, width, heigth);
 	gb::windowX = width;

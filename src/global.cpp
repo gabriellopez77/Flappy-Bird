@@ -59,7 +59,7 @@ namespace gb {
 	float genPipesDelay = 0.f;
 	int randNum(const int min, const int max) {
 		static std::random_device rd;
-		static std::mt19937 gen = std::mt19937(rd());
+		static std::mt19937_64 gen = std::mt19937_64(rd());
 
 		std::uniform_int_distribution rand_num(min, max);
 

@@ -33,7 +33,6 @@ public:
 	float alpha = 1.f;
 
 protected:
-
 	float animationDelay = 0.f;
 	unsigned short animationStage = 0;
 

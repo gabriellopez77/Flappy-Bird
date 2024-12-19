@@ -17,9 +17,6 @@ public:
 
 	glm::vec2 velocity = glm::vec2(0.f);
 
-	float maxSpeed = 1000.f;
-	float Xspeed = 900.f;
-	float Yspeed = 900.f;
 	float rotate = 0.f;
 	float scoreDelay = 0.f;
 	unsigned short coinCount = 0;
