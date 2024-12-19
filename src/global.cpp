@@ -30,6 +30,7 @@ namespace gb {
 	bool onScreen = false;
 	bool start_screen = true;
 	bool death_screen = false;
+	bool dressingRoom = false;
 
 
 	// player

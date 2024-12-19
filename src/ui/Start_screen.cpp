@@ -26,6 +26,11 @@ void Start_screen::update() {
 		gb::onScreen = false;
 		gb::beforeStart = true;
 	}
+
+	if (gb::clicked && brush_button->hover) {
+		gb::dressingRoom = true;
+		gb::start_screen = false;
+	}
 }
 
 void Start_screen::draw() {

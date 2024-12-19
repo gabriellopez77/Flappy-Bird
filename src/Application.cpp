@@ -14,6 +14,7 @@
 #include "objects/Scenery.h"
 #include "ui/Death_screen.h"
 #include "ui/Start_screen.h"
+#include "ui/DressingRoom.h"
 
 #include <iostream>
 
@@ -86,6 +87,7 @@ int main() {
 
 	Scenery scene = Scenery();
 	Start_screen start_screen = Start_screen();
+	DressingRoom dressingRoom_screen = DressingRoom();
 	Death_screen death_screen = Death_screen();
 
 
@@ -188,6 +190,10 @@ int main() {
 		if (gb::death_screen) {
 			death_screen.update();
 			death_screen.draw();
+		}
+		if (gb::dressingRoom) {
+			dressingRoom_screen.update();
+			dressingRoom_screen.draw();
 		}
 
 

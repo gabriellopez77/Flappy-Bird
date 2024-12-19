@@ -55,6 +55,7 @@ namespace gb {
 	extern bool onScreen;
 	extern bool start_screen;
 	extern bool death_screen;
+	extern bool dressingRoom;
 
 	// player
 	extern void* player;
