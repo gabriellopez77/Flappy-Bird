@@ -74,10 +74,10 @@ int main() {
 	player->position = PLAYER_START_POSITION;
 	player->collSize = glm::vec2(50, 45);
 
-
 	Scenery scene;
-	Hud hud;
+	
 	Start_screen start_screen;
+	Hud hud;
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
 
@@ -154,7 +154,7 @@ int main() {
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
 					death_screen.coinCount_text.text = std::to_string(player->coinCount);
 					death_screen.playerScore_text.text = std::to_string(player->score);
-					gb::death_screen = true;
+					gb::currentScreen = (int)ui::Death_screen;
 				}
 			}
 
@@ -165,25 +165,14 @@ int main() {
 		player->draw();
 		scene.drawGround();
 
+		gb::onScreen = gb::currentScreen != (int)ui::Hud;
 
 		if (gb::onScreen) {
 			screen_background.draw();
 		}
 
-
-		if (gb::start_screen) {
-			start_screen.update();
-			start_screen.draw();
-		}
-		if (gb::death_screen) {
-			death_screen.update();
-			death_screen.draw();
-		}
-		if (gb::dressingRoom) {
-			dressingRoom_screen.update();
-			dressingRoom_screen.draw();
-		}
-
+		gb::gui[gb::currentScreen]->update();
+		gb::gui[gb::currentScreen]->draw();
 
 		gb::clicked = false;
 		gb::action = 0;
@@ -216,7 +205,7 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 
 		if (!gb::started && !gb::onScreen) {
 			gb::beforeStart = true;
-			gb::start_screen = false;
+			gb::currentScreen = (int)ui::Hud;
 		}
 
 		if (!gb::paused && !gb::onScreen && !gb::beforeStart)

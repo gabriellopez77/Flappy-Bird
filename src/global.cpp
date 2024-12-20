@@ -28,10 +28,7 @@ namespace gb {
 	bool paused = false;
 	bool started = false;
 	bool onScreen = false;
-	bool start_screen = true;
-	bool death_screen = false;
-	bool dressingRoom = false;
-
+	int currentScreen = (int)ui::Start_screen;
 
 	// player
 	void* player = nullptr;
@@ -44,14 +41,13 @@ namespace gb {
 		((Player*)player)->scoreDelay = 0.f;
 		genPipesDelay = 0.f;
 		paused = false;
-		death_screen = false;
 		started = false;
-		onScreen = false;
 	}
 
 
 	// objects
 	std::vector<Pipes*> pipes = std::vector<Pipes*>();
+	std::unordered_map<int, InterfaceObject*> gui;
 
 
 	// outros

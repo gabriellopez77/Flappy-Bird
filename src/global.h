@@ -4,8 +4,11 @@
 #include "../Dependencies/glfw/glfw3.h"
 
 #include "objects/Pipes.h"
+#include "InterfaceObject.h"
 
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 #define SCREEN_WIDTH 950
 #define SCREEN_HEIGHT 850
@@ -53,9 +56,7 @@ namespace gb {
 	extern bool paused;
 	extern bool started;
 	extern bool onScreen;
-	extern bool start_screen;
-	extern bool death_screen;
-	extern bool dressingRoom;
+	extern int currentScreen;
 
 	// player
 	extern void* player;
@@ -64,6 +65,7 @@ namespace gb {
 
 	// objects
 	extern std::vector<Pipes*> pipes;
+	extern std::unordered_map<int, InterfaceObject*> gui;
 
 
 	// outros

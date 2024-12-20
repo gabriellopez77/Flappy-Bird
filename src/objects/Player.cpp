@@ -61,13 +61,13 @@ void Player::update() {
 	if (position.y > gb::windowY - collSize.y - 165) {
 		position.y = gb::windowY - collSize.y - 165;
 		velocity.y = 0.f;
-		gb::death_screen = true;
+		gb::currentScreen = (int)ui::Death_screen;
 	}
 
 	if (position.y < 0) {
 		position.y = 0;
 		velocity.y = 0;
-		gb::death_screen = true;
+		gb::currentScreen = (int)ui::Death_screen;
 	}
 
 	collPosition.x = position.x + 3;
