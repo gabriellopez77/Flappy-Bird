@@ -39,7 +39,7 @@ int main() {
 	glfwMakeContextCurrent(window);
 
 	// ativa o V-SYNC
-	//glfwSwapInterval(1);
+	glfwSwapInterval(1);
 
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -146,10 +146,10 @@ int main() {
 			player->update();
 
 			for (auto obj : gb::pipes) {
-				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
+				if (player->checkCollision(&obj->coin) && !obj->coinCollected) {
 					player->coinCount++;
 					hud.coinCount_text.text = std::to_string(player->coinCount);
-					obj->coinVisible = false;
+					obj->coinCollected = true;
 				}
 
 				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
