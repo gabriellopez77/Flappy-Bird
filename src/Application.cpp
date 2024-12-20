@@ -200,7 +200,7 @@ void inputs() {
 	else pressed = false;
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
-	glViewport(0.f, 0.f, width, heigth);
+	glViewport(0.f, 0.f, static_cast<int>(width), static_cast<int>(heigth));
 	gb::windowX = width;
 	gb::windowY = heigth;
 

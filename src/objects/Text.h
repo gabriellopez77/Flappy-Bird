@@ -12,7 +12,7 @@ public:
 
 	glm::ivec4 sprites;
 
-	glm::ivec2 tempPos = glm::ivec2(0.f);
+	glm::ivec2 tempPos;
 	std::string text = "0";
 	unsigned char oneSpacing;
 };

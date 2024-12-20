@@ -16,22 +16,14 @@ Text::Text(
 
 void Text::draw() {
 	tempPos = position;
-
-	for (auto c = 0; c < text.size(); c++) {
+	int textSize = text.size();
+	char currentChar;
+	for (int c = 0; c < textSize; c++) {
 		int value;
-		switch (text[c]) {
-			case '0': value = 0; break;
-			case '1': value = 1; break;
-			case '2': value = 2; break;
-			case '3': value = 3; break;
-			case '4': value = 4; break;
-			case '5': value = 5; break;
-			case '6': value = 6; break;
-			case '7': value = 7; break;
-			case '8': value = 8; break;
-			case '9': value = 9; break;
-			default: value = 10; break;
-		}
+		currentChar = text[c];
+		if (currentChar >= '0' && currentChar <= '9')
+			value = currentChar - '0';
+		else value = -1;
 
 		setNormalizedTexUV(sprites.x + (sprites.z * value), sprites.y, sprites.z, sprites.w);
 
