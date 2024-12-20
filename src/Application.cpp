@@ -16,13 +16,14 @@
 #include "ui/Start_screen.h"
 #include "ui/DressingRoom.h"
 #include "ui/Hud_screen.h"
+#include "ui/Pause_screen.h"
 
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
-void draw(InterfaceObject* inter);
+void inputs();
 
 int main() {
 	glfwInit();
@@ -77,6 +78,7 @@ int main() {
 	Scenery scene;
 	
 	Start_screen start_screen;
+	Pause pause_screen;
 	Hud hud;
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
@@ -96,10 +98,11 @@ int main() {
 		gb::lastFrame = currentFrame;
 
 		// inputs
-		player->input(Action::EMPTY);
+		inputs();
+		//player->input(Action::EMPTY);
 
 
-		if (!gb::started) {
+		if (!gb::running) {
 			player->update();
 		}
 
@@ -107,11 +110,11 @@ int main() {
 			scene.update();
 
 		if (gb::beforeStart) {
-			player->position.x += 4.f;
+			player->position.x += 400.f * gb::deltaTime;
 			if (player->position.x > (SCREEN_WIDTH / 2) - 150) {
 				player->position.x = (SCREEN_WIDTH / 2) -150;
 				gb::beforeStart = false;
-				gb::started = true;
+				gb::running = true;
 
 				hud.score_text.text = '0';
 				hud.coinCount_text.text = '0';
@@ -120,7 +123,7 @@ int main() {
 		}
 		scene.drawBackground();
 
-		if (gb::started && !gb::paused) {
+		if (gb::running && !gb::paused) {
 			// geração dos pipes
 			gb::genPipesDelay += gb::deltaTime;
 			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
@@ -141,13 +144,11 @@ int main() {
 			player->update();
 
 			// desenha o hub
-			hud.draw();
 
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
 					hud.coinCount_text.text = std::to_string(player->coinCount);
-
 					obj->coinVisible = false;
 				}
 
@@ -165,12 +166,16 @@ int main() {
 		player->draw();
 		scene.drawGround();
 
-		gb::onScreen = gb::currentScreen != (int)ui::Hud;
+
+		//std::cout << "paused " << gb::paused << '\n';
+
+
+		gb::onScreen = gb::currentScreen != (int)ui::Hud_screen;
+		gb::paused = gb::currentScreen != (int)ui::Hud_screen;
 
 		if (gb::onScreen) {
 			screen_background.draw();
 		}
-
 		gb::gui[gb::currentScreen]->update();
 		gb::gui[gb::currentScreen]->draw();
 
@@ -182,8 +187,20 @@ int main() {
 		glfwPollEvents();
 	}
 }
-void draw(InterfaceObject* inter) {
-	inter->draw();
+
+bool pressed = false;
+void inputs() {
+	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		if (!pressed) {
+			if (gb::currentScreen == (int)ui::Pause_screen)
+				gb::currentScreen = (int)ui::Hud_screen;
+			else if (gb::currentScreen == (int)ui::Hud_screen)
+				gb::currentScreen = (int)ui::Pause_screen;
+
+			pressed = true;
+		}
+	}
+	else pressed = false;
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
 	glViewport(0.f, 0.f, width, heigth);
@@ -203,10 +220,9 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::clicked = true;
 		gb::action = action;
 
-		if (!gb::started && !gb::onScreen) {
-			gb::beforeStart = true;
-			gb::currentScreen = (int)ui::Hud;
-		}
+		//if (!gb::running && !gb::onScreen) {
+		//	gb::currentScreen = (int)ui::Hud;
+		//}
 
 		if (!gb::paused && !gb::onScreen && !gb::beforeStart)
 			((Player*)gb::player)->input(Action::JUMP);

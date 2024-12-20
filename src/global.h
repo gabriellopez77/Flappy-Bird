@@ -54,7 +54,7 @@ namespace gb {
 
 	// interfaces
 	extern bool paused;
-	extern bool started;
+	extern bool running;
 	extern bool onScreen;
 	extern int currentScreen;
 
@@ -72,4 +72,5 @@ namespace gb {
 	extern bool beforeStart;
 	extern float genPipesDelay;
 	extern int randNum(const int min, const int max);
+	extern float lerp(float a, float b, float t);
 }

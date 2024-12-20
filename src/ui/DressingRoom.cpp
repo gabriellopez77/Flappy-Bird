@@ -7,13 +7,14 @@ DressingRoom::DressingRoom() :
 	close_button(351, 118, 52, 29)
 {
 	id = (int)ui::DressingRoom_screen;
+	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));
+
 	panel_image.size = glm::ivec2(285, 407);
 	panel_image.position = glm::vec2(SCREEN_WIDTH /2 - panel_image.size.x /2, SCREEN_HEIGHT /2 - panel_image.size.y /2);
 
 	close_button.size = glm::ivec2(156, 100);
 	close_button.position = glm::vec2(SCREEN_WIDTH / 2 - close_button.size.x / 2, SCREEN_HEIGHT - 200);
 
-	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));
 }
 
 void DressingRoom::update() {

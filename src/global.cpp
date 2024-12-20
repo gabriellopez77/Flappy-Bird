@@ -26,7 +26,7 @@ namespace gb {
 
 	// interfaces
 	bool paused = false;
-	bool started = false;
+	bool running = false;
 	bool onScreen = false;
 	int currentScreen = (int)ui::Start_screen;
 
@@ -40,8 +40,8 @@ namespace gb {
 		((Player*)player)->rotate = 0.f;
 		((Player*)player)->scoreDelay = 0.f;
 		genPipesDelay = 0.f;
-		paused = false;
-		started = false;
+		running = false;
+		beforeStart = true;
 	}
 
 
@@ -60,5 +60,8 @@ namespace gb {
 		std::uniform_int_distribution rand_num(min, max);
 
 		return rand_num(gen);
+	}
+	float lerp(float a, float b, float t) {
+		return a + (b - a) * t;
 	}
 }

@@ -7,6 +7,7 @@
 
 #include "../Global.h"
 
+
 Player::Player(
 	int spriteX,
 	int spriteY,
@@ -38,8 +39,8 @@ void Player::draw() {
 void Player::update() {
 	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 
-	if (!gb::started) {
-		position.y += cos(glfwGetTime() * 3.f);
+	if (!gb::running) {
+		position.y += cos(glfwGetTime() * 3.f) * 40 * gb::deltaTime;
 		return;
 	}
 
@@ -80,14 +81,6 @@ bool Player::checkCollision(const GameObject* obj) const {
 }
 
 void Player::input(Action action) {
-	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS && !gb::onScreen && gb::started) {
-		if (!pressed) {
-			gb::paused = !gb::paused;
-			pressed = true;
-		}
-	}
-	else pressed = false;
-
 	if (action == Action::JUMP) {
 		velocity.y = -650.f;
 		rotate = 10;

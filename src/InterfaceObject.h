@@ -1,10 +1,12 @@
 #pragma once
 
 enum class ui {
-	Hud,
+	Empty,
+	Hud_screen,
 	Start_screen,
 	DressingRoom_screen,
 	Death_screen,
+	Pause_screen
 };
 
 class InterfaceObject {

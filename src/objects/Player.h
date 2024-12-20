@@ -21,5 +21,4 @@ public:
 	float scoreDelay = 0.f;
 	unsigned short coinCount = 0;
 	unsigned short score = 0;
-	bool pressed = false;
 };
