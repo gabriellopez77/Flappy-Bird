@@ -40,12 +40,12 @@ void Death_screen::update() {
 
 	if (gb::clicked && respawn_button.hover) {
 		gb::playerKill();
-		gb::currentScreen = (int)ui::Hud_screen;
+		gb::currentScreen = (int)ui::Start_screen;
 	}
 
 	if (gb::clicked && house_button.hover) {
 		gb::playerKill();
-		gb::currentScreen = (int)ui::Start_screen;
+		gb::currentScreen = (int)ui::Main_screen;
 	}
 }
 

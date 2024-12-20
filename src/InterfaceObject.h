@@ -1,7 +1,8 @@
 #pragma once
 
-enum class ui {
+enum class ui : int {
 	Empty,
+	Main_screen,
 	Hud_screen,
 	Start_screen,
 	DressingRoom_screen,

@@ -28,7 +28,7 @@ namespace gb {
 	bool paused = false;
 	bool running = false;
 	bool onScreen = false;
-	int currentScreen = (int)ui::Start_screen;
+	int currentScreen = (int)ui::Main_screen;
 
 	// player
 	void* player = nullptr;

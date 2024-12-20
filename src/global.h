@@ -10,7 +10,7 @@
 #include <map>
 #include <unordered_map>
 
-#define SCREEN_WIDTH 950
+#define SCREEN_WIDTH 750
 #define SCREEN_HEIGHT 850
 
 #define PIPE_SIZE_X 90
@@ -21,7 +21,7 @@
 #define PIPE_SPACING 200
 
 #define PLAYER_SIZE 60
-#define PLAYER_START_POSITION glm::vec2(100, 300)
+#define PLAYER_START_POSITION glm::vec2(70, 300)
 #define PLAYER_MAX_ROTATE 80
 #define PLAYER_MIN_ROTATE -10
 #define GRAVITY 3000

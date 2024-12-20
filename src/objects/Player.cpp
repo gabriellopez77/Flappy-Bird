@@ -40,7 +40,8 @@ void Player::update() {
 	setAnimatedSprite(2, 487, 20, 20, 3, 0.03f);
 
 	if (!gb::running) {
-		position.y += cos(glfwGetTime() * 3.f) * 40 * gb::deltaTime;
+		position.y += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
+		rotate += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		return;
 	}
 

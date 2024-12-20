@@ -21,7 +21,7 @@ void DressingRoom::update() {
 	close_button.update();
 
 	if (gb::clicked && close_button.hover) {
-		gb::currentScreen = (int)ui::Start_screen;
+		gb::currentScreen = (int)ui::Main_screen;
 	}
 }
 

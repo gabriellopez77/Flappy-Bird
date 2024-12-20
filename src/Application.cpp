@@ -13,10 +13,11 @@
 #include "objects/Button.h"
 #include "objects/Scenery.h"
 #include "ui/Death_screen.h"
-#include "ui/Start_screen.h"
+#include "ui/Main_screen.h"
 #include "ui/DressingRoom.h"
 #include "ui/Hud_screen.h"
 #include "ui/Pause_screen.h"
+#include "ui/Start_screen.h"
 
 #include <iostream>
 
@@ -38,7 +39,7 @@ int main() {
 	glfwMakeContextCurrent(window);
 
 	// ativa o V-SYNC
-	glfwSwapInterval(1);
+	//glfwSwapInterval(1);
 
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -77,6 +78,7 @@ int main() {
 
 	Scenery scene;
 	
+	Main_screen main_screen;
 	Start_screen start_screen;
 	Pause pause_screen;
 	Hud hud;
@@ -99,7 +101,6 @@ int main() {
 
 		// inputs
 		inputs();
-		//player->input(Action::EMPTY);
 
 
 		if (!gb::running) {
@@ -110,11 +111,12 @@ int main() {
 			scene.update();
 
 		if (gb::beforeStart) {
-			player->position.x += 400.f * gb::deltaTime;
+			player->position.x += 300.f * gb::deltaTime;
 			if (player->position.x > (SCREEN_WIDTH / 2) - 150) {
 				player->position.x = (SCREEN_WIDTH / 2) -150;
 				gb::beforeStart = false;
 				gb::running = true;
+				gb::currentScreen = (int)ui::Hud_screen;
 
 				hud.score_text.text = '0';
 				hud.coinCount_text.text = '0';
@@ -143,8 +145,6 @@ int main() {
 			Pipes::updatePipes();
 			player->update();
 
-			// desenha o hub
-
 			for (auto obj : gb::pipes) {
 				if (player->checkCollision(&obj->coin) && obj->coinVisible) {
 					player->coinCount++;
@@ -165,9 +165,6 @@ int main() {
 		Pipes::drawPipes();
 		player->draw();
 		scene.drawGround();
-
-
-		//std::cout << "paused " << gb::paused << '\n';
 
 
 		gb::onScreen = gb::currentScreen != (int)ui::Hud_screen;
@@ -219,10 +216,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
 		gb::action = action;
-
-		//if (!gb::running && !gb::onScreen) {
-		//	gb::currentScreen = (int)ui::Hud;
-		//}
 
 		if (!gb::paused && !gb::onScreen && !gb::beforeStart)
 			((Player*)gb::player)->input(Action::JUMP);

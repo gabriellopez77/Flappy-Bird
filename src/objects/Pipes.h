@@ -16,4 +16,5 @@ public:
 	GameObject pipeBottom;
 
 	bool coinVisible = true;
+	bool coinCollected = false;
 };
