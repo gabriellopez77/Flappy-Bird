@@ -70,11 +70,11 @@ int main() {
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = 0.5f;
 
-	Player* player = new Player(2, 487, 20,20);
-	gb::player = player;
-	player->size = glm::ivec2(PLAYER_SIZE);
-	player->position = PLAYER_START_POSITION;
-	player->collSize = glm::vec2(50, 45);
+	Player player = Player(2, 487, 20,20);
+	gb::player = &player;
+	player.size = glm::ivec2(PLAYER_SIZE);
+	player.position = PLAYER_START_POSITION;
+	player.collSize = glm::vec2(50, 45);
 
 	Scenery scene;
 	
@@ -104,16 +104,17 @@ int main() {
 
 
 		if (!gb::running) {
-			player->update();
+			player.update();
 		}
 
 		if (!gb::paused)
 			scene.update();
 
 		if (gb::beforeStart) {
-			player->position.x += 300.f * gb::deltaTime;
-			if (player->position.x > (SCREEN_WIDTH / 2) - 150) {
-				player->position.x = (SCREEN_WIDTH / 2) -150;
+			player.position.x += 300.f * gb::deltaTime;
+			if (player.position.x > (SCREEN_WIDTH / 2) - 150) {
+				player.position.x = (SCREEN_WIDTH / 2) -150;
+				player.velocity.y = 0.f;
 				gb::beforeStart = false;
 				gb::running = true;
 				gb::currentScreen = (int)ui::Hud_screen;
@@ -133,28 +134,28 @@ int main() {
 				gb::genPipesDelay = 0.f;
 			}
 
-			player->scoreDelay += gb::deltaTime;
-			if (player->scoreDelay >= 2.f) {
-				player->scoreDelay = 0.f;
-				player->score++;
-				hud.score_text.text = std::to_string(player->score);
+			player.scoreDelay += gb::deltaTime;
+			if (player.scoreDelay >= 2.f) {
+				player.scoreDelay = 0.f;
+				player.score++;
+				hud.score_text.text = std::to_string(player.score);
 				hud.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud.score_text.text.size());
 			}
 
 			// atualiza os pipes e o jogador
 			Pipes::updatePipes();
-			player->update();
+			player.update();
 
 			for (auto obj : gb::pipes) {
-				if (player->checkCollision(&obj->coin) && !obj->coinCollected) {
-					player->coinCount++;
-					hud.coinCount_text.text = std::to_string(player->coinCount);
+				if (player.checkCollision(&obj->coin) && !obj->coinCollected) {
+					player.coinCount++;
+					hud.coinCount_text.text = std::to_string(player.coinCount);
 					obj->coinCollected = true;
 				}
 
-				if (player->checkCollision(&obj->pipeBottom) || player->checkCollision(&obj->pipeTop)) {
-					death_screen.coinCount_text.text = std::to_string(player->coinCount);
-					death_screen.playerScore_text.text = std::to_string(player->score);
+				if (player.checkCollision(&obj->pipeBottom) || player.checkCollision(&obj->pipeTop)) {
+					death_screen.coinCount_text.text = std::to_string(player.coinCount);
+					death_screen.playerScore_text.text = std::to_string(player.score);
 					gb::currentScreen = (int)ui::Death_screen;
 				}
 			}
@@ -163,7 +164,7 @@ int main() {
 
 
 		Pipes::drawPipes();
-		player->draw();
+		player.draw();
 		scene.drawGround();
 
 

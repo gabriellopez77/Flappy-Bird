@@ -15,6 +15,9 @@ public:
 	GameObject coin;
 	GameObject pipeBottom;
 
+	float veloY = 130.f;
 	bool coinVisible = true;
 	bool coinCollected = false;
+	bool orange;
+	bool signal = false;
 };

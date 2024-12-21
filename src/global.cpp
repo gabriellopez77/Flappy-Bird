@@ -64,4 +64,7 @@ namespace gb {
 	float lerp(float a, float b, float t) {
 		return a + (b - a) * t;
 	}
+	bool chance(int percentage) {
+		return randNum(0, 100) < percentage;
+	}
 }

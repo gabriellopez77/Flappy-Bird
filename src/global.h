@@ -22,7 +22,7 @@
 
 #define PLAYER_SIZE 60
 #define PLAYER_START_POSITION glm::vec2(70, 300)
-#define PLAYER_MAX_ROTATE 80
+#define PLAYER_MAX_ROTATE 90
 #define PLAYER_MIN_ROTATE -10
 #define GRAVITY 3000
 
@@ -72,5 +72,6 @@ namespace gb {
 	extern bool beforeStart;
 	extern float genPipesDelay;
 	extern int randNum(const int min, const int max);
+	extern bool chance(int percentage);
 	extern float lerp(float a, float b, float t);
 }

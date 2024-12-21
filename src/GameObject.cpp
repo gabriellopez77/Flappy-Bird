@@ -29,8 +29,8 @@ GameObject::GameObject(
 	int spriteY,
 	int spriteWidth,
 	int spriteHeight
-) {
-
+)
+{
 	setNormalizedTexUV(spriteX, spriteY, spriteWidth, spriteHeight);
 }
 
