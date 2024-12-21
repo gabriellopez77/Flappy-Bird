@@ -14,8 +14,7 @@ Button::Button(
 {
 
 }
-void Button::update() {
-
+inline void Button::update() {
 	hover = checkMouseClick(gb::mousePosX, gb::mousePosY, gb::action);
 
 	if (hover)

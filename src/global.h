@@ -21,7 +21,7 @@
 #define PIPE_SPACING 200
 
 #define PLAYER_SIZE 60
-#define PLAYER_START_POSITION glm::vec2(70, 300)
+#define PLAYER_START_POSITION glm::vec2(70.f, 300.f)
 #define PLAYER_MAX_ROTATE 90
 #define PLAYER_MIN_ROTATE -10
 #define GRAVITY 3000
@@ -31,7 +31,7 @@
 #define BACKGROUND_SPEED 60.f
 #define GROUND_SPEED 230.f
 
-
+enum class stats : char {notStarted, Starting, Started};
 namespace gb {
 	// dt
 	extern float deltaTime;
@@ -54,7 +54,6 @@ namespace gb {
 
 	// interfaces
 	extern bool paused;
-	extern bool running;
 	extern bool onScreen;
 	extern int currentScreen;
 
@@ -69,7 +68,7 @@ namespace gb {
 
 
 	// outros
-	extern bool beforeStart;
+	extern char currentStatus;
 	extern float genPipesDelay;
 	extern int randNum(const int min, const int max);
 	extern bool chance(int percentage);

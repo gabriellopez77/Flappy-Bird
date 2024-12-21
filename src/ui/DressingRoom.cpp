@@ -4,7 +4,7 @@
 
 DressingRoom::DressingRoom() :
 	panel_image(452, 159, 57, 81),
-	close_button(351, 118, 52, 29)
+	close_button(460, 483, 52, 29)
 {
 	id = (int)ui::DressingRoom_screen;
 	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));

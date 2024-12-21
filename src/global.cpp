@@ -26,7 +26,6 @@ namespace gb {
 
 	// interfaces
 	bool paused = false;
-	bool running = false;
 	bool onScreen = false;
 	int currentScreen = (int)ui::Main_screen;
 
@@ -34,14 +33,12 @@ namespace gb {
 	void* player = nullptr;
 	void playerKill() {
 		pipes.clear();
-		((Player*)player)->coinCount = 0;
-		((Player*)player)->score = 0;
+		((Player*)player)->coinCount = 0i16;
+		((Player*)player)->score = 0i16;
 		((Player*)player)->position = PLAYER_START_POSITION;
 		((Player*)player)->rotate = 0.f;
 		((Player*)player)->scoreDelay = 0.f;
 		genPipesDelay = 0.f;
-		running = false;
-		beforeStart = true;
 	}
 
 
@@ -51,7 +48,7 @@ namespace gb {
 
 
 	// outros
-	bool beforeStart = false;
+	char currentStatus = (char)stats::notStarted;
 	float genPipesDelay = 0.f;
 	int randNum(const int min, const int max) {
 		static std::random_device rd;

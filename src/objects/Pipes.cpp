@@ -66,9 +66,9 @@ void Pipes::update() {
 
 	// animação de coleta das moedas
 	if (coinCollected && coinVisible) {
-		coin.position.x = gb::lerp(coin.position.x, 30, 20.f * gb::deltaTime);
-		coin.position.y = gb::lerp(coin.position.y, 40, 20.f * gb::deltaTime);
-		if (coin.position.x <= 40 && coin.position.y <= 50)
+		coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
+		coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
+		if (coin.position.x <= 40.f && coin.position.y <= 50.f)
 			coinVisible = false;
 	}
 	else coin.position.x = pipeBottom.position.x + COIN_SIZE;
@@ -79,7 +79,7 @@ void Pipes::update() {
 
 void Pipes::updatePipes() {
 	for (auto it = gb::pipes.begin(); it != gb::pipes.end(); ) {
-		if ((*it)->pipeBottom.position.x + PIPE_SIZE_X <= 0) {
+		if ((*it)->pipeBottom.position.x + PIPE_SIZE_X <= 0.f) {
 			delete (*it);
 			it = gb::pipes.erase(it);
 		}

@@ -7,8 +7,8 @@ Death_screen::Death_screen() :
 	board_image(3, 259, 113, 57),
 	playerScore_text(138, 323, 6, 7, 10),
 	gameOver_image(395, 59, 96, 21),
-	respawn_button(351, 118, 52, 29),
-	house_button(404, 118, 52, 29),
+	respawn_button(460, 483, 52, 29),
+	house_button(460, 455, 52, 29),
 	coinCount_text(138, 323, 6, 7, 10)
 {
 	id = (int)ui::Death_screen;
@@ -41,11 +41,13 @@ void Death_screen::update() {
 	if (gb::clicked && respawn_button.hover) {
 		gb::playerKill();
 		gb::currentScreen = (int)ui::Start_screen;
+		gb::currentStatus = (char)stats::Starting;
 	}
 
 	if (gb::clicked && house_button.hover) {
 		gb::playerKill();
 		gb::currentScreen = (int)ui::Main_screen;
+		gb::currentStatus = (char)stats::notStarted;
 	}
 }
 

@@ -99,24 +99,25 @@ int main() {
 		gb::deltaTime = currentFrame - gb::lastFrame;
 		gb::lastFrame = currentFrame;
 
-		// inputs
+		// keyboard input
 		inputs();
 
 
-		if (!gb::running) {
+		if (gb::currentStatus != (char)stats::Started) {
 			player.update();
 		}
 
-		if (!gb::paused)
+		if (gb::currentScreen != (char)ui::Death_screen && gb::currentScreen != (char)ui::Pause_screen)
 			scene.update();
 
-		if (gb::beforeStart) {
+		if (gb::currentStatus == (char)stats::Starting) {
 			player.position.x += 300.f * gb::deltaTime;
+				screen_background.alpha -= 0.03f;
 			if (player.position.x > (SCREEN_WIDTH / 2) - 150) {
 				player.position.x = (SCREEN_WIDTH / 2) -150;
 				player.velocity.y = 0.f;
-				gb::beforeStart = false;
-				gb::running = true;
+				screen_background.alpha = 0.5f;
+				gb::currentStatus = (char)stats::Started;
 				gb::currentScreen = (int)ui::Hud_screen;
 
 				hud.score_text.text = '0';
@@ -126,7 +127,7 @@ int main() {
 		}
 		scene.drawBackground();
 
-		if (gb::running && !gb::paused) {
+		if (gb::currentStatus == (char)stats::Started && !gb::paused) {
 			// geração dos pipes
 			gb::genPipesDelay += gb::deltaTime;
 			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
@@ -218,7 +219,7 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		gb::clicked = true;
 		gb::action = action;
 
-		if (!gb::paused && !gb::onScreen && !gb::beforeStart)
+		if (!gb::paused && !gb::onScreen && gb::currentStatus == (char)stats::Started)
 			((Player*)gb::player)->input(Action::JUMP);
 	}
 }
