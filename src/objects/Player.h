@@ -19,8 +19,10 @@ public:
 
 	float rotate = 0.f;
 	float scoreDelay = 0.f;
-	short skinType = 0;
 	unsigned short coinCount = 0;
 	unsigned short matchCoinCount = 0;
 	unsigned short score = 0;
+
+	unsigned char birdTex = 2i8;
+	char skinType = 0;
 };

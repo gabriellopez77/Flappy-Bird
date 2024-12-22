@@ -84,6 +84,12 @@ void DressingRoom::update() {
 			obj->buyItem_button.alpha = 0.6f;
 			currentSelected->buyItem_button.enabled = true;
 			currentSelected->buyItem_button.alpha = 1.f;
+			if (obj->position.x == 210)
+				((Player*)gb::player)->birdTex = 2i8;
+			else if (obj->position.x == 341)
+				((Player*)gb::player)->birdTex = 62i8;
+			else if (obj->position.x == 472)
+				((Player*)gb::player)->birdTex = 122i8;
 			currentSelected = obj;
 		}
 	}
