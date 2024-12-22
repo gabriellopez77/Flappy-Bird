@@ -2,9 +2,6 @@
 
 #include "../Global.h"
 
-#include <iostream>
-
-
 Pipes::Pipes() :
 	pipeTop(56, 323, 26, 160),
 	coin(146, 258, 16, 16),

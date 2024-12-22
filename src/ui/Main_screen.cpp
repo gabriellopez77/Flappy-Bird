@@ -1,7 +1,7 @@
 #include "Main_screen.h"
 
-#include "../global.h"
-#include <iostream>
+#include "../Global.h"
+
 Main_screen::Main_screen() :
 	gameTitle_image(351, 91, 89, 24),
 	start_button(460, 483, 52, 29),

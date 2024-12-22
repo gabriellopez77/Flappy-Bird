@@ -15,8 +15,11 @@ public:
 
 	GameObject panel_image;
 	Button close_button;
-	//Text coinCount_text;
-	//Text itemPrice1_text;
-	//Text itemPrice2_text;
-	//Text itemPrice3_text;
+	Button buyItem1_button;
+	Button buyItem2_button;
+	Button buyItem3_button;
+	Text coinCount_text;
+	Text itemPrice1_text;
+	Text itemPrice2_text;
+	Text itemPrice3_text;
 };

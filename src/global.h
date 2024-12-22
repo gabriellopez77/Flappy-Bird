@@ -7,29 +7,28 @@
 #include "InterfaceObject.h"
 
 #include <vector>
-#include <map>
 #include <unordered_map>
 
-#define SCREEN_WIDTH 750
-#define SCREEN_HEIGHT 850
+constexpr int SCREEN_WIDTH = 800;
+constexpr int SCREEN_HEIGHT = 800;
 
-#define PIPE_SIZE_X 90
-#define PIPE_SIZE_Y 462
-#define PIPE_MIN_HEIGHT 250
-#define PIPE_MAX_HEIGHT 650
-#define PIPES_GEN_DELAY 1.6f
-#define PIPE_SPACING 200
+constexpr int PIPE_SIZE_X = 90;
+constexpr int PIPE_SIZE_Y = 462;
+constexpr int PIPE_MIN_HEIGHT = 250;
+constexpr int PIPE_MAX_HEIGHT = SCREEN_HEIGHT - 160 - 40;
+constexpr float PIPES_GEN_DELAY = 1.6f;
+constexpr int PIPE_SPACING = 200;
 
-#define PLAYER_SIZE 60
-#define PLAYER_START_POSITION glm::vec2(70.f, 300.f)
-#define PLAYER_MAX_ROTATE 90
-#define PLAYER_MIN_ROTATE -10
-#define GRAVITY 3000
+constexpr int PLAYER_SIZE = 60;
+constexpr glm::vec2 PLAYER_START_POSITION(70.f, 300.f);
+constexpr int PLAYER_MAX_ROTATE = 90;
+constexpr int PLAYER_MIN_ROTATE = -10;
+constexpr int GRAVITY = 3000;
 
-#define COIN_SIZE 32
+constexpr int COIN_SIZE = 32;
 
-#define BACKGROUND_SPEED 60.f
-#define GROUND_SPEED 230.f
+constexpr float BACKGROUND_SPEED = 60.f;
+constexpr float GROUND_SPEED = 230.f;
 
 enum class stats : char {notStarted, Starting, Started};
 namespace gb {
@@ -46,7 +45,6 @@ namespace gb {
 
 	// mouse
 	extern bool clicked;
-	extern int action;
 	extern double mousePosX;
 	extern double mousePosY;
 	extern GLFWcursor* cursorState;

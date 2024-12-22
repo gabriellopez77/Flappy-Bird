@@ -27,6 +27,6 @@ void Hud::update() {
 
 void Hud::draw() {
 	coin_image.draw();
-	coinCount_text.draw();
 	score_text.draw();
+	coinCount_text.draw();
 }

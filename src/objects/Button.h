@@ -9,6 +9,5 @@ public:
 	bool hover = false;
 
 	void update() override;
-
-	bool checkMouseClick(double mouseX, double mouseY, int action) const;
+	bool checkMouseClick(double mouseX, double mouseY) const;
 };

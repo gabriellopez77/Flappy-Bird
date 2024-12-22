@@ -14,7 +14,7 @@ public:
 
 	Text playerScore_text;
 	Text coinCount_text;
-	GameObject board_image;
+	GameObject panel_image;
 	GameObject gameOver_image;
 	Button respawn_button;
 	Button house_button;

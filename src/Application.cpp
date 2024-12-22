@@ -33,6 +33,8 @@ int main() {
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.5", NULL, NULL);
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	glfwSetWindowPos(window, mode->width / 2 - SCREEN_WIDTH /2, mode->height / 2 - SCREEN_HEIGHT /2);
 	gb::window = window;
 
 	// cria o contexto opengl atual
@@ -84,7 +86,6 @@ int main() {
 	Hud hud;
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
-
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -179,7 +180,6 @@ int main() {
 		gb::gui[gb::currentScreen]->draw();
 
 		gb::clicked = false;
-		gb::action = 0;
 		glfwSetCursor(window, gb::cursorState);
 
 		glfwSwapBuffers(window);
@@ -217,7 +217,6 @@ void mouse_move_callback(GLFWwindow* window, double xpos, double ypos) {
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
-		gb::action = action;
 
 		if (!gb::paused && !gb::onScreen && gb::currentStatus == (char)stats::Started)
 			((Player*)gb::player)->input(Action::JUMP);

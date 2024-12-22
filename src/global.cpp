@@ -18,7 +18,6 @@ namespace gb {
 
 	// mouse
 	bool clicked = false;
-	int action = 0;
 	double mousePosX = 0;
 	double mousePosY = 0;
 	GLFWcursor* cursorState = nullptr;
