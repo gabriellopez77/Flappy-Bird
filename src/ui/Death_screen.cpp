@@ -31,7 +31,6 @@ Death_screen::Death_screen() :
 
 	coinCount_text.size = glm::ivec2(30, 35);
 	coinCount_text.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * playerScore_text.text.size()) + 120, 400);
-
 }
 
 void Death_screen::update() {

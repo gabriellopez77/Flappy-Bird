@@ -32,7 +32,8 @@ namespace gb {
 	void* player = nullptr;
 	void playerKill() {
 		pipes.clear();
-		((Player*)player)->coinCount = 0i16;
+		((Player*)player)->coinCount += ((Player*)player)->matchCoinCount;
+		((Player*)player)->matchCoinCount = 0i16;
 		((Player*)player)->score = 0i16;
 		((Player*)player)->position = PLAYER_START_POSITION;
 		((Player*)player)->rotate = 0.f;

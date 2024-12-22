@@ -14,10 +14,10 @@ Button::Button(
 
 }
 inline void Button::update() {
-	hover = checkMouseClick(gb::mousePosX, gb::mousePosY);
+	if (enabled) hover = checkMouseClick(gb::mousePosX, gb::mousePosY);
+	else hover = false;
 
-	if (hover)
-		gb::cursorState = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
+	if (hover) gb::cursorState = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
 }
 
 bool Button::checkMouseClick(const double mouseX, const double mouseY) const {

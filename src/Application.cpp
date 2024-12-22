@@ -32,7 +32,7 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.5", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.6", NULL, NULL);
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	glfwSetWindowPos(window, mode->width / 2 - SCREEN_WIDTH /2, mode->height / 2 - SCREEN_HEIGHT /2);
 	gb::window = window;
@@ -150,13 +150,13 @@ int main() {
 
 			for (auto obj : gb::pipes) {
 				if (player.checkCollision(&obj->coin) && !obj->coinCollected) {
-					player.coinCount++;
-					hud.coinCount_text.text = std::to_string(player.coinCount);
+					player.matchCoinCount++;
+					hud.coinCount_text.text = std::to_string(player.matchCoinCount);
 					obj->coinCollected = true;
 				}
 
 				if (player.checkCollision(&obj->pipeBottom) || player.checkCollision(&obj->pipeTop)) {
-					death_screen.coinCount_text.text = std::to_string(player.coinCount);
+					death_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
 					death_screen.playerScore_text.text = std::to_string(player.score);
 					gb::currentScreen = (int)ui::Death_screen;
 				}

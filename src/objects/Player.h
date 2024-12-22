@@ -19,6 +19,8 @@ public:
 
 	float rotate = 0.f;
 	float scoreDelay = 0.f;
+	short skinType = 0;
 	unsigned short coinCount = 0;
+	unsigned short matchCoinCount = 0;
 	unsigned short score = 0;
 };
