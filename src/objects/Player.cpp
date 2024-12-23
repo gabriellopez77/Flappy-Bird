@@ -37,7 +37,7 @@ void Player::draw() {
 }
 
 void Player::update() {
-	setAnimatedSprite(birdTex, 487, 20, 20, 3, 0.03f);
+	setAnimatedSprite(2 + (60 * skinType), 487, 20, 20, 3, 0.03f);
 
 	if (gb::currentStatus != (char)stats::Started) {
 		position.y += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;

@@ -23,6 +23,5 @@ public:
 	unsigned short matchCoinCount = 0;
 	unsigned short score = 0;
 
-	unsigned char birdTex = 2i8;
-	char skinType = 0;
+	unsigned char skinType = 0;
 };

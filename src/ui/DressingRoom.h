@@ -17,7 +17,7 @@ public:
 			birdSkin_image(0, 0, 0, 0),
 			buyItem_button(349,498,37,14),
 			coin_image(194, 258, 16, 16),
-			//itemPrice_text(138, 323, 6, 7, 10),
+			itemPrice_text(138, 323, 6, 7, 10),
 			position(0.f)
 		{
 		}
@@ -26,13 +26,18 @@ public:
 		GameObject birdSkin_image;
 		Button buyItem_button;
 		GameObject coin_image;
-		//Text itemPrice_text;
+		Text itemPrice_text;
+		unsigned short price = 0;
+		unsigned char skinType;
+		bool purchased = false;
 
 		void draw() {
 			birdSkin_image.draw();
 			buyItem_button.draw();
-			coin_image.draw();
-			//itemPrice_text.draw();
+			if (!purchased) {
+				coin_image.draw();
+				itemPrice_text.draw();
+			}
 		}
 	};
 
