@@ -6,6 +6,11 @@
 #include "Shader.h"
 #include "Texture.h"
 
+struct Collision {
+	glm::vec2 size = glm::vec2(0.f);
+	glm::vec2 position = glm::vec2(0.f);
+};
+
 class GameObject {
 public:
 	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
@@ -23,8 +28,7 @@ public:
 	glm::ivec2 size =				glm::ivec2(0);
 
 	// colisoes
-	glm::vec2 collPosition =		glm::vec2(0.f);
-	glm::vec2 collSize =			glm::vec2(0.f);
+	Collision* collision = nullptr;
 
 	static Texture* texture;
 	static Shader* shader;

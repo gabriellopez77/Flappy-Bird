@@ -27,7 +27,6 @@ DressingRoom::DressingRoom() :
 	Item* item1 = new Item();
 	item1->position = glm::vec2(210, 450);
 	item1->birdSkin_image.setNormalizedTexUV(2, 487, 20, 20);
-	item1->skinType = 0i8;
 	item1->purchased = true;
 	item1->itemPrice_text.size = glm::ivec2(24, 28);
 	item1->itemPrice_text.position = glm::vec2(item1->position.x + 32 + 5, item1->position.y - 38);
@@ -40,7 +39,7 @@ DressingRoom::DressingRoom() :
 	Item* item2 = new Item();
 	item2->position = glm::vec2(item1->position.x + 131, item1->position.y);
 	item2->birdSkin_image.setNormalizedTexUV(62, 487, 20, 20);
-	item2->skinType = 1i8;
+	item2->skinType = 1;
 	item2->coin_image.size = glm::ivec2(32);
 	item2->coin_image.position = glm::vec2(item2->position.x, item2->position.y - 40);
 	item2->price = 5;
@@ -58,7 +57,7 @@ DressingRoom::DressingRoom() :
 	Item* item3 = new Item();
 	item3->position = glm::vec2(item2->position.x + 131, item2->position.y);
 	item3->birdSkin_image.setNormalizedTexUV(122, 487, 20, 20);
-	item3->skinType = 2i8;
+	item3->skinType = 2;
 	item3->coin_image.size = glm::ivec2(32);
 	item3->coin_image.position = glm::vec2(item3->position.x, item3->position.y - 40);
 	item3->price = 10;

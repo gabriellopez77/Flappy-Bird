@@ -28,7 +28,7 @@ public:
 		GameObject coin_image;
 		Text itemPrice_text;
 		unsigned short price = 0;
-		unsigned char skinType;
+		unsigned char skinType = 0;
 		bool purchased = false;
 
 		void draw() {

@@ -67,9 +67,7 @@ void GameObject::draw() {
 	shader->setMat4(shader->modelLoc, model);
 	shader->setFloat(shader->alphaLoc, alpha);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
-
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 

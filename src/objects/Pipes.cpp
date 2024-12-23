@@ -14,18 +14,20 @@ Pipes::Pipes() :
 		if (signal)
 			veloY = -veloY;
 	}
-
+	pipeBottom.collision = new Collision();
 	pipeBottom.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 	pipeBottom.position = glm::ivec2(SCREEN_WIDTH, gb::randNum(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT));
-	pipeBottom.collSize = pipeBottom.size;
+	pipeBottom.collision->size = pipeBottom.size;
 
+	pipeTop.collision = new Collision();
 	pipeTop.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING) - PIPE_SIZE_Y;
-	pipeTop.collSize = pipeTop.size;
+	pipeTop.collision->size = pipeTop.size;
 
+	coin.collision = new Collision();
 	coin.size = glm::ivec2(COIN_SIZE);
 	coin.position.y = gb::randNum(pipeTop.position.y + PIPE_SIZE_Y, pipeBottom.position.y - COIN_SIZE);
-	coin.collSize = coin.size;
+	coin.collision->size = coin.size;
 }
 
 void Pipes::draw() {
@@ -57,8 +59,8 @@ void Pipes::update() {
 			veloY = -veloY;
 		}
 	}
-	pipeBottom.collPosition = pipeBottom.position;
-	pipeTop.collPosition = pipeTop.position;
+	pipeBottom.collision->position = pipeBottom.position;
+	pipeTop.collision->position = pipeTop.position;
 
 
 	// animação de coleta das moedas
@@ -69,7 +71,7 @@ void Pipes::update() {
 			coinVisible = false;
 	}
 	else coin.position.x = pipeBottom.position.x + COIN_SIZE;
-	coin.collPosition = coin.position;
+	coin.collision->position = coin.position;
 
 	coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
 }

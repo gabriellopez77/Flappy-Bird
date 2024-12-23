@@ -15,13 +15,13 @@ Player::Player(
 	int spriteHeight
 ) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight)
 {
+	collision = new Collision();
 }
 
 void Player::draw() {
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.f));
 	model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
-
 
 	model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
 	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
@@ -30,9 +30,7 @@ void Player::draw() {
 	model = glm::scale(model, glm::vec3(size, 0.f));
 	shader->setMat4(shader->modelLoc, model);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_TEX);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
-
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
@@ -60,8 +58,8 @@ void Player::update() {
 
 
 	// bordas
-	if (position.y > gb::windowY - collSize.y - 165) {
-		position.y = gb::windowY - collSize.y - 165;
+	if (position.y > gb::windowY - collision->size.y - 165) {
+		position.y = gb::windowY - collision->size.y - 165;
 		velocity.y = 0.f;
 		gb::currentScreen = (int)ui::Death_screen;
 	}
@@ -72,13 +70,13 @@ void Player::update() {
 		gb::currentScreen = (int)ui::Death_screen;
 	}
 
-	collPosition.x = position.x + 3;
-	collPosition.y = position.y + 5;
+	collision->position.x = position.x + 3;
+	collision->position.y = position.y + 5;
 }
 
 bool Player::checkCollision(const GameObject* obj) const {
-	return (collPosition.x + collSize.x >= obj->collPosition.x && collPosition.x <= obj->collPosition.x + obj->collSize.x &&
-			collPosition.y + collSize.y >= obj->collPosition.y && collPosition.y <= obj->collPosition.y + obj->collSize.y);
+	return (collision->position.x + collision->size.x >= obj->collision->position.x && collision->position.x <= obj->collision->position.x + obj->collision->size.x &&
+			collision->position.y + collision->size.y >= obj->collision->position.y && collision->position.y <= obj->collision->position.y + obj->collision->size.y);
 }
 
 void Player::input(Action action) {

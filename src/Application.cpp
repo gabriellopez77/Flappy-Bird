@@ -76,7 +76,7 @@ int main() {
 	gb::player = &player;
 	player.size = glm::ivec2(PLAYER_SIZE);
 	player.position = PLAYER_START_POSITION;
-	player.collSize = glm::vec2(50, 45);
+	player.collision->size = glm::vec2(50, 45);
 
 	Scenery scene;
 	
