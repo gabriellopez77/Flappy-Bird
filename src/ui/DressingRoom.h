@@ -46,6 +46,7 @@ public:
 
 	std::vector<Item*> item_list;
 
+	GameObject coinCount_image;
 	Text coinCount_text;
 	GameObject panel_image;
 	GameObject selectedItem_image;

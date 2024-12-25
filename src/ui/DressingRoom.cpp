@@ -6,6 +6,7 @@
 #include <iostream>
 
 DressingRoom::DressingRoom() :
+	coinCount_image(194, 258, 16, 16),
 	panel_image(235, 455, 113, 57),
 	selectedItem_image(292, 198, 7, 7),
 	close_button(460, 483, 52, 29),
@@ -15,14 +16,18 @@ DressingRoom::DressingRoom() :
 	id = (int)ui::DressingRoom_screen;
 	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));
 
+	coinCount_image.size = glm::ivec2(64);
+	coinCount_image.position = glm::vec2(326, 205);
+
+	coinCount_text.size = glm::ivec2(30, 35);
+	coinCount_text.position = glm::vec2(400, 220);
+
 	panel_image.size = glm::ivec2(452, 228);
 	panel_image.position = glm::vec2(SCREEN_WIDTH /2 - panel_image.size.x /2, SCREEN_HEIGHT /2 - panel_image.size.y /2);
 
 	close_button.size = glm::ivec2(156, 100);
 	close_button.position = glm::vec2(SCREEN_WIDTH /2 - close_button.size.x /2, SCREEN_HEIGHT - 180);
 
-	coinCount_text.size = glm::ivec2(30, 35);
-	coinCount_text.position = glm::vec2(400, 220);
 
 	Item* item1 = new Item();
 	item1->position = glm::vec2(210, 450);
@@ -42,7 +47,7 @@ DressingRoom::DressingRoom() :
 	item2->skinType = 1;
 	item2->coin_image.size = glm::ivec2(32);
 	item2->coin_image.position = glm::vec2(item2->position.x, item2->position.y - 40);
-	item2->price = 5;
+	item2->price = 50;
 	item2->itemPrice_text.size = glm::ivec2(24, 28);
 	item2->itemPrice_text.position = glm::vec2(item2->position.x + 32 + 5, item2->position.y - 38);
 	item2->itemPrice_text.text = std::to_string(item2->price);
@@ -60,7 +65,7 @@ DressingRoom::DressingRoom() :
 	item3->skinType = 2;
 	item3->coin_image.size = glm::ivec2(32);
 	item3->coin_image.position = glm::vec2(item3->position.x, item3->position.y - 40);
-	item3->price = 10;
+	item3->price = 100;
 	item3->itemPrice_text.size = glm::ivec2(24, 28);
 	item3->itemPrice_text.position = glm::vec2(item3->position.x + 32 + 5, item3->position.y - 38);
 	item3->itemPrice_text.text = std::to_string(item3->price);
@@ -134,6 +139,7 @@ void DressingRoom::draw() {
 	panel_image.draw();
 	close_button.draw();
 	coinCount_text.draw();
+	coinCount_image.draw();
 	selectedItem_image.draw();
 	item_list[0]->draw();
 	item_list[1]->draw();

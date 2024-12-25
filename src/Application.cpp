@@ -83,7 +83,7 @@ int main() {
 	Main_screen main_screen;
 	Start_screen start_screen;
 	Pause pause_screen;
-	Hud hud;
+	Hud hud_screen;
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
 
@@ -121,8 +121,8 @@ int main() {
 				gb::currentStatus = (char)stats::Started;
 				gb::currentScreen = (int)ui::Hud_screen;
 
-				hud.score_text.text = '0';
-				hud.coinCount_text.text = '0';
+				hud_screen.score_text.text = '0';
+				hud_screen.coinCount_text.text = '0';
 				gb::genPipesDelay = 0.f;
 			}
 		}
@@ -140,8 +140,8 @@ int main() {
 			if (player.scoreDelay >= 2.f) {
 				player.scoreDelay = 0.f;
 				player.score++;
-				hud.score_text.text = std::to_string(player.score);
-				hud.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud.score_text.text.size());
+				hud_screen.score_text.text = std::to_string(player.score);
+				hud_screen.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud_screen.score_text.text.size());
 			}
 
 			// atualiza os pipes e o jogador
@@ -151,7 +151,7 @@ int main() {
 			for (auto obj : gb::pipes) {
 				if (player.checkCollision(&obj->coin) && !obj->coinCollected) {
 					player.matchCoinCount++;
-					hud.coinCount_text.text = std::to_string(player.matchCoinCount);
+					hud_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
 					obj->coinCollected = true;
 				}
 
