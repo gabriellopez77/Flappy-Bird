@@ -11,11 +11,13 @@ public:
 
 	void update() override;
 	void draw() override;
+	void start() override;
 
+	GameObject gameOver_image;
+	GameObject panel_image;
+	Text playerBestScore_text;
 	Text playerScore_text;
 	Text coinCount_text;
-	GameObject panel_image;
-	GameObject gameOver_image;
 	Button respawn_button;
 	Button house_button;
 };

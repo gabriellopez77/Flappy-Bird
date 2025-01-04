@@ -8,8 +8,8 @@ Main_screen::Main_screen() :
 	brush_button(460, 427, 52, 29),
 	exit_button(460, 399, 52, 29)
 {
-	id = (int)ui::Main_screen;
-	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));
+	id = ui::Main_screen;
+	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	gameTitle_image.size = glm::ivec2(356, 96);
 	gameTitle_image.position = glm::ivec2(SCREEN_WIDTH / 2 - gameTitle_image.size.x / 2, 50);
@@ -30,12 +30,12 @@ void Main_screen::update() {
 	exit_button.update();
 
 	if (gb::clicked && start_button.hover) {
-		gb::currentScreen = (int)ui::Start_screen;
-		gb::currentStatus = (char)stats::Starting;
+		gb::changeCurrentInterface(ui::Start_screen);
+		gb::currentStatus = stats::Starting;
 	}
 
 	if (gb::clicked && brush_button.hover) {
-		gb::currentScreen = (int)ui::DressingRoom_screen;
+		gb::changeCurrentInterface(ui::DressingRoom_screen);
 	}
 
 	if (gb::clicked && exit_button.hover)

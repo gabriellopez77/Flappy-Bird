@@ -33,6 +33,7 @@ GameObject::GameObject(
 {
 	setNormalizedTexUV(spriteX, spriteY, spriteWidth, spriteHeight);
 }
+GameObject::GameObject(bool tex) {};
 
 void GameObject::create() {
 	glGenVertexArrays(1, &VAO);
@@ -78,15 +79,15 @@ void GameObject::setNormalizedTexUV(int spriteX, int spriteY, int spriteWidth, i
 	texCoords[6] = (spriteX + spriteWidth) / 512.f;  texCoords[1] = spriteY / 512.f;
 }
 
-void GameObject::setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int imagesCount, float delay) {
-	animationDelay += gb::deltaTime;
+void GameObject::setAnimatedSprite(int spriteX, int spriteY, int spriteWidth, int spriteHeight, int spritesCount, float delay) {
+	animationDelayTime += gb::deltaTime;
 
-	if (animationDelay >= delay) {
+	if (animationDelayTime >= delay) {
+		animationDelayTime = 0.f;
 		setNormalizedTexUV(spriteX += (spriteWidth * animationStage), spriteY, spriteWidth, spriteHeight);
-		animationDelay = 0.f;
 		animationStage++;
 
-		if (animationStage == imagesCount)
+		if (animationStage == spritesCount)
 			animationStage = 0;
 	}
 }

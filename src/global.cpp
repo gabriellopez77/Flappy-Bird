@@ -26,30 +26,37 @@ namespace gb {
 	// interfaces
 	bool paused = false;
 	bool onScreen = false;
-	int currentScreen = (int)ui::Main_screen;
+	ui currentScreen = ui::Main_screen;
 
 	// player
 	void* player = nullptr;
 	void playerKill() {
+		Player* pl = ((Player*)player);
+
 		pipes.clear();
-		((Player*)player)->coinCount += ((Player*)player)->matchCoinCount;
-		((Player*)player)->matchCoinCount = 0i16;
-		((Player*)player)->score = 0i16;
-		((Player*)player)->position = PLAYER_START_POSITION;
-		((Player*)player)->rotate = 0.f;
-		((Player*)player)->scoreDelay = 0.f;
+		pl->coinCount += pl->matchCoinCount;
+		pl->matchCoinCount = 0i16;
+		pl->score = 0i16;
+		pl->position = PLAYER_START_POSITION;
+		pl->rotate = 0.f;
 		genPipesDelay = 0.f;
 	}
 
 
 	// objects
 	std::vector<Pipes*> pipes = std::vector<Pipes*>();
-	std::unordered_map<int, InterfaceObject*> gui;
+	std::unordered_map<ui, InterfaceObject*> gui;
 
 
 	// outros
-	char currentStatus = (char)stats::notStarted;
+	stats currentStatus = stats::notStarted;
 	float genPipesDelay = 0.f;
+
+	void changeCurrentInterface(ui interface) {
+		gui[interface]->start();
+		currentScreen = interface;
+	}
+
 	int randNum(const int min, const int max) {
 		static std::random_device rd;
 		static std::mt19937_64 gen = std::mt19937_64(rd());
@@ -58,9 +65,11 @@ namespace gb {
 
 		return rand_num(gen);
 	}
+
 	float lerp(float a, float b, float t) {
 		return a + (b - a) * t;
 	}
+
 	bool chance(int percentage) {
 		return randNum(0, 100) < percentage;
 	}

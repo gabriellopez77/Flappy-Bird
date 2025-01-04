@@ -70,7 +70,7 @@ int main() {
 
 	GameObject screen_background(292, 206, 16, 16);
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	screen_background.alpha = 0.5f;
+	screen_background.alpha = BACKGROUND_ALPHA;
 
 	Player player = Player(2, 487, 20,20);
 	gb::player = &player;
@@ -89,6 +89,8 @@ int main() {
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	float startTime = 0.f;
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -104,22 +106,24 @@ int main() {
 		inputs();
 
 
-		if (gb::currentStatus != (char)stats::Started) {
+		if (gb::currentStatus != stats::Started) {
 			player.update();
 		}
 
-		if (gb::currentScreen != (char)ui::Death_screen && gb::currentScreen != (char)ui::Pause_screen)
+		if (gb::currentScreen != ui::Death_screen && gb::currentScreen != ui::Pause_screen)
 			scene.update();
 
-		if (gb::currentStatus == (char)stats::Starting) {
-			player.position.x += 300.f * gb::deltaTime;
-				screen_background.alpha -= 0.03f;
-			if (player.position.x > (SCREEN_WIDTH / 2) - 150) {
-				player.position.x = (SCREEN_WIDTH / 2) -150;
+		if (gb::currentStatus == stats::Starting) {
+			startTime += gb::deltaTime;
+			player.position.x += 3.3f;
+			screen_background.alpha -= 0.03f;
+			if (startTime > 0.5f) {
+				startTime = 0.f;
+				screen_background.alpha = BACKGROUND_ALPHA;
 				player.velocity.y = 0.f;
-				screen_background.alpha = 0.5f;
-				gb::currentStatus = (char)stats::Started;
-				gb::currentScreen = (int)ui::Hud_screen;
+
+				gb::currentStatus = stats::Started;
+				gb::changeCurrentInterface(ui::Hud_screen);
 
 				hud_screen.score_text.text = '0';
 				hud_screen.coinCount_text.text = '0';
@@ -128,7 +132,7 @@ int main() {
 		}
 		scene.drawBackground();
 
-		if (gb::currentStatus == (char)stats::Started && !gb::paused) {
+		if (gb::currentStatus == stats::Started && !gb::paused) {
 			// geração dos pipes
 			gb::genPipesDelay += gb::deltaTime;
 			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
@@ -136,32 +140,40 @@ int main() {
 				gb::genPipesDelay = 0.f;
 			}
 
-			player.scoreDelay += gb::deltaTime;
-			if (player.scoreDelay >= 2.f) {
-				player.scoreDelay = 0.f;
-				player.score++;
-				hud_screen.score_text.text = std::to_string(player.score);
-				hud_screen.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud_screen.score_text.text.size());
-			}
-
 			// atualiza os pipes e o jogador
 			Pipes::updatePipes();
 			player.update();
 
-			for (auto obj : gb::pipes) {
-				if (player.checkCollision(&obj->coin) && !obj->coinCollected) {
-					player.matchCoinCount++;
-					hud_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
-					obj->coinCollected = true;
-				}
-
-				if (player.checkCollision(&obj->pipeBottom) || player.checkCollision(&obj->pipeTop)) {
-					death_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
-					death_screen.playerScore_text.text = std::to_string(player.score);
-					gb::currentScreen = (int)ui::Death_screen;
-				}
+			// verifica se o jogador bateu no chao
+			if (player.checkCollision(&scene.ground1) || player.checkCollision(&scene.ground2)) {
+				player.position.y = scene.ground1.position.y - player.size.y + 9.f;
+				gb::changeCurrentInterface(ui::Death_screen);
 			}
+			
 
+			for (auto obj : gb::pipes) {
+				// se a moeda nao tiver sido coletada, verifica se o jogador colidiu com ela
+				if (!obj->coinCollected) {
+					if (player.checkCollision(&obj->coin)) {
+						player.matchCoinCount++;
+						hud_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
+						obj->coinCollected = true;
+					}
+				}
+
+				if (!obj->passed) {
+					if (player.checkCollision(&obj->scoreWall)) {
+						player.score++;
+						hud_screen.score_text.text = std::to_string(player.score);
+						hud_screen.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud_screen.score_text.text.size());
+						obj->passed = true;
+
+					}
+				}
+				// verifica se o jogador se colidiu com algum pipe
+				if (player.checkCollision(&obj->pipeBottom) || player.checkCollision(&obj->pipeTop))
+					gb::changeCurrentInterface(ui::Death_screen);
+			}
 		}
 
 
@@ -170,8 +182,8 @@ int main() {
 		scene.drawGround();
 
 
-		gb::onScreen = gb::currentScreen != (int)ui::Hud_screen;
-		gb::paused = gb::currentScreen != (int)ui::Hud_screen;
+		gb::onScreen = gb::currentScreen != ui::Hud_screen;
+		gb::paused = gb::currentScreen != ui::Hud_screen;
 
 		if (gb::onScreen) {
 			screen_background.draw();
@@ -191,10 +203,10 @@ bool pressed = false;
 void inputs() {
 	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		if (!pressed) {
-			if (gb::currentScreen == (int)ui::Pause_screen)
-				gb::currentScreen = (int)ui::Hud_screen;
-			else if (gb::currentScreen == (int)ui::Hud_screen)
-				gb::currentScreen = (int)ui::Pause_screen;
+			if (gb::currentScreen == ui::Pause_screen)
+				gb::currentScreen = ui::Hud_screen;
+			else if (gb::currentScreen == ui::Hud_screen)
+				gb::currentScreen = ui::Pause_screen;
 
 			pressed = true;
 		}
@@ -218,7 +230,7 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
 
-		if (!gb::paused && !gb::onScreen && gb::currentStatus == (char)stats::Started)
+		if (!gb::paused && !gb::onScreen && gb::currentStatus == stats::Started)
 			((Player*)gb::player)->input(Action::JUMP);
 	}
 }

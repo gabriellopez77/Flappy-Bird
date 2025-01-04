@@ -12,8 +12,15 @@ enum class ui : int {
 
 class InterfaceObject {
 public:
+	// atualiza toda a interface
 	virtual void update() = 0;
+
+	// desenha toda a interface
 	virtual void draw() = 0;
 
-	int id;
+	// so é chamada uma vez ao mudar de interface
+	virtual void start() {};
+
+	// id da interface
+	ui id;
 };

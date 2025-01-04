@@ -37,7 +37,7 @@ void Player::draw() {
 void Player::update() {
 	setAnimatedSprite(2 + (60 * skinType), 487, 20, 20, 3, 0.03f);
 
-	if (gb::currentStatus != (char)stats::Started) {
+	if (gb::currentStatus != stats::Started) {
 		position.y += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		rotate += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		return;
@@ -49,26 +49,12 @@ void Player::update() {
 	position += velocity * gb::deltaTime;
 
 
-	// aplica a rotaçao do player
+	// rotaçao do player
 	rotate += glm::normalize(velocity).y * 220.f * gb::deltaTime;
 	if (rotate > PLAYER_MAX_ROTATE)
 		rotate = PLAYER_MAX_ROTATE;
 	else if (rotate < PLAYER_MIN_ROTATE)
 		rotate = PLAYER_MIN_ROTATE;
-
-
-	// bordas
-	if (position.y > gb::windowY - collision->size.y - 165) {
-		position.y = gb::windowY - collision->size.y - 165;
-		velocity.y = 0.f;
-		gb::currentScreen = (int)ui::Death_screen;
-	}
-
-	if (position.y < 0) {
-		position.y = 0;
-		velocity.y = 0;
-		gb::currentScreen = (int)ui::Death_screen;
-	}
 
 	collision->position.x = position.x + 3;
 	collision->position.y = position.y + 5;

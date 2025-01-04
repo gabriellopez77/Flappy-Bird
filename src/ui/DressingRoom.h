@@ -43,6 +43,7 @@ public:
 
 	void update() override;
 	void draw() override;
+	void start() override;
 
 	std::vector<Item*> item_list;
 

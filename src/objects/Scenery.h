@@ -10,8 +10,8 @@ public:
 	void drawBackground();
 	void drawGround();
 
-	GameObject* background1;
-	GameObject* background2;
-	GameObject* ground1;
-	GameObject* ground2;
+	GameObject background1;
+	GameObject background2;
+	GameObject ground1;
+	GameObject ground2;
 };

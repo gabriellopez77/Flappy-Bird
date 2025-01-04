@@ -4,14 +4,18 @@
 
 Hud::Hud() :
 	coin_image(194, 258, 16, 16),
+	pause_button(121, 306, 13, 14),
 	coinCount_text(138, 323, 6, 7, 10),
 	score_text(292, 158, 12, 18, 16)
 {
-	id = (int)ui::Hud_screen;
-	gb::gui.insert(std::pair<int, InterfaceObject*>(id, this));
+	id = ui::Hud_screen;
+	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	coin_image.size = glm::ivec2(48);
 	coin_image.position = glm::ivec2(20, 30);
+
+	pause_button.size = glm::ivec2(52, 56);
+	pause_button.position = glm::vec2(SCREEN_WIDTH - pause_button.size.x - 30, 30);
 
 	coinCount_text.size = glm::ivec2(30, 35);
 	coinCount_text.position = glm::ivec2(71, 35);
@@ -22,11 +26,15 @@ Hud::Hud() :
 }
 
 void Hud::update() {
+	pause_button.update();
 
+	if (gb::clicked && pause_button.hover)
+		gb::changeCurrentInterface(ui::Pause_screen);
 }
 
 void Hud::draw() {
 	coin_image.draw();
+	pause_button.draw();
 	score_text.draw();
 	coinCount_text.draw();
 }
