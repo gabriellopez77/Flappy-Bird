@@ -31,13 +31,15 @@ namespace gb {
 	// player
 	void* player = nullptr;
 	void playerKill() {
-		Player* pl = ((Player*)player);
+		static Player* pl = ((Player*)player);
 
 		pipes.clear();
 		pl->coinCount += pl->matchCoinCount;
-		pl->matchCoinCount = 0i16;
-		pl->score = 0i16;
+		pl->matchCoinCount = 0;
+		pl->score = 0;
 		pl->position = PLAYER_START_POSITION;
+		pl->collision->position = glm::vec2(pl->position.x + 3.f, pl->position.y + 5.f);
+		pl->velocity = 0.f;
 		pl->rotate = 0.f;
 		genPipesDelay = 0.f;
 	}
@@ -49,8 +51,9 @@ namespace gb {
 
 
 	// outros
-	stats currentStatus = stats::notStarted;
+	status currentStatus = status::notStarted;
 	float genPipesDelay = 0.f;
+	bool debugMode = false;
 
 	void changeCurrentInterface(ui interface) {
 		gui[interface]->start();

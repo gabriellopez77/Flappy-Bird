@@ -1,13 +1,14 @@
 #include "Scenery.h"
 
 #include "../global.h"
+#include "Player.h"
 
+#include <iostream>
 Scenery::Scenery() :
 	background1(0, 0, 144, 256),
 	background2(0, 0, 144, 256),
 	ground1(292, 0, 168, 56),
 	ground2(292, 0, 168, 56)
-
 {
 	background1.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT - 50);
 
@@ -28,27 +29,41 @@ Scenery::Scenery() :
 }
 
 void Scenery::update() {
-	background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
-	background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
+	if (gb::currentStatus != status::Dead) {
+		background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
+		background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
 
-	if (background1.position.x + SCREEN_WIDTH <= 0)
-		background1.position.x = background2.position.x + SCREEN_WIDTH;
+		if (background1.position.x + SCREEN_WIDTH <= 0)
+			background1.position.x = background2.position.x + SCREEN_WIDTH;
 
-	else if (background2.position.x + SCREEN_WIDTH <= 0)
-		background2.position.x = background1.position.x + SCREEN_WIDTH;
+		else if (background2.position.x + SCREEN_WIDTH <= 0)
+			background2.position.x = background1.position.x + SCREEN_WIDTH;
 
 
-	ground1.position.x -= GROUND_SPEED * gb::deltaTime;
-	ground2.position.x -= GROUND_SPEED * gb::deltaTime;
+		ground1.position.x -= GROUND_SPEED * gb::deltaTime;
+		ground2.position.x -= GROUND_SPEED * gb::deltaTime;
 
-	if (ground1.position.x + SCREEN_WIDTH <= 0)
-		ground1.position.x = ground2.position.x + SCREEN_WIDTH;
+		if (ground1.position.x + SCREEN_WIDTH <= 0)
+			ground1.position.x = ground2.position.x + SCREEN_WIDTH;
 
-	else if (ground2.position.x + SCREEN_WIDTH <= 0)
-		ground2.position.x = ground1.position.x + SCREEN_WIDTH;
+		else if (ground2.position.x + SCREEN_WIDTH <= 0)
+			ground2.position.x = ground1.position.x + SCREEN_WIDTH;
 
-	ground1.collision->position.x = ground1.position.x;
-	ground2.collision->position.x = ground2.position.x;
+		ground1.collision->position.x = ground1.position.x;
+		ground2.collision->position.x = ground2.position.x;
+	}
+
+	// colisões
+
+	// verifica se o jogador bateu no chao
+	Player* pl = ((Player*)gb::player);
+	if (pl->checkCollision(&ground1) || pl->checkCollision(&ground2)) {
+		pl->groundCollided = true;
+		pl->velocity = 0;
+		pl->position.y = ground1.position.y - pl->collision->size.y -1;
+		pl->collision->position.y = pl->position.y;
+		gb::currentStatus = status::Dead;
+	}
 }
 
 void Scenery::drawBackground() {

@@ -3,8 +3,6 @@
 #include "../Global.h"
 #include "../objects/Player.h"
 
-#include <iostream>
-
 DressingRoom::DressingRoom() :
 	coinCount_image(194, 258, 16, 16),
 	panel_image(235, 455, 113, 57),
@@ -31,8 +29,6 @@ DressingRoom::DressingRoom() :
 	close_button.size = glm::ivec2(156, 100);
 	close_button.position = glm::vec2(SCREEN_WIDTH /2 - close_button.size.x /2, SCREEN_HEIGHT - 180);
 
-	std::cout << panelX << '\n';
-	std::cout << panelY << '\n';
 	Item* item1 = new Item();
 	item1->position = glm::vec2(panelX + 36, panelY + 164);
 	item1->birdSkin_image.setNormalizedTexUV(2, 487, 20, 20);
@@ -108,9 +104,11 @@ void DressingRoom::update() {
 	if (gb::clicked && close_button.hover)
 		gb::changeCurrentInterface(ui::Main_screen);
 
+	Player* pl = static_cast<Player*>(gb::player);
+
 	for (auto obj : item_list) {
 		if (!obj->purchased) {
-			if (((Player*)gb::player)->coinCount >= obj->price) {
+			if (pl->coinCount >= obj->price) {
 				obj->buyItem_button.enabled = true;
 				obj->buyItem_button.alpha = 1.f;
 				obj->birdSkin_image.alpha = 1.f;
@@ -124,7 +122,7 @@ void DressingRoom::update() {
 
 		if (gb::clicked && obj->buyItem_button.hover) {
 			if (!obj->purchased) {
-				((Player*)gb::player)->coinCount -= obj->price;
+				pl->coinCount -= obj->price;
 				obj->purchased = true;
 			}
 
@@ -136,7 +134,7 @@ void DressingRoom::update() {
 			obj->buyItem_button.alpha = 0.6f;
 			obj->buyItem_button.setNormalizedTexUV(349, 483, 37, 14);
 			currentSelected = obj;
-			((Player*)gb::player)->skinType = currentSelected->skinType;
+			pl->skinType = currentSelected->skinType;
 			selectedItem_image.position = glm::ivec2(currentSelected->buyItem_button.position.x + currentSelected->buyItem_button.size.x / 2 - 14, 310);
 		}
 	}

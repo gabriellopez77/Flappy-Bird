@@ -1,6 +1,7 @@
 #include "Hud_screen.h"
 
 #include "../Global.h"
+#include "../objects/Player.h"
 
 Hud::Hud() :
 	coin_image(194, 258, 16, 16),
@@ -25,11 +26,19 @@ Hud::Hud() :
 
 }
 
+void Hud::start() {
+}
 void Hud::update() {
 	pause_button.update();
 
 	if (gb::clicked && pause_button.hover)
 		gb::changeCurrentInterface(ui::Pause_screen);
+
+	static const Player* pl = ((Player*)gb::player);
+
+	coinCount_text.text = std::to_string(pl->matchCoinCount);
+	score_text.text = std::to_string(pl->score);
+	score_text.position.x = (SCREEN_WIDTH / 2) - (24 * score_text.text.size());
 }
 
 void Hud::draw() {

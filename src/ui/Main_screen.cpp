@@ -1,6 +1,8 @@
 #include "Main_screen.h"
 
 #include "../Global.h"
+#include "../objects/Player.h"
+
 
 Main_screen::Main_screen() :
 	gameTitle_image(351, 91, 89, 24),
@@ -24,6 +26,9 @@ Main_screen::Main_screen() :
 	exit_button.position = glm::vec2(SCREEN_WIDTH /2 - exit_button.size.x /2, SCREEN_HEIGHT - 180);
 }
 
+void Main_screen::start() {
+
+}
 void Main_screen::update() {
 	start_button.update();
 	brush_button.update();
@@ -31,14 +36,14 @@ void Main_screen::update() {
 
 	if (gb::clicked && start_button.hover) {
 		gb::changeCurrentInterface(ui::Start_screen);
-		gb::currentStatus = stats::Starting;
+		gb::currentStatus = status::Starting;
 	}
 
-	if (gb::clicked && brush_button.hover) {
+	else if (gb::clicked && brush_button.hover) {
 		gb::changeCurrentInterface(ui::DressingRoom_screen);
 	}
 
-	if (gb::clicked && exit_button.hover)
+	else if (gb::clicked && exit_button.hover)
 		glfwSetWindowShouldClose(gb::window, true);
 }
 

@@ -1,6 +1,7 @@
 #include "Pipes.h"
 
 #include "../Global.h"
+#include "Player.h"
 
 Pipes::Pipes() :
 	pipeTop(56, 323, 26, 160),
@@ -114,6 +115,33 @@ void Pipes::update() {
 	// anima o sprite da moeda se ela estiver visivel
 	if (coinVisible)
 		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
+
+
+
+	// colisões
+
+	static Player* pl = static_cast<Player*>(gb::player);
+
+	// se a moeda nao tiver sido coletada, verifica se o jogador colidiu com ela
+	if (!coinCollected) {
+		if (pl->checkCollision(&coin)) {
+			pl->matchCoinCount++;
+			coinCollected = true;
+		}
+	}
+
+	// verifica se o jogador passou pelos pipes
+	if (!passed) {
+		if (pl->checkCollision(&scoreWall)) {
+			pl->score++;
+			passed = true;
+		}
+	}
+
+	// verifica se o jogador se colidiu com algum pipe
+	if (pl->checkCollision(&pipeBottom) || pl->checkCollision(&pipeTop)) {
+		gb::currentStatus = status::Dead;
+	}
 }
 
 void Pipes::updatePipes() {

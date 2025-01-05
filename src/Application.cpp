@@ -32,7 +32,7 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.6", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.8", NULL, NULL);
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	glfwSetWindowPos(window, mode->width / 2 - SCREEN_WIDTH /2, mode->height / 2 - SCREEN_HEIGHT /2);
 	gb::window = window;
@@ -68,15 +68,20 @@ int main() {
 	// reserva o espaço dos pipes
 	gb::pipes.reserve(5);
 
-	GameObject screen_background(292, 206, 16, 16);
+	GameObject screen_background(292, 206, 1, 1);
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = BACKGROUND_ALPHA;
+
+	GameObject white_blink(292, 224, 1, 1);
+	white_blink.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	white_blink.alpha = 0.f;
 
 	Player player = Player(2, 487, 20,20);
 	gb::player = &player;
 	player.size = glm::ivec2(PLAYER_SIZE);
 	player.position = PLAYER_START_POSITION;
 	player.collision->size = glm::vec2(50, 45);
+	player.collision->position.x = player.position.x + 3.f;
 
 	Scenery scene;
 	
@@ -87,10 +92,13 @@ int main() {
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
 
-	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	float startTime = 0.f;
+	float deathTime = 0.f;
+	bool piscar = true;
+	std::cout << std::boolalpha;
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -102,37 +110,38 @@ int main() {
 		gb::deltaTime = currentFrame - gb::lastFrame;
 		gb::lastFrame = currentFrame;
 
-		// keyboard input
+
 		inputs();
 
-
-		if (gb::currentStatus != stats::Started) {
+		if (gb::currentScreen != ui::Pause_screen)
 			player.update();
-		}
+
 
 		if (gb::currentScreen != ui::Death_screen && gb::currentScreen != ui::Pause_screen)
 			scene.update();
 
-		if (gb::currentStatus == stats::Starting) {
-			startTime += gb::deltaTime;
-			player.position.x += 3.3f;
-			screen_background.alpha -= 0.03f;
-			if (startTime > 0.5f) {
-				startTime = 0.f;
-				screen_background.alpha = BACKGROUND_ALPHA;
-				player.velocity.y = 0.f;
+		if (gb::currentStatus == status::Dead && gb::currentScreen != ui::Death_screen) {
+			deathTime += gb::deltaTime;
 
-				gb::currentStatus = stats::Started;
-				gb::changeCurrentInterface(ui::Hud_screen);
+			if (white_blink.alpha >= 0.99f)
+				piscar = false;
 
-				hud_screen.score_text.text = '0';
-				hud_screen.coinCount_text.text = '0';
-				gb::genPipesDelay = 0.f;
-			}
+			if (piscar)
+				white_blink.alpha = gb::lerp(white_blink.alpha, 1.f, gb::deltaTime * 30.f);
+			else
+				white_blink.alpha = gb::lerp(white_blink.alpha, 0.f, gb::deltaTime * 40.f);
+
+
+			if (deathTime >= 1.f) {
+				deathTime = 0.f;
+				piscar = true;
+				gb::changeCurrentInterface(ui::Death_screen);
+			}	
 		}
+
 		scene.drawBackground();
 
-		if (gb::currentStatus == stats::Started && !gb::paused) {
+		if (gb::currentStatus == status::Started && !gb::paused && gb::currentStatus != status::Dead) {
 			// geração dos pipes
 			gb::genPipesDelay += gb::deltaTime;
 			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
@@ -140,43 +149,12 @@ int main() {
 				gb::genPipesDelay = 0.f;
 			}
 
-			// atualiza os pipes e o jogador
+			// atualiza os pipes
 			Pipes::updatePipes();
-			player.update();
 
-			// verifica se o jogador bateu no chao
-			if (player.checkCollision(&scene.ground1) || player.checkCollision(&scene.ground2)) {
-				player.position.y = scene.ground1.position.y - player.size.y + 9.f;
-				gb::changeCurrentInterface(ui::Death_screen);
-			}
-			
-
-			for (auto obj : gb::pipes) {
-				// se a moeda nao tiver sido coletada, verifica se o jogador colidiu com ela
-				if (!obj->coinCollected) {
-					if (player.checkCollision(&obj->coin)) {
-						player.matchCoinCount++;
-						hud_screen.coinCount_text.text = std::to_string(player.matchCoinCount);
-						obj->coinCollected = true;
-					}
-				}
-
-				if (!obj->passed) {
-					if (player.checkCollision(&obj->scoreWall)) {
-						player.score++;
-						hud_screen.score_text.text = std::to_string(player.score);
-						hud_screen.score_text.position.x = (SCREEN_WIDTH / 2) - (24 * hud_screen.score_text.text.size());
-						obj->passed = true;
-
-					}
-				}
-				// verifica se o jogador se colidiu com algum pipe
-				if (player.checkCollision(&obj->pipeBottom) || player.checkCollision(&obj->pipeTop))
-					gb::changeCurrentInterface(ui::Death_screen);
-			}
 		}
-
-
+		
+		// desenha os objetos
 		Pipes::drawPipes();
 		player.draw();
 		scene.drawGround();
@@ -185,9 +163,13 @@ int main() {
 		gb::onScreen = gb::currentScreen != ui::Hud_screen;
 		gb::paused = gb::currentScreen != ui::Hud_screen;
 
-		if (gb::onScreen) {
+		
+		if (gb::onScreen)
 			screen_background.draw();
-		}
+
+		//if (gb::currentStatus == status::Dead)
+			white_blink.draw();
+
 		gb::gui[gb::currentScreen]->update();
 		gb::gui[gb::currentScreen]->draw();
 
@@ -213,13 +195,14 @@ void inputs() {
 	}
 	else pressed = false;
 }
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
 	glViewport(0.f, 0.f, static_cast<int>(width), static_cast<int>(heigth));
 	gb::windowX = width;
 	gb::windowY = heigth;
 
 	glm::mat4 projection = glm::ortho(0.0f, (float)gb::windowX, (float)gb::windowY, 0.f, -1.0f, 1.f);
-	GameObject::shader->setMat4(GameObject::shader->projectionLoc, projection);
+	glUniformMatrix4fv(GameObject::shader->projectionLoc, 1, GL_FALSE, &projection[0][0]);
 }
 
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -230,7 +213,16 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
 
-		if (!gb::paused && !gb::onScreen && gb::currentStatus == stats::Started)
-			((Player*)gb::player)->input(Action::JUMP);
+		if (gb::currentStatus == status::Starting) {
+			((Player*)gb::player)->groundCollided = false;
+			((Player*)gb::player)->input(action::JUMP);
+			gb::currentStatus = status::Started;
+			gb::changeCurrentInterface(ui::Hud_screen);
+
+			gb::genPipesDelay = 0.f;
+		}
+
+		if (!gb::paused && !gb::onScreen && gb::currentStatus == status::Started)
+			((Player*)gb::player)->input(action::JUMP);
 	}
 }

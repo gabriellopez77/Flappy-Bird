@@ -7,16 +7,26 @@ out vec4 FragColor;
 uniform sampler2D myTexture;
 uniform float alpha;
 
+uniform bool debugMode;
+uniform vec4 hitBoxColor;
 
-vec4 boxColor = vec4(0.5f, 0.2f, 0.2f, 0.3f);
-vec4 tex = texture(myTexture, TexCoord);
-
+vec4 result;
 void main()
 {
-	if (tex.a < 0.1f)
-		discard;
+	if (debugMode)
+	{
+		result = hitBoxColor;
+		FragColor = result;
+	}
+	else
+	{
+		vec4 tex = texture(myTexture, TexCoord);
+		if (tex.a < 0.1f)
+			discard;
 
-	tex.a = alpha;
-	FragColor = tex;
+		tex.a = alpha;
+		result = tex;
+		FragColor = result;
+	}
 
 }

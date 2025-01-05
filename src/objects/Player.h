@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Dependencies/glm/glm.hpp"
+#include "../../Dependencies/glm/glm.hpp"
 
 #include "../GameObject.h"
 
-enum class Action : char { JUMP, EMPTY };
+enum class action : char { JUMP, EMPTY };
 
 class Player : public GameObject {
 public:
@@ -13,14 +13,12 @@ public:
 	void draw() override;
 	void update() override;
 
-	// 
-	void input(Action action);
+	void input(action action);
 
 	// retorna true o jogador colidiu com algum objeto, senao, false
 	bool checkCollision(const GameObject* obj) const;
 
-	glm::vec2 velocity = glm::vec2(0.f);
-
+	float velocity = 0.f;
 	float rotate = 0.f;
 
 	// quantidade total de moedas
@@ -37,4 +35,6 @@ public:
 
 	// tipo de skin do jogador
 	unsigned char skinType = 0;
+
+	bool groundCollided = false;
 };

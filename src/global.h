@@ -24,6 +24,7 @@ constexpr glm::vec2 PLAYER_START_POSITION(70.f, SCREEN_HEIGHT * 0.3f);
 constexpr int PLAYER_MAX_ROTATE = 90;
 constexpr int PLAYER_MIN_ROTATE = -10;
 constexpr int GRAVITY = 3000;
+constexpr glm::vec4 hitBoxColor = glm::vec4(0.5f, 0.2f, 0.2f, 0.3f);
 
 constexpr int COIN_SIZE = 32;
 
@@ -31,10 +32,11 @@ constexpr float BACKGROUND_SPEED = 60.f;
 constexpr float BACKGROUND_ALPHA = 0.5f;
 constexpr float GROUND_SPEED = 300.f;
 
-enum class stats : char {
+enum class status : char {
 	notStarted,
 	Starting,
-	Started
+	Started,
+	Dead
 };
 
 namespace gb {
@@ -72,8 +74,9 @@ namespace gb {
 
 
 	// outros
-	extern stats currentStatus;
+	extern status currentStatus;
 	extern float genPipesDelay;
+	extern bool debugMode;
 
 	// muda a interface ativa no momento e chama a funçao 'start'
 	extern void changeCurrentInterface(ui interface);

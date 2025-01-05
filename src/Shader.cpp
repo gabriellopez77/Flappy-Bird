@@ -64,23 +64,9 @@ Shader::Shader(const char* vertPath, const char* fragPath) {
 	modelLoc = glGetUniformLocation(ID, "model");
 	projectionLoc = glGetUniformLocation(ID, "projection");
 	alphaLoc = glGetUniformLocation(ID, "alpha");
+	debugModeLoc = glGetUniformLocation(ID, "debugMode");
+	hitBoxColorLoc = glGetUniformLocation(ID, "hitBoxColor");
 }
 void Shader::use() const {
 	glUseProgram(ID);
-}
-
-void Shader::setMat4(unsigned int uniformLocation, glm::mat4& matrix) const {
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
-}
-
-void Shader::setVec3(unsigned int uniformLocation, glm::vec3& vector) const {
-	glUniform3fv(uniformLocation, 1, &vector[0]);
-}
-
-void Shader::setBool(unsigned int uniformLocation, bool value) const {
-	glUniform1i(uniformLocation, value);
-}
-
-void Shader::setFloat(unsigned int uniformLocation, float value) const {
-	glUniform1f(uniformLocation, value);
 }

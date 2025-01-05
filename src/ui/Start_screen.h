@@ -12,4 +12,5 @@ public:
 	void draw() override;
 
 	GameObject getReady_image;
+	GameObject clickToStart_image;
 };

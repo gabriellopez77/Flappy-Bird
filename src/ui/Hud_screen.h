@@ -11,6 +11,7 @@ public:
 
 	void update() override;
 	void draw() override;
+	void start() override;
 
 	GameObject coin_image;
 	Button pause_button;

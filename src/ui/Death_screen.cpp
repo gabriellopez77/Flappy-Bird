@@ -50,6 +50,8 @@ void Death_screen::start() {
 	playerBestScore_text.text = std::to_string(player->bestScore);
 	coinCount_text.text = std::to_string(player->matchCoinCount);
 	playerScore_text.text = std::to_string(player->score);
+
+	gb::currentStatus = status::Dead;
 }
 
 void Death_screen::update() {
@@ -60,13 +62,13 @@ void Death_screen::update() {
 	if (gb::clicked && respawn_button.hover) {
 		gb::playerKill();
 		gb::changeCurrentInterface(ui::Start_screen);
-		gb::currentStatus = stats::Starting;
+		gb::currentStatus = status::Starting;
 	}
 
 	if (gb::clicked && house_button.hover) {
 		gb::playerKill();
 		gb::changeCurrentInterface(ui::Main_screen);
-		gb::currentStatus = stats::notStarted;
+		gb::currentStatus = status::notStarted;
 	}
 }
 void Death_screen::draw() {

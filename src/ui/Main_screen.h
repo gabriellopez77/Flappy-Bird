@@ -10,6 +10,7 @@ public:
 
 	void update() override;
 	void draw() override;
+	void start() override;
 
 	GameObject gameTitle_image;
 	Button brush_button;
