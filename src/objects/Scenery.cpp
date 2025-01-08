@@ -29,41 +29,39 @@ Scenery::Scenery() :
 }
 
 void Scenery::update() {
-	if (gb::currentStatus != status::Dead) {
-		background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
-		background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
-
-		if (background1.position.x + SCREEN_WIDTH <= 0)
-			background1.position.x = background2.position.x + SCREEN_WIDTH;
-
-		else if (background2.position.x + SCREEN_WIDTH <= 0)
-			background2.position.x = background1.position.x + SCREEN_WIDTH;
-
-
-		ground1.position.x -= GROUND_SPEED * gb::deltaTime;
-		ground2.position.x -= GROUND_SPEED * gb::deltaTime;
-
-		if (ground1.position.x + SCREEN_WIDTH <= 0)
-			ground1.position.x = ground2.position.x + SCREEN_WIDTH;
-
-		else if (ground2.position.x + SCREEN_WIDTH <= 0)
-			ground2.position.x = ground1.position.x + SCREEN_WIDTH;
-
-		ground1.collision->position.x = ground1.position.x;
-		ground2.collision->position.x = ground2.position.x;
-	}
-
-	// colisões
-
 	// verifica se o jogador bateu no chao
 	Player* pl = ((Player*)gb::player);
 	if (pl->checkCollision(&ground1) || pl->checkCollision(&ground2)) {
 		pl->groundCollided = true;
 		pl->velocity = 0;
-		pl->position.y = ground1.position.y - pl->collision->size.y -1;
+		pl->position.y = ground1.position.y - pl->collision->size.y - 1;
 		pl->collision->position.y = pl->position.y;
 		gb::currentStatus = status::Dead;
 	}
+	if (gb::currentStatus == status::Dead)
+		return;
+
+	background1.position.x -= BACKGROUND_SPEED * gb::deltaTime;
+	background2.position.x -= BACKGROUND_SPEED * gb::deltaTime;
+
+	if (background1.position.x + SCREEN_WIDTH <= 0)
+		background1.position.x = background2.position.x + SCREEN_WIDTH;
+
+	else if (background2.position.x + SCREEN_WIDTH <= 0)
+		background2.position.x = background1.position.x + SCREEN_WIDTH;
+
+
+	ground1.position.x -= GROUND_SPEED * gb::deltaTime;
+	ground2.position.x -= GROUND_SPEED * gb::deltaTime;
+
+	if (ground1.position.x + SCREEN_WIDTH <= 0)
+		ground1.position.x = ground2.position.x + SCREEN_WIDTH;
+
+	else if (ground2.position.x + SCREEN_WIDTH <= 0)
+		ground2.position.x = ground1.position.x + SCREEN_WIDTH;
+
+	ground1.collision->position.x = ground1.position.x;
+	ground2.collision->position.x = ground2.position.x;
 }
 
 void Scenery::drawBackground() {

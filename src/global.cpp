@@ -3,7 +3,6 @@
 #include "objects/Player.h"
 
 #include <random>
-#include <iostream>
 
 namespace gb {
 	// dt
@@ -57,6 +56,14 @@ namespace gb {
 	bool debugMode = false;
 
 	void changeCurrentInterface(ui interface) {
+		if (interface != ui::Hud_screen)
+			onScreen = true;
+		else onScreen = false;
+
+		if (interface == ui::Hud_screen)
+			paused = false;
+		else paused = true;
+
 		gui[interface]->start();
 		currentScreen = interface;
 	}

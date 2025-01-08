@@ -75,23 +75,17 @@ int main() {
 	// reserva o espaço dos pipes
 	gb::pipes.reserve(5);
 
-	GameObject screen_background(292, 206, 1, 1);
-	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	screen_background.alpha = BACKGROUND_ALPHA;
-
 	GameObject white_blink(292, 224, 1, 1);
 	white_blink.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	white_blink.alpha = 0.f;
 
+	// player
 	Player player = Player(2, 487, 20,20);
-	gb::player = &player;
-	player.size = glm::ivec2(PLAYER_SIZE);
-	player.position = PLAYER_START_POSITION;
-	player.collision->size = glm::vec2(50, 45);
-	player.collision->position.x = player.position.x + 3.f;
 
+	// background
 	Scenery scene;
 	
+	// interfaces
 	Main_screen main_screen;
 	Start_screen start_screen;
 	Pause pause_screen;
@@ -99,12 +93,19 @@ int main() {
 	DressingRoom dressingRoom_screen;
 	Death_screen death_screen;
 
+	// fundo preto das interfaces
+	GameObject screen_background(292, 206, 1, 1);
+	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen_background.alpha = BACKGROUND_ALPHA;
+
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	float deathTime = 0.f;
 	bool piscar = true;
 	std::cout << std::boolalpha;
+
+	gb::changeCurrentInterface(ui::Main_screen);
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -116,61 +117,52 @@ int main() {
 		gb::deltaTime = currentFrame - gb::lastFrame;
 		gb::lastFrame = currentFrame;
 
-
 		inputs();
-
-		// atualiza se o jogo nao estiver pausado
+		
 		if (gb::currentScreen != ui::Pause_screen) {
 			player.update();
 			scene.update();
 		}
 
-
-		if (gb::currentStatus == status::Dead && gb::currentScreen != ui::Death_screen) {
-			deathTime += gb::deltaTime;
-
-			if (white_blink.alpha >= 0.99f)
-				piscar = false;
-			float elevado = pow(white_blink.alpha, 2);
-
-			if (piscar)
-				white_blink.alpha = gb::lerp(white_blink.alpha, 1.f, gb::deltaTime * 30.f);
-			else
-				white_blink.alpha = gb::lerp(white_blink.alpha, 0.f, gb::deltaTime * 40.f);
-
-
-			if (deathTime >= 1.f) {
-				deathTime = 0.f;
-				piscar = true;
-				gb::changeCurrentInterface(ui::Death_screen);
-			}	
-		}
-
-		scene.drawBackground();
-
-		if (gb::currentStatus == status::Started && !gb::paused && gb::currentStatus != status::Dead) {
-			// geração dos pipes
-			gb::genPipesDelay += gb::deltaTime;
-			if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
-				gb::pipes.push_back(new Pipes());
-				gb::genPipesDelay = 0.f;
-			}
-
-			// atualiza os pipes
+		if (!gb::paused) {
 			Pipes::updatePipes();
 
+			if (gb::currentStatus == status::Started) {
+				// geração dos pipes
+				gb::genPipesDelay += gb::deltaTime;
+				if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
+					gb::pipes.push_back(new Pipes());
+					gb::genPipesDelay = 0.f;
+				}
+			}
+
+
+			if (gb::currentStatus == status::Dead) {
+				deathTime += gb::deltaTime;
+
+				if (white_blink.alpha >= 0.99f)
+					piscar = false;
+
+				if (piscar)
+					white_blink.alpha = gb::lerp(white_blink.alpha, 1.f, gb::deltaTime * 30.f);
+				else
+					white_blink.alpha = gb::lerp(white_blink.alpha, 0.f, gb::deltaTime * 40.f);
+
+
+				if (deathTime >= 1.f) {
+					deathTime = 0.f;
+					piscar = true;
+					gb::changeCurrentInterface(ui::Death_screen);
+				}	
+			}
 		}
-		
+	
 		// desenha os objetos
+		scene.drawBackground();
 		Pipes::drawPipes();
 		player.draw();
 		scene.drawGround();
-
-
-		gb::onScreen = gb::currentScreen != ui::Hud_screen;
-		gb::paused = gb::currentScreen != ui::Hud_screen;
-
-		
+	
 		if (gb::onScreen)
 			screen_background.draw();
 
@@ -193,9 +185,9 @@ void inputs() {
 	if (glfwGetKey(gb::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		if (!pressed) {
 			if (gb::currentScreen == ui::Pause_screen)
-				gb::currentScreen = ui::Hud_screen;
-			else if (gb::currentScreen == ui::Hud_screen)
-				gb::currentScreen = ui::Pause_screen;
+				gb::changeCurrentInterface(ui::Hud_screen);
+			else if (gb::currentScreen == ui::Hud_screen && gb::currentStatus != status::Dead)
+				gb::changeCurrentInterface(ui::Pause_screen);
 
 			pressed = true;
 		}
@@ -217,12 +209,14 @@ void mouse_move_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) {
+	static Player* pl = (Player*)gb::player;
+
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
 
-		if (gb::currentStatus == status::Starting) {
-			((Player*)gb::player)->groundCollided = false;
-			((Player*)gb::player)->input(action::JUMP);
+		if (gb::currentScreen == ui::Start_screen) {
+			pl->groundCollided = false;
+			pl->input(action::JUMP);
 			gb::currentStatus = status::Started;
 			gb::changeCurrentInterface(ui::Hud_screen);
 
@@ -230,6 +224,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 		}
 
 		if (!gb::paused && !gb::onScreen && gb::currentStatus == status::Started)
-			((Player*)gb::player)->input(action::JUMP);
+			pl->input(action::JUMP);
 	}
 }

@@ -3,8 +3,6 @@
 #include "../../Dependencies/glm/gtc/matrix_transform.hpp"
 #include "../../Dependencies/glad/glad.h"
 
-#include <iostream>
-
 #include "../Global.h"
 
 
@@ -16,6 +14,15 @@ Player::Player(
 ) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight)
 {
 	collision = new Collision();
+
+	size = glm::ivec2(PLAYER_SIZE);
+	position = PLAYER_START_POSITION;
+
+	collision->size = glm::vec2(50, 40);
+	collision->position.x = position.x + 3.f;
+	collision->position.y = position.y + 5.f;
+
+	gb::player = this;
 }
 
 void Player::draw() {
@@ -55,19 +62,25 @@ void Player::update() {
 		setAnimatedSprite(2 + (60 * skinType), 487, 20, 20, 3, 0.03f);
 
 
-	if (gb::currentStatus == status::notStarted || gb::currentStatus == status::Starting) {
+	if (gb::currentStatus == status::notStarted) {
 		position.y += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		rotate += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		return;
 	}
 
-	else if (gb::currentStatus == status::Started || gb::currentStatus == status::Dead && !groundCollided) {
+	else if (gb::currentStatus == status::Started || (gb::currentStatus == status::Dead && !groundCollided)) {
 		// aplica a gravidade
 		velocity += GRAVITY * gb::deltaTime;
 		position.y += velocity * gb::deltaTime;
+
+		// verifica se o jogador de bateu no "teto"
+		if (collision->position.y <= 0.f) {
+			position.y = 0.f;
+			gb::currentStatus = status::Dead;
+		}
 	
 		// atualiza a hitbox do jogador
-		collision->position.y = position.y;
+		collision->position.y = position.y + 5.f;
 
 		// rotaçao do player
 		rotate += glm::normalize(glm::vec2(velocity)).y * 220.f * gb::deltaTime;
@@ -75,10 +88,6 @@ void Player::update() {
 			rotate = PLAYER_MAX_ROTATE;
 		else if (rotate < PLAYER_MIN_ROTATE)
 			rotate = PLAYER_MIN_ROTATE;
-
-		if (position.y <= 0.f)
-			gb::currentStatus = status::Dead;
-
 	}
 }
 

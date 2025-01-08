@@ -5,9 +5,6 @@
 class Pipes {
 public:
 	Pipes();
-
-	void draw();
-	void update();
 	static void updatePipes();
 	static void drawPipes();
 
@@ -22,4 +19,8 @@ public:
 	bool orange;
 	bool signal = false;
 	bool passed = false;
+
+private:
+	void draw();
+	void update();
 };

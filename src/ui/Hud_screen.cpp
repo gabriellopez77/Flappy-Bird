@@ -32,7 +32,8 @@ void Hud::update() {
 	pause_button.update();
 
 	if (gb::clicked && pause_button.hover)
-		gb::changeCurrentInterface(ui::Pause_screen);
+		if (gb::currentStatus != status::Dead)
+			gb::changeCurrentInterface(ui::Pause_screen);
 
 	static const Player* pl = ((Player*)gb::player);
 

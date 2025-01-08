@@ -34,7 +34,6 @@ inline constexpr float GROUND_SPEED = 300.f;
 
 enum class status : char {
 	notStarted,
-	Starting,
 	Started,
 	Dead
 };

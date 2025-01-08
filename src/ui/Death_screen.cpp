@@ -62,7 +62,6 @@ void Death_screen::update() {
 	if (gb::clicked && respawn_button.hover) {
 		gb::playerKill();
 		gb::changeCurrentInterface(ui::Start_screen);
-		gb::currentStatus = status::Starting;
 	}
 
 	if (gb::clicked && house_button.hover) {

@@ -20,12 +20,14 @@ Pipes::Pipes() :
 
 	pipeBottom.collision = new Collision();
 	pipeBottom.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
-	pipeBottom.position = glm::ivec2(SCREEN_WIDTH, gb::randNum(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT));
+	pipeBottom.position.x = SCREEN_WIDTH;
+	pipeBottom.position.y = gb::randNum(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT);
 	pipeBottom.collision->size = pipeBottom.size;
 	pipeBottom.collision->position.y = pipeBottom.position.y;
 
 	pipeTop.collision = new Collision();
 	pipeTop.size = glm::ivec2(PIPE_SIZE_X, PIPE_SIZE_Y);
+	pipeTop.position.x = SCREEN_WIDTH;
 	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING) - PIPE_SIZE_Y;
 	pipeTop.collision->size = pipeTop.size;
 	pipeTop.collision->position.y = pipeTop.position.y;
@@ -54,27 +56,33 @@ void Pipes::draw() {
 
 
 void Pipes::update() {
-	// movimentação dos pipes
-	float movimentX = GROUND_SPEED * gb::deltaTime;
+	 if (gb::currentStatus == status::Started) {
+		 const float movimentX = GROUND_SPEED * gb::deltaTime;
 
-	// movimenta os pipes para a esquerda
-	pipeBottom.position.x -= movimentX;
-	pipeTop.position.x = pipeBottom.position.x;
+		// movimenta para a esquerda
+		pipeBottom.position.x -= movimentX;
+		pipeTop.position.x -= movimentX;
+		scoreWall.position.x -= movimentX;
 
+		// atualiza a posição da hitbox no eixo X
+		pipeBottom.collision->position.x = pipeBottom.position.x;
+		pipeTop.collision->position.x = pipeTop.position.x;
+		scoreWall.collision->position.x = scoreWall.position.x;
+
+		// animação de coleta das moedas
+		if (coinCollected && coinVisible) {
+			coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
+			coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
+			if (coin.position.x <= 40.f && coin.position.y <= 50.f)
+				coinVisible = false;
+		}
+		else coin.position.x -= movimentX;
+		coin.collision->position.x = coin.position.x;
+	}
+		
 	// logica dos tubos laranja
 	if (orange) {
-		float movimentY = veloY * gb::deltaTime;
-
-		// movimenta os pipes no eixo Y
-		pipeBottom.position.y += movimentY;
-		pipeTop.position.y += movimentY;
-
-		if (!coinCollected) {
-			coin.position.y += movimentY;
-			coin.collision->position.y = coin.position.y;
-		}
-
-		// inverte o eixo Y dos pipes laranja se chegarem no limite de suas posições no eixo Y 
+		// inverte o eixo Y dos pipes laranja se chegarem no limite de suas posições
 		if (pipeBottom.position.y > PIPE_MAX_HEIGHT) {
 			pipeBottom.position.y = PIPE_MAX_HEIGHT;
 			veloY = -veloY;
@@ -84,38 +92,31 @@ void Pipes::update() {
 			veloY = -veloY;
 		}
 
-		// atualiza a posição da hitbox dos pipes no eixo Y
+		float movimentY = veloY * gb::deltaTime;
+
+		// movimenta os pipes no eixo Y
+		pipeBottom.position.y += movimentY;
+		pipeTop.position.y += movimentY;
+
+		// atualiza a posição e a hitbox da moeda no eixo Y
+		if (!coinCollected) {
+			coin.position.y += movimentY;
+			coin.collision->position.y = coin.position.y;
+		}
+
+
+		// atualiza a posição no eixo Y
+		scoreWall.position.y = pipeBottom.position.y - PIPE_SPACING;
+
+		// atualiza a posição da hitbox no eixo Y
 		pipeTop.collision->position.y = pipeTop.position.y;
 		pipeBottom.collision->position.y = pipeBottom.position.y;
-
-		//atualiza a posição e a hitbox do scoreWall no eixo Y
-		scoreWall.position.y = pipeBottom.position.y - PIPE_SPACING;
 		scoreWall.collision->position.y = scoreWall.position.y;
 	}
-
-	// atualiza a posição da hitbox dos pipes no eixo X
-	pipeBottom.collision->position.x = pipeBottom.position.x;
-	pipeTop.collision->position.x = pipeTop.position.x;
-
-	//atualiza a posição e a hitbox do scoreWall no eixo X
-	scoreWall.position.x -= movimentX;
-	scoreWall.collision->position.x = scoreWall.position.x;
-
-
-	// animação de coleta das moedas
-	if (coinCollected && coinVisible) {
-		coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
-		coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
-		if (coin.position.x <= 40.f && coin.position.y <= 50.f)
-			coinVisible = false;
-	}
-	else coin.position.x -= movimentX;
-	coin.collision->position.x = coin.position.x;
 
 	// anima o sprite da moeda se ela estiver visivel
 	if (coinVisible)
 		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
-
 
 
 	// colisões

@@ -8,7 +8,9 @@ Main_screen::Main_screen() :
 	gameTitle_image(351, 91, 89, 24),
 	start_button(460, 483, 52, 29),
 	brush_button(460, 427, 52, 29),
-	exit_button(460, 399, 52, 29)
+	exit_button(460, 399, 52, 29),
+	versionName_image(443, 92, 57, 5),
+	versionNumber_image(443, 98, 19, 7)
 {
 	id = ui::Main_screen;
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
@@ -24,6 +26,12 @@ Main_screen::Main_screen() :
 
 	exit_button.size = glm::ivec2(156, 100);
 	exit_button.position = glm::vec2(SCREEN_WIDTH /2 - exit_button.size.x /2, SCREEN_HEIGHT - 180);
+
+	versionName_image.size = glm::ivec2(57 * 4, 5 * 4);
+	versionName_image.position = glm::vec2(10.f, SCREEN_HEIGHT - versionName_image.size.y - 10.f);
+
+	versionNumber_image.size = glm::ivec2(19 * 4, 7 * 4);
+	versionNumber_image.position = glm::vec2(SCREEN_WIDTH - versionNumber_image.size.x - 10.f, SCREEN_HEIGHT - versionNumber_image.size.y - 10.f);
 }
 
 void Main_screen::start() {
@@ -36,7 +44,6 @@ void Main_screen::update() {
 
 	if (gb::clicked && start_button.hover) {
 		gb::changeCurrentInterface(ui::Start_screen);
-		gb::currentStatus = status::Starting;
 	}
 
 	else if (gb::clicked && brush_button.hover) {
@@ -52,4 +59,6 @@ void Main_screen::draw() {
 	gameTitle_image.draw();
 	brush_button.draw();
 	exit_button.draw();
+	versionName_image.draw();
+	versionNumber_image.draw();
 }

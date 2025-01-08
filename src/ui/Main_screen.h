@@ -13,6 +13,8 @@ public:
 	void start() override;
 
 	GameObject gameTitle_image;
+	GameObject versionName_image;
+	GameObject versionNumber_image;
 	Button brush_button;
 	Button start_button;
 	Button exit_button;
