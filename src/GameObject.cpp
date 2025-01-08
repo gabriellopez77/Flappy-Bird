@@ -4,6 +4,7 @@
 
 #include "Global.h"
 
+#include <iostream>
 Texture* GameObject::texture = nullptr;
 Shader* GameObject::shader = nullptr;
 
@@ -34,6 +35,10 @@ GameObject::GameObject(
 	setNormalizedTexUV(spriteX, spriteY, spriteWidth, spriteHeight);
 }
 GameObject::GameObject(bool tex) {};
+
+GameObject::~GameObject() {
+	delete collision;
+}
 
 void GameObject::create() {
 	glGenVertexArrays(1, &VAO);

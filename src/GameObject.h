@@ -19,6 +19,7 @@ public:
 	 spriteWidth e spriteHeight: tamanho X e Y do sprite (em pixels)
 	*/
 	GameObject(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
+	~GameObject();
 
 	// construtor de objetos sem texturas
 	GameObject(bool tex);

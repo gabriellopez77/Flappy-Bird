@@ -3,6 +3,7 @@
 #include "objects/Player.h"
 
 #include <random>
+#include <iostream>
 
 namespace gb {
 	// dt
@@ -38,7 +39,7 @@ namespace gb {
 		pl->matchCoinCount = 0;
 		pl->score = 0;
 		pl->position = PLAYER_START_POSITION;
-		pl->collision->position = glm::vec2(pl->position.x + 3.f, pl->position.y + 5.f);
+		pl->collision->position = glm::vec2(pl->position.x + 3.f, pl->position.y);
 		pl->velocity = 0.f;
 		pl->rotate = 0.f;
 		genPipesDelay = 0.f;

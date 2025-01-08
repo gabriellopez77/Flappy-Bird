@@ -9,28 +9,28 @@
 #include <vector>
 #include <unordered_map>
 
-constexpr int SCREEN_WIDTH = 800;
-constexpr int SCREEN_HEIGHT = 800;
+inline constexpr int SCREEN_WIDTH = 800;
+inline constexpr int SCREEN_HEIGHT = 800;
 
-constexpr int PIPE_SIZE_X = 90;
-constexpr int PIPE_SIZE_Y = 462;
-constexpr int PIPE_MIN_HEIGHT = 250;
-constexpr int PIPE_MAX_HEIGHT = SCREEN_HEIGHT - 160 - 40;
-constexpr float PIPES_GEN_DELAY = 1.2f;
-constexpr int PIPE_SPACING = 200;
+inline constexpr int PIPE_SIZE_X = 90;
+inline constexpr int PIPE_SIZE_Y = 462;
+inline constexpr int PIPE_MIN_HEIGHT = 250;
+inline constexpr int PIPE_MAX_HEIGHT = SCREEN_HEIGHT - 160 - 40;
+inline constexpr float PIPES_GEN_DELAY = 1.2f;
+inline constexpr int PIPE_SPACING = 180;
 
-constexpr int PLAYER_SIZE = 60;
-constexpr glm::vec2 PLAYER_START_POSITION(70.f, SCREEN_HEIGHT * 0.3f);
-constexpr int PLAYER_MAX_ROTATE = 90;
-constexpr int PLAYER_MIN_ROTATE = -10;
-constexpr int GRAVITY = 3000;
-constexpr glm::vec4 hitBoxColor = glm::vec4(0.5f, 0.2f, 0.2f, 0.3f);
+inline constexpr int PLAYER_SIZE = 60;
+inline constexpr glm::vec2 PLAYER_START_POSITION(200.f, 300.f);
+inline constexpr int PLAYER_MAX_ROTATE = 90;
+inline constexpr int PLAYER_MIN_ROTATE = -10;
+inline constexpr int GRAVITY = 3000;
+inline constexpr glm::vec4 hitBoxColor = glm::vec4(0.5f, 0.2f, 0.2f, 0.3f);
 
-constexpr int COIN_SIZE = 32;
+inline constexpr int COIN_SIZE = 32;
 
-constexpr float BACKGROUND_SPEED = 60.f;
-constexpr float BACKGROUND_ALPHA = 0.5f;
-constexpr float GROUND_SPEED = 300.f;
+inline constexpr float BACKGROUND_SPEED = 60.f;
+inline constexpr float BACKGROUND_ALPHA = 0.5f;
+inline constexpr float GROUND_SPEED = 300.f;
 
 enum class status : char {
 	notStarted,

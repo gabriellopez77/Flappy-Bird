@@ -32,9 +32,16 @@ int main() {
 	glfwInitHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	// impede o redimensionamento da janela
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
 	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.8", NULL, NULL);
+
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	// centraliza a janela no centro da tela
 	glfwSetWindowPos(window, mode->width / 2 - SCREEN_WIDTH /2, mode->height / 2 - SCREEN_HEIGHT /2);
+
 	gb::window = window;
 
 	// cria o contexto opengl atual
@@ -42,7 +49,7 @@ int main() {
 
 	// ativa o V-SYNC
 	glfwSwapInterval(1);
-
+	
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -95,7 +102,6 @@ int main() {
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	float startTime = 0.f;
 	float deathTime = 0.f;
 	bool piscar = true;
 	std::cout << std::boolalpha;
@@ -113,18 +119,19 @@ int main() {
 
 		inputs();
 
-		if (gb::currentScreen != ui::Pause_screen)
+		// atualiza se o jogo nao estiver pausado
+		if (gb::currentScreen != ui::Pause_screen) {
 			player.update();
-
-
-		if (gb::currentScreen != ui::Death_screen && gb::currentScreen != ui::Pause_screen)
 			scene.update();
+		}
+
 
 		if (gb::currentStatus == status::Dead && gb::currentScreen != ui::Death_screen) {
 			deathTime += gb::deltaTime;
 
 			if (white_blink.alpha >= 0.99f)
 				piscar = false;
+			float elevado = pow(white_blink.alpha, 2);
 
 			if (piscar)
 				white_blink.alpha = gb::lerp(white_blink.alpha, 1.f, gb::deltaTime * 30.f);
@@ -167,7 +174,7 @@ int main() {
 		if (gb::onScreen)
 			screen_background.draw();
 
-		//if (gb::currentStatus == status::Dead)
+		if (gb::currentStatus == status::Dead)
 			white_blink.draw();
 
 		gb::gui[gb::currentScreen]->update();

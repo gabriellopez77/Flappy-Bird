@@ -76,6 +76,9 @@ void Player::update() {
 		else if (rotate < PLAYER_MIN_ROTATE)
 			rotate = PLAYER_MIN_ROTATE;
 
+		if (position.y <= 0.f)
+			gb::currentStatus = status::Dead;
+
 	}
 }
 
