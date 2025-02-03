@@ -8,9 +8,8 @@ enum class action : char { JUMP, EMPTY };
 
 class Player : public GameObject {
 public:
-	Player(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
+	Player();
 
-	void draw() override;
 	void update() override;
 
 	void input(action action);
@@ -19,7 +18,6 @@ public:
 	bool checkCollision(const GameObject* obj) const;
 
 	float velocity = 0.f;
-	float rotate = 0.f;
 
 	// quantidade total de moedas
 	unsigned short coinCount = 0;
@@ -30,7 +28,7 @@ public:
 	// pontuação do jogador por partida
 	unsigned short score = 0;
 
-	//melhor pontuação do jogador
+	// melhor pontuação do jogador
 	unsigned short bestScore = 0;
 
 	// tipo de skin do jogador

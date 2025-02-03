@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../Dependencies/ml/Sprite.h"
 
 #include "../InterfaceObject.h"
 #include "../objects/Button.h"
 #include "../objects/Text.h"
 
-#include <vector>
+#include <array>
 
 class DressingRoom : public InterfaceObject {
 public:
@@ -14,18 +14,18 @@ public:
 
 	struct Item {
 		Item() :
-			birdSkin_image(0, 0, 0, 0),
-			buyItem_button(349,498,37,14),
-			coin_image(194, 258, 16, 16),
 			itemPrice_text(138, 323, 6, 7, 10),
 			position(0.f)
 		{
+			birdSkin_image.setNormalizedTex(0, 0, 0, 0);
+			buyItem_button.setNormalizedTex(349, 498, 37, 14);
+			coin_image.setNormalizedTex(194, 258, 16, 16);
 		}
 		glm::vec2 position;
 
-		GameObject birdSkin_image;
+		ml::Sprite birdSkin_image;
 		Button buyItem_button;
-		GameObject coin_image;
+		ml::Sprite coin_image;
 		Text itemPrice_text;
 		unsigned short price = 0;
 		unsigned char skinType = 0;
@@ -45,12 +45,12 @@ public:
 	void draw() override;
 	void start() override;
 
-	std::vector<Item*> item_list;
+	std::array<Item, 3> item_list;
 
-	GameObject coinCount_image;
+	ml::Sprite coinCount_image;
 	Text coinCount_text;
-	GameObject panel_image;
-	GameObject selectedItem_image;
+	ml::Sprite panel_image;
+	ml::Sprite selectedItem_image;
 	Button close_button;
 	Item* currentSelected = nullptr;
 };

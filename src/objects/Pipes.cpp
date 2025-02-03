@@ -3,19 +3,18 @@
 #include "../Global.h"
 #include "Player.h"
 
-Pipes::Pipes() :
-	pipeTop(56, 323, 26, 160),
-	coin(146, 258, 16, 16),
-	pipeBottom(84, 323, 26, 160),
-	scoreWall(466, 431, 1, 1)
-{
+Pipes::Pipes() {
 	// sorteia se o pipe será ou nao laranja
 	if (orange = gb::chance(34)) {
-		pipeTop.setNormalizedTexUV(0, 323, 26, 160);
-		pipeBottom.setNormalizedTexUV(28, 323, 26, 160);
+		pipeTop.setNormalizedTex(0, 323, 26, 160);
+		pipeBottom.setNormalizedTex(28, 323, 26, 160);
 		signal = gb::chance(50);
 		if (signal)
 			veloY = -veloY;
+	}
+	else {
+		pipeTop.setNormalizedTex(56, 323, 26, 160);
+		pipeBottom.setNormalizedTex(84, 323, 26, 160);
 	}
 
 	pipeBottom.collision = new Collision();
@@ -56,8 +55,9 @@ void Pipes::draw() {
 
 
 void Pipes::update() {
+	float movimentX = 0.f;
 	 if (gb::currentStatus == status::Started) {
-		 const float movimentX = GROUND_SPEED * gb::deltaTime;
+		movimentX = GROUND_SPEED* gb::deltaTime;
 
 		// movimenta para a esquerda
 		pipeBottom.position.x -= movimentX;
@@ -68,16 +68,6 @@ void Pipes::update() {
 		pipeBottom.collision->position.x = pipeBottom.position.x;
 		pipeTop.collision->position.x = pipeTop.position.x;
 		scoreWall.collision->position.x = scoreWall.position.x;
-
-		// animação de coleta das moedas
-		if (coinCollected && coinVisible) {
-			coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
-			coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
-			if (coin.position.x <= 40.f && coin.position.y <= 50.f)
-				coinVisible = false;
-		}
-		else coin.position.x -= movimentX;
-		coin.collision->position.x = coin.position.x;
 	}
 		
 	// logica dos tubos laranja
@@ -114,9 +104,20 @@ void Pipes::update() {
 		scoreWall.collision->position.y = scoreWall.position.y;
 	}
 
+
+	// animação de coleta das moedas
+	if (coinCollected && coinVisible) {
+		coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
+		coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
+		if (coin.position.x <= 40.f && coin.position.y <= 50.f)
+			coinVisible = false;
+	}
+	else coin.position.x -= movimentX;
+	coin.collision->position.x = coin.position.x;
+
 	// anima o sprite da moeda se ela estiver visivel
 	if (coinVisible)
-		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f);
+		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f, gb::deltaTime);
 
 
 	// colisões

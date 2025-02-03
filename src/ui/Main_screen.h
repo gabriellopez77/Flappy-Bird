@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../Dependencies/ml/Sprite.h"
 #include "../InterfaceObject.h"
 #include "../objects/Button.h"
 
@@ -12,9 +12,9 @@ public:
 	void draw() override;
 	void start() override;
 
-	GameObject gameTitle_image;
-	GameObject versionName_image;
-	GameObject versionNumber_image;
+	ml::Sprite gameTitle_image;
+	ml::Sprite versionName_image;
+	ml::Sprite versionNumber_image;
 	Button brush_button;
 	Button start_button;
 	Button exit_button;

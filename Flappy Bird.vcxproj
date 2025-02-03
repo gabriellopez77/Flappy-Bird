@@ -136,6 +136,10 @@
     <ClCompile Include="Dependencies\glad\glad.c" />
     <ClCompile Include="Dependencies\glm\detail\glm.cpp" />
     <ClCompile Include="Dependencies\glm\glm.cppm" />
+    <ClCompile Include="Dependencies\ml\MLGlobals.cpp" />
+    <ClCompile Include="Dependencies\ml\Shader.cpp" />
+    <ClCompile Include="Dependencies\ml\Slice.cpp" />
+    <ClCompile Include="Dependencies\ml\Sprite.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Global.cpp" />
@@ -144,8 +148,6 @@
     <ClCompile Include="src\objects\Scenery.cpp" />
     <ClCompile Include="src\objects\Text.cpp" />
     <ClCompile Include="src\objects\Player.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\ui\Death_screen.cpp" />
     <ClCompile Include="src\ui\DressingRoom.cpp" />
     <ClCompile Include="src\ui\Hud_screen.cpp" />
@@ -446,6 +448,10 @@
     <ClInclude Include="Dependencies\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\glm\vector_relational.hpp" />
     <ClInclude Include="Dependencies\KHR\khrplatform.h" />
+    <ClInclude Include="Dependencies\ml\MLGlobals.h" />
+    <ClInclude Include="Dependencies\ml\Shader.h" />
+    <ClInclude Include="Dependencies\ml\Slice.h" />
+    <ClInclude Include="Dependencies\ml\Sprite.h" />
     <ClInclude Include="Dependencies\stb\stb_image.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Global.h" />
@@ -455,8 +461,6 @@
     <ClInclude Include="src\objects\Scenery.h" />
     <ClInclude Include="src\objects\Text.h" />
     <ClInclude Include="src\objects\Player.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\ui\Death_screen.h" />
     <ClInclude Include="src\ui\DressingRoom.h" />
     <ClInclude Include="src\ui\Hud_screen.h" />

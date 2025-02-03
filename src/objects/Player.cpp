@@ -6,13 +6,7 @@
 #include "../Global.h"
 
 
-Player::Player(
-	int spriteX,
-	int spriteY,
-	int spriteWidth,
-	int spriteHeight
-) : GameObject(spriteX, spriteY, spriteWidth, spriteHeight)
-{
+Player::Player() {
 	collision = new Collision();
 
 	size = glm::ivec2(PLAYER_SIZE);
@@ -25,47 +19,14 @@ Player::Player(
 	gb::player = this;
 }
 
-void Player::draw() {
-	model = glm::mat4(1.f);
-	model = glm::translate(model, glm::vec3(position.x, position.y, 0.f));
-	model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
-
-	model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
-	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
-	model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
-
-	model = glm::scale(model, glm::vec3(size, 0.f));
-	glUniformMatrix4fv(shader->modelLoc, 1, GL_FALSE, &model[0][0]);
-
-	glUniform1i(glGetUniformLocation(shader->ID, "debugMode"), false);
-
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 8, texCoords);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	// desenha as hitbox
-	if (gb::debugMode) {
-		model = glm::mat4(1.f);
-		model = glm::translate(model, glm::vec3(collision->position, 0.f));
-		model = glm::scale(model, glm::vec3(collision->size, 0.f));
-
-		glUniformMatrix4fv(shader->modelLoc, 1, GL_FALSE, &model[0][0]);
-
-		glUniform1i(shader->debugModeLoc, true);
-		glUniform4fv(shader->hitBoxColorLoc, 1, &hitBoxColor[0]);
-
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
-}
-
 void Player::update() {
 	if (gb::currentStatus != status::Dead)
-		setAnimatedSprite(2 + (60 * skinType), 487, 20, 20, 3, 0.03f);
+		setAnimatedSprite(2 + (60 * skinType), 487, 20, 20, 3, 0.03f, gb::deltaTime);
 
 
 	if (gb::currentStatus == status::notStarted) {
 		position.y += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
 		rotate += cos(static_cast<float>(glfwGetTime()) * 4.f) * 40 * gb::deltaTime;
-		return;
 	}
 
 	else if (gb::currentStatus == status::Started || (gb::currentStatus == status::Dead && !groundCollided)) {

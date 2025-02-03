@@ -1,12 +1,10 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../Dependencies/ml/Sprite.h"
 
-class Button : public GameObject {
+class Button : public ml::Sprite {
 public:
-	Button(int spriteX, int spriteY, int spriteWidth, int spriteHeight);
-
-	void update() override;
+	void update();
 	bool checkMouseClick(double mouseX, double mouseY) const;
 
 	bool hover = false;

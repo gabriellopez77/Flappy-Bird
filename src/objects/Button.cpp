@@ -4,16 +4,7 @@
 
 #include "../Global.h"
 
-Button::Button(
-	int spriteX,
-	int spriteY,
-	int spriteWidth,
-	int spriteHeight) :
-	GameObject(spriteX, spriteY, spriteWidth, spriteHeight)
-{
-
-}
-inline void Button::update() {
+void Button::update() {
 	if (enabled) hover = checkMouseClick(gb::mousePosX, gb::mousePosY);
 	else hover = false;
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../Dependencies/ml/Sprite.h"
 
 #include <string>
 
-class Text : public GameObject {
+class Text : public ml::Sprite {
 public:
-	Text(int spriteX, int spriteY, int spriteWidth, int spriteHeight, char oneSpacing);
+	Text(int posX, int posY, int width, int height, char oneSpacing);
 
 	void draw() override;
 

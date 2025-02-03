@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../Dependencies/ml/Sprite.h"
 #include "../objects/Text.h"
 #include "../objects/Button.h"
 #include "../InterfaceObject.h"
@@ -13,8 +13,8 @@ public:
 	void draw() override;
 	void start() override;
 
-	GameObject gameOver_image;
-	GameObject panel_image;
+	ml::Sprite gameOver_image;
+	ml::Sprite panel_image;
 	Text playerBestScore_text;
 	Text playerScore_text;
 	Text coinCount_text;

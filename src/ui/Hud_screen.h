@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../../Dependencies/ml/Sprite.h"
 #include "../InterfaceObject.h"
-#include "../GameObject.h"
 #include "../objects/Text.h"
 #include "../objects/Button.h"
 
@@ -13,7 +13,7 @@ public:
 	void draw() override;
 	void start() override;
 
-	GameObject coin_image;
+	ml::Sprite coin_image;
 	Button pause_button;
 	Text coinCount_text;
 	Text score_text;

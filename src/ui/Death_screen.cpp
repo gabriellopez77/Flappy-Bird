@@ -6,20 +6,18 @@
 #include <iostream>
 
 Death_screen::Death_screen() :
-	gameOver_image(395, 59, 96, 21),
-	panel_image(3, 259, 113, 57),
 	playerBestScore_text(138, 323, 6, 7, 10),
 	playerScore_text(138, 323, 6, 7, 10),
-	coinCount_text(138, 323, 6, 7, 10),
-	respawn_button(460, 483, 52, 29),
-	house_button(460, 455, 52, 29)
+	coinCount_text(138, 323, 6, 7, 10)
 {
 	id = ui::Death_screen;
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
+	gameOver_image.setNormalizedTex(395, 59, 96, 21);
 	gameOver_image.size = glm::ivec2(384, 100);
 	gameOver_image.position = glm::ivec2((SCREEN_WIDTH / 2) - (gameOver_image.size.x / 2), 50);
 
+	panel_image.setNormalizedTex(3, 259, 113, 57);
 	panel_image.size = glm::ivec2(452, 228);
 	panel_image.position = glm::vec2(SCREEN_WIDTH /2 - panel_image.size.x /2, 220);
 	float panelX = panel_image.position.x;
@@ -34,9 +32,11 @@ Death_screen::Death_screen() :
 	coinCount_text.size = glm::ivec2(30, 35);
 	coinCount_text.position = glm::vec2(panelX + 340, panelY + 100);
 
+	respawn_button.setNormalizedTex(460, 483, 52, 29);
 	respawn_button.size = glm::ivec2(156, 100);
 	respawn_button.position = glm::ivec2(panelX + 50, panelY + panel_image.size.y + 30);
 
+	house_button.setNormalizedTex(460, 455, 52, 29);
 	house_button.size = glm::vec2(156, 100);
 	house_button.position = glm::ivec2(panelX + panel_image.size.x - house_button.size.x - 50, panelY + panel_image.size.y + 30);
 }
@@ -62,6 +62,7 @@ void Death_screen::update() {
 	if (gb::clicked && respawn_button.hover) {
 		gb::playerKill();
 		gb::changeCurrentInterface(ui::Start_screen);
+		gb::currentStatus = status::notStarted;
 	}
 
 	if (gb::clicked && house_button.hover) {

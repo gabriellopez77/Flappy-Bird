@@ -1,10 +1,9 @@
 #include "../Dependencies/glad/glad.h"
 #include "../Dependencies/glfw/glfw3.h"
+#include "../Dependencies/glm/gtc/matrix_transform.hpp"
 
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "Shader.h"
-#include "Texture.h"
 #include "GameObject.h"
 #include "Global.h"
 #include "objects/Player.h"
@@ -21,7 +20,6 @@
 
 #include <iostream>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
 void inputs();
@@ -55,32 +53,28 @@ int main() {
 
 	// definiçoes do opengl
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	glCullFace(GL_FRONT);
 	glFrontFace(GL_CW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// GLFW callbacks
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetMouseButtonCallback(window, mouse_click_callback);
 	glfwSetCursorPosCallback(window, mouse_move_callback);
 
-	GameObject::shader = new Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-	GameObject::shader->use();
-
-	GameObject::texture = new Texture("assets/textures/sprites.png", GL_RGBA);
-	GameObject::texture->use();
-	GameObject::create();
+	ml::Sprite::init("assets/sprites.png");
+	GameObject::debugShader = ml::Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
 	// reserva o espaço dos pipes
 	gb::pipes.reserve(5);
 
-	GameObject white_blink(292, 224, 1, 1);
+	GameObject white_blink;
 	white_blink.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	white_blink.color = glm::vec3(1.f, 1.f, 1.f);
 	white_blink.alpha = 0.f;
 
 	// player
-	Player player = Player(2, 487, 20,20);
+	Player player;
 
 	// background
 	Scenery scene;
@@ -94,22 +88,25 @@ int main() {
 	Death_screen death_screen;
 
 	// fundo preto das interfaces
-	GameObject screen_background(292, 206, 1, 1);
+	GameObject screen_background;
 	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = BACKGROUND_ALPHA;
 
 	glClearColor(0.f, 0.f, 0.f, 0.f);
-	framebuffer_size_callback(window, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glm::mat4 projection = glm::ortho(0.0f, 800.f, 800.f, 0.f, -1.0f, 1.f);
+	glUniformMatrix4fv(glGetUniformLocation(ml::Sprite::shader.id, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	float deathTime = 0.f;
 	bool piscar = true;
-	std::cout << std::boolalpha;
 
 	gb::changeCurrentInterface(ui::Main_screen);
+
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// define o ponteiro do mouse
+		// redefine o ponteiro do mouse
 		gb::cursorState = glfwCreateStandardCursor(GLFW_CENTER_CURSOR);
 
 		// delta time
@@ -193,15 +190,6 @@ void inputs() {
 		}
 	}
 	else pressed = false;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int heigth) {
-	glViewport(0.f, 0.f, static_cast<int>(width), static_cast<int>(heigth));
-	gb::windowX = width;
-	gb::windowY = heigth;
-
-	glm::mat4 projection = glm::ortho(0.0f, (float)gb::windowX, (float)gb::windowY, 0.f, -1.0f, 1.f);
-	glUniformMatrix4fv(GameObject::shader->projectionLoc, 1, GL_FALSE, &projection[0][0]);
 }
 
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos) {
