@@ -3,7 +3,23 @@
 #include "../Global.h"
 #include "Player.h"
 
+#include <iostream>
+
 Pipes Pipes::pipes[3];
+
+Pipes::Pipes() {
+	pipeBottom.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
+	pipeBottom.collision.size = pipeBottom.size;
+
+	pipeTop.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
+	pipeTop.collision.size = pipeTop.size;
+
+	coin.size = glm::vec2(COIN_SIZE);
+	coin.collision.size = coin.size;
+
+	scoreWall.size = glm::vec2(30, PIPE_SPACING_HEIGHT);
+	scoreWall.collision.size = glm::vec2(30.f, PIPE_SPACING_HEIGHT);
+}
 
 void Pipes::draw() {
 	pipeTop.draw();
@@ -63,26 +79,7 @@ void Pipes::update() {
 		scoreWall.collision.position.y = scoreWall.position.y;
 	}
 
-
-	// animação de coleta das moedas
-	if (coinCollected && coinVisible) {
-		coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
-		coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
-		if (coin.position.x <= 40.f && coin.position.y <= 50.f) {
-			coinVisible = false;
-			gb::matchCoinCount++;
-		}
-	}
-	else coin.position.x -= movimentX;
-	coin.collision.position.x = coin.position.x;
-
-	// anima o sprite da moeda se ela estiver visivel
-	if (coinVisible)
-		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f, gb::deltaTime);
-
-
-	// colisões
-
+	// colisoes
 	static Player* pl = static_cast<Player*>(gb::player);
 
 	// se a moeda nao tiver sido coletada, verifica se o jogador colidiu com ela
@@ -104,6 +101,23 @@ void Pipes::update() {
 	if (pl->checkCollision(&pipeBottom) || pl->checkCollision(&pipeTop)) {
 		gb::currentStatus = status::Dead;
 	}
+
+
+	// animação de coleta das moedas
+	if (coinCollected && coinVisible) {
+		coin.position.x = gb::lerp(coin.position.x, 30.f, 10.f * gb::deltaTime);
+		coin.position.y = gb::lerp(coin.position.y, 40.f, 10.f * gb::deltaTime);
+		if (coin.position.x <= 40.f && coin.position.y <= 50.f) {
+			coinVisible = false;
+			gb::matchCoinCount++;
+		}
+	}
+	else coin.position.x -= movimentX;
+	coin.collision.position.x = coin.position.x;
+
+	// anima o sprite da moeda se ela estiver visivel
+	if (coinVisible)
+		coin.setAnimatedSprite(146, 258, 16, 16, 6, 0.2f, gb::deltaTime);
 }
 
 void Pipes::resetPipes() {
@@ -126,28 +140,20 @@ void Pipes::resetPipes() {
 			p.pipeBottom.setNormalizedTex(84, 323, 26, 160);
 		}
 
-		p.pipeBottom.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 		p.pipeBottom.position.x = SCREEN_WIDTH;
 		p.pipeBottom.position.y = gb::randNum(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT);
-		p.pipeBottom.collision.size = p.pipeBottom.size;
 		p.pipeBottom.collision.position = p.pipeBottom.position;
 
-		p.pipeTop.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 		p.pipeTop.position.x = SCREEN_WIDTH;
 		p.pipeTop.position.y = (p.pipeBottom.position.y - PIPE_SPACING_HEIGHT) - PIPE_SIZE_Y;
-		p.pipeTop.collision.size = p.pipeTop.size;
 		p.pipeTop.collision.position = p.pipeTop.position;
 
-		p.coin.size = glm::vec2(COIN_SIZE);
 		p.coin.position.x = p.pipeBottom.position.x + COIN_SIZE;
 		p.coin.position.y = gb::randNum(p.pipeTop.position.y + PIPE_SIZE_Y, p.pipeBottom.position.y - COIN_SIZE);
-		p.coin.collision.size = p.coin.size;
 		p.coin.collision.position = p.coin.position;
 
-		p.scoreWall.size = glm::vec2(30, PIPE_SPACING_HEIGHT);
 		p.scoreWall.position.x = p.pipeBottom.position.x + p.pipeBottom.size.x - p.scoreWall.size.x;
 		p.scoreWall.position.y = p.pipeBottom.position.y - PIPE_SPACING_HEIGHT;
-		p.scoreWall.collision.size = glm::vec2(30.f, PIPE_SPACING_HEIGHT);
 		p.scoreWall.collision.position = p.scoreWall.position;
 
 
@@ -176,28 +182,20 @@ void Pipes::reset() {
 		pipeBottom.setNormalizedTex(84, 323, 26, 160);
 	}
 
-	pipeBottom.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 	pipeBottom.position.x = SCREEN_WIDTH;
 	pipeBottom.position.y = gb::randNum(PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT);
-	pipeBottom.collision.size = pipeBottom.size;
 	pipeBottom.collision.position = pipeBottom.position;
 
-	pipeTop.size = glm::vec2(PIPE_SIZE_X, PIPE_SIZE_Y);
 	pipeTop.position.x = SCREEN_WIDTH;
 	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING_HEIGHT) - PIPE_SIZE_Y;
-	pipeTop.collision.size = pipeTop.size;
 	pipeTop.collision.position = pipeTop.position;
 
-	coin.size = glm::vec2(COIN_SIZE);
 	coin.position.x = pipeBottom.position.x + COIN_SIZE;
 	coin.position.y = gb::randNum(pipeTop.position.y + PIPE_SIZE_Y, pipeBottom.position.y - COIN_SIZE);
-	coin.collision.size = coin.size;
 	coin.collision.position = coin.position;
 
-	scoreWall.size = glm::vec2(30, PIPE_SPACING_HEIGHT);
 	scoreWall.position.x = pipeBottom.position.x + pipeBottom.size.x - scoreWall.size.x;
 	scoreWall.position.y = pipeBottom.position.y - PIPE_SPACING_HEIGHT;
-	scoreWall.collision.size = glm::vec2(30.f, PIPE_SPACING_HEIGHT);
 	scoreWall.collision.position = scoreWall.position;
 }
 

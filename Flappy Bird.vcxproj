@@ -149,7 +149,7 @@
     <ClCompile Include="src\objects\Text.cpp" />
     <ClCompile Include="src\objects\Player.cpp" />
     <ClCompile Include="src\ui\Death_screen.cpp" />
-    <ClCompile Include="src\ui\DressingRoom.cpp" />
+    <ClCompile Include="src\ui\DressingRoom_screen.cpp" />
     <ClCompile Include="src\ui\Hud_screen.cpp" />
     <ClCompile Include="src\ui\Main_screen.cpp" />
     <ClCompile Include="src\ui\Pause_screen.cpp" />
@@ -462,7 +462,7 @@
     <ClInclude Include="src\objects\Text.h" />
     <ClInclude Include="src\objects\Player.h" />
     <ClInclude Include="src\ui\Death_screen.h" />
-    <ClInclude Include="src\ui\DressingRoom.h" />
+    <ClInclude Include="src\ui\DressingRoom_screen.h" />
     <ClInclude Include="src\ui\Hud_screen.h" />
     <ClInclude Include="src\ui\Main_screen.h" />
     <ClInclude Include="src\ui\Pause_screen.h" />

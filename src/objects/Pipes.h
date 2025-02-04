@@ -6,6 +6,8 @@
 
 class Pipes {
 public:
+	Pipes();
+
 	static void updatePipes();
 	static void drawPipes();
 	static void resetPipes();

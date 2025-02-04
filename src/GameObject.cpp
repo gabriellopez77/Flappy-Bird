@@ -25,17 +25,3 @@ void GameObject::draw() {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 }
-
-void GameObject::setAnimatedSprite(int posX, int posY, int width, int height, int count, float delay, float dt) {
-	animationDelayTime += dt;
-	useTexture = true;
-
-	if (animationDelayTime >= delay) {
-		animationDelayTime = 0.f;
-		setNormalizedTex(posX += (width * animationStage), posY, width, height);
-		animationStage++;
-
-		if (animationStage == count)
-			animationStage = 0;
-	}
-}

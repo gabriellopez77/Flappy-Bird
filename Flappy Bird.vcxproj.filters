@@ -54,7 +54,7 @@
     <ClCompile Include="src\objects\Scenery.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\DressingRoom.cpp">
+    <ClCompile Include="src\ui\DressingRoom_screen.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\Hud_screen.cpp">
@@ -986,7 +986,7 @@
     <ClInclude Include="src\objects\Scenery.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\DressingRoom.h">
+    <ClInclude Include="src\ui\DressingRoom_screen.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="src\InterfaceObject.h">

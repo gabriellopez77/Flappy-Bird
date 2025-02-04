@@ -1,11 +1,8 @@
-
-
 #include "../Dependencies/glad/glad.h"
 #include "../Dependencies/glfw/glfw3.h"
 #include "../Dependencies/glm/gtc/matrix_transform.hpp"
 
 
-#define STB_IMAGE_IMPLEMENTATION
 #include "GameObject.h"
 #include "Global.h"
 #include "objects/Player.h"
@@ -15,7 +12,7 @@
 #include "objects/Scenery.h"
 #include "ui/Death_screen.h"
 #include "ui/Main_screen.h"
-#include "ui/DressingRoom.h"
+#include "ui/DressingRoom_screen.h"
 #include "ui/Hud_screen.h"
 #include "ui/Pause_screen.h"
 #include "ui/Start_screen.h"
@@ -75,6 +72,9 @@ int main() {
 	// background
 	Scenery scene;
 	
+	// inicializa os pipes
+	Pipes::resetPipes();
+
 	// interfaces
 	Main_screen main_screen;
 	Start_screen start_screen;
@@ -88,8 +88,6 @@ int main() {
 	screen_background.size = glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = BACKGROUND_ALPHA;
 
-	// inicializa os pipes
-	Pipes::resetPipes();
 
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
