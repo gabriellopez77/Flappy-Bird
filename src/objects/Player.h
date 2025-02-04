@@ -22,12 +22,6 @@ public:
 	// quantidade total de moedas
 	unsigned short coinCount = 0;
 
-	//quantidade de moedas por partidas
-	unsigned short matchCoinCount = 0;
-
-	// pontuação do jogador por partida
-	unsigned short score = 0;
-
 	// melhor pontuação do jogador
 	unsigned short bestScore = 0;
 

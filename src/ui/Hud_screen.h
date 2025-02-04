@@ -17,4 +17,13 @@ public:
 	Button pause_button;
 	Text coinCount_text;
 	Text score_text;
+
+	// coin collect animation
+
+	float times = 0.f;
+	bool diminuir = false;
+	bool animation = false;
+private:
+	int lastCoinCount = 0;
+	int lastScore = 0;
 };

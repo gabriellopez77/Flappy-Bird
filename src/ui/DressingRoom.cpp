@@ -9,21 +9,21 @@ DressingRoom::DressingRoom() :
 	id = ui::DressingRoom_screen;
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
-	panel_image.size = glm::ivec2(452, 228);
+	panel_image.size = glm::vec2(452, 228);
 	panel_image.position = glm::vec2(SCREEN_WIDTH /2 - panel_image.size.x /2, SCREEN_HEIGHT /2 - panel_image.size.y /2);
 	panel_image.setNormalizedTex(235, 455, 113, 57);
 
 	float panelX = panel_image.position.x;
 	float panelY = panel_image.position.y;
 
-	coinCount_image.size = glm::ivec2(64);
+	coinCount_image.size = glm::vec2(64);
 	coinCount_image.position = glm::vec2(panelX + panel_image.size.x /2 - coinCount_image.size.x, panelY - 80);
 	coinCount_image.setNormalizedTex(194, 258, 16, 16);
 
-	coinCount_text.size = glm::ivec2(30, 35);
+	coinCount_text.size = glm::vec2(30, 35);
 	coinCount_text.position = glm::vec2(coinCount_image.position.x + coinCount_image.size.x + 20 , panelY - 60);
 
-	close_button.size = glm::ivec2(156, 100);
+	close_button.size = glm::vec2(156, 100);
 	close_button.position = glm::vec2(SCREEN_WIDTH /2 - close_button.size.x /2, SCREEN_HEIGHT - 180);
 	close_button.setNormalizedTex(460, 483, 52, 29);
 
@@ -31,29 +31,29 @@ DressingRoom::DressingRoom() :
 	item1.position = glm::vec2(panelX + 36, panelY + 164);
 	item1.birdSkin_image.setNormalizedTex(2, 487, 20, 20);
 	item1.purchased = true;
-	item1.itemPrice_text.size = glm::ivec2(24, 28);
+	item1.itemPrice_text.size = glm::vec2(24, 28);
 	item1.itemPrice_text.position = glm::vec2(item1.position.x + 32 + 5, item1.position.y - 38);
 	item1.itemPrice_text.text = std::to_string(item1.price);
-	item1.buyItem_button.size = glm::ivec2(111, 42);
+	item1.buyItem_button.size = glm::vec2(111, 42);
 	item1.buyItem_button.position = glm::vec2(item1.position.x, item1.position.y);
-	item1.birdSkin_image.size = glm::ivec2(PLAYER_SIZE);
+	item1.birdSkin_image.size = glm::vec2(PLAYER_SIZE);
 	item1.birdSkin_image.position = glm::vec2(item1.buyItem_button.position.x + item1.buyItem_button.size.x /2 - PLAYER_SIZE /2, item1.position.y - 100);
 
 	Item& item2 = item_list[1];
 	item2.position = glm::vec2(item1.position.x + 131, item1.position.y);
 	item2.birdSkin_image.setNormalizedTex(62, 487, 20, 20);
 	item2.skinType = 1;
-	item2.coin_image.size = glm::ivec2(32);
+	item2.coin_image.size = glm::vec2(32);
 	item2.coin_image.position = glm::vec2(item2.position.x, item2.position.y - 40);
 	item2.price = 50;
-	item2.itemPrice_text.size = glm::ivec2(24, 28);
+	item2.itemPrice_text.size = glm::vec2(24, 28);
 	item2.itemPrice_text.position = glm::vec2(item2.position.x + 32 + 5, item2.position.y - 38);
 	item2.itemPrice_text.text = std::to_string(item2.price);
-	item2.buyItem_button.size = glm::ivec2(111, 42);
+	item2.buyItem_button.size = glm::vec2(111, 42);
 	item2.buyItem_button.position = glm::vec2(item2.position.x, item2.position.y);
 	item2.buyItem_button.enabled = false;
 	item2.buyItem_button.alpha = 0.6f;
-	item2.birdSkin_image.size = glm::ivec2(PLAYER_SIZE);
+	item2.birdSkin_image.size = glm::vec2(PLAYER_SIZE);
 	item2.birdSkin_image.position = glm::vec2(item2.buyItem_button.position.x + item2.buyItem_button.size.x /2 - PLAYER_SIZE /2, item2.position.y - 100);
 	item2.birdSkin_image.alpha = 0.6f;
 
@@ -61,17 +61,17 @@ DressingRoom::DressingRoom() :
 	item3.position = glm::vec2(item2.position.x + 131, item2.position.y);
 	item3.birdSkin_image.setNormalizedTex(122, 487, 20, 20);
 	item3.skinType = 2;
-	item3.coin_image.size = glm::ivec2(32);
+	item3.coin_image.size = glm::vec2(32);
 	item3.coin_image.position = glm::vec2(item3.position.x, item3.position.y - 40);
 	item3.price = 100;
-	item3.itemPrice_text.size = glm::ivec2(24, 28);
+	item3.itemPrice_text.size = glm::vec2(24, 28);
 	item3.itemPrice_text.position = glm::vec2(item3.position.x + 32 + 5, item3.position.y - 38);
 	item3.itemPrice_text.text = std::to_string(item3.price);
-	item3.buyItem_button.size = glm::ivec2(111, 42);
+	item3.buyItem_button.size = glm::vec2(111, 42);
 	item3.buyItem_button.position = glm::vec2(item3.position.x, item3.position.y);
 	item3.buyItem_button.enabled = false;
 	item3.buyItem_button.alpha = 0.6f;
-	item3.birdSkin_image.size = glm::ivec2(PLAYER_SIZE);
+	item3.birdSkin_image.size = glm::vec2(PLAYER_SIZE);
 	item3.birdSkin_image.position = glm::vec2(item3.buyItem_button.position.x + item3.buyItem_button.size.x /2 - PLAYER_SIZE /2, item3.position.y - 100);
 	item3.birdSkin_image.alpha = 0.6f;
 
@@ -130,7 +130,7 @@ void DressingRoom::update() {
 			obj.buyItem_button.setNormalizedTex(349, 483, 37, 14);
 			currentSelected = &obj;
 			pl->skinType = currentSelected->skinType;
-			selectedItem_image.position = glm::ivec2(currentSelected->buyItem_button.position.x + currentSelected->buyItem_button.size.x / 2 - 14, 310);
+			selectedItem_image.position = glm::vec2(currentSelected->buyItem_button.position.x + currentSelected->buyItem_button.size.x / 2 - 14, 310);
 		}
 	}
 }

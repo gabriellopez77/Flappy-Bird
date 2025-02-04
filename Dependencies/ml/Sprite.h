@@ -22,11 +22,11 @@ namespace ml {
 
 		// definicoes do sprite
 		static ml::Shader shader;
+		ml::Slice* slice = nullptr;
 		glm::vec2 position;
 		glm::vec3 color;
 		glm::vec2 size;
 		float rotate = 0.f;
-		ml::Slice* slice = nullptr;
 		float alpha = 1.f;
 		float texCoords[8] = { 0 };
 

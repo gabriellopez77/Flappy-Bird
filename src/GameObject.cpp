@@ -7,28 +7,23 @@
 
 #include <iostream>
 
-ml::Shader GameObject::debugShader(nullptr, nullptr);
-
-GameObject::~GameObject() {
-	delete collision;
-}
 
 void GameObject::draw() {
 	Sprite::draw();
 
-	//glUseProgram(debugShader.id);
-	//// desenha as hitbox
-	//if (gb::debugMode && collision) {
-	//	model = glm::mat4(1.f);
-	//	model = glm::translate(model, glm::vec3(collision->position, 0.f));
-	//	model = glm::scale(model, glm::vec3(collision->size, 0.f));
+	// desenha as hitbox
+	if (gb::debugMode && collision.position.x != -1) {
+		model = glm::mat4(1.f);
+		model = glm::translate(model, glm::vec3(collision.position, 0.f));
+		model = glm::scale(model, glm::vec3(collision.size, 0.f));
 
-	//	glUniformMatrix4fv(shader.modelLoc, 1, GL_FALSE, &model[0][0]);
+		glUniformMatrix4fv(shader.modelLoc, 1, GL_FALSE, &model[0][0]);
+		glUniform1i(shader.useTextureLoc, false);
+		glUniform1f(shader.alphaLoc, hitBoxColor.w);
+		glUniform3fv(shader.colorLoc, 1, &hitBoxColor[0]);
 
-	//	glUniform4fv(glGetUniformLocation(shader.id, "hitBoxColor"), 1, &hitBoxColor[0]);
-
-	//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//}
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 }
 
 void GameObject::setAnimatedSprite(int posX, int posY, int width, int height, int count, float delay, float dt) {

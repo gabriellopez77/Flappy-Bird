@@ -1,3 +1,5 @@
+
+
 #include "../Dependencies/glad/glad.h"
 #include "../Dependencies/glfw/glfw3.h"
 #include "../Dependencies/glm/gtc/matrix_transform.hpp"
@@ -17,8 +19,6 @@
 #include "ui/Hud_screen.h"
 #include "ui/Pause_screen.h"
 #include "ui/Start_screen.h"
-
-#include <iostream>
 
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
@@ -63,13 +63,9 @@ int main() {
 	glfwSetCursorPosCallback(window, mouse_move_callback);
 
 	ml::Sprite::init("assets/sprites.png");
-	GameObject::debugShader = ml::Shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-
-	// reserva o espaço dos pipes
-	gb::pipes.reserve(5);
 
 	GameObject white_blink;
-	white_blink.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	white_blink.size = glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	white_blink.color = glm::vec3(1.f, 1.f, 1.f);
 	white_blink.alpha = 0.f;
 
@@ -89,13 +85,16 @@ int main() {
 
 	// fundo preto das interfaces
 	GameObject screen_background;
-	screen_background.size = glm::ivec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen_background.size = glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_background.alpha = BACKGROUND_ALPHA;
+
+	// inicializa os pipes
+	Pipes::resetPipes();
 
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
 	glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glm::mat4 projection = glm::ortho(0.0f, 800.f, 800.f, 0.f, -1.0f, 1.f);
+	glm::mat4 projection = glm::ortho(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.f, -1.0f, 1.f);
 	glUniformMatrix4fv(glGetUniformLocation(ml::Sprite::shader.id, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	float deathTime = 0.f;
@@ -123,16 +122,6 @@ int main() {
 
 		if (!gb::paused) {
 			Pipes::updatePipes();
-
-			if (gb::currentStatus == status::Started) {
-				// geração dos pipes
-				gb::genPipesDelay += gb::deltaTime;
-				if (gb::genPipesDelay >= PIPES_GEN_DELAY) {
-					gb::pipes.push_back(new Pipes());
-					gb::genPipesDelay = 0.f;
-				}
-			}
-
 
 			if (gb::currentStatus == status::Dead) {
 				deathTime += gb::deltaTime;
@@ -201,15 +190,6 @@ void mouse_click_callback(GLFWwindow* window, int button, int action, int mods) 
 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		gb::clicked = true;
-
-		if (gb::currentScreen == ui::Start_screen) {
-			pl->groundCollided = false;
-			pl->input(action::JUMP);
-			gb::currentStatus = status::Started;
-			gb::changeCurrentInterface(ui::Hud_screen);
-
-			gb::genPipesDelay = 0.f;
-		}
 
 		if (!gb::paused && !gb::onScreen && gb::currentStatus == status::Started)
 			pl->input(action::JUMP);

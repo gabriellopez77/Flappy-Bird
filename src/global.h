@@ -9,28 +9,28 @@
 #include <vector>
 #include <unordered_map>
 
-inline constexpr int SCREEN_WIDTH = 800;
-inline constexpr int SCREEN_HEIGHT = 800;
+constexpr float SCREEN_WIDTH = 800;
+constexpr float SCREEN_HEIGHT = 800;
 
-inline constexpr int PIPE_SIZE_X = 90;
-inline constexpr int PIPE_SIZE_Y = 462;
-inline constexpr int PIPE_MIN_HEIGHT = 250;
-inline constexpr int PIPE_MAX_HEIGHT = SCREEN_HEIGHT - 160 - 40;
-inline constexpr float PIPES_GEN_DELAY = 1.2f;
-inline constexpr int PIPE_SPACING = 180;
+constexpr int PIPE_SIZE_X = 90;
+constexpr int PIPE_SIZE_Y = 462;
+constexpr int PIPE_MIN_HEIGHT = 250;
+constexpr int PIPE_MAX_HEIGHT = SCREEN_HEIGHT - 160 - 40;
+constexpr float PIPE_SPACING_HEIGHT = 180.f;
+constexpr float PIPE_SPACING_WIDTH = 300.f;
 
-inline constexpr int PLAYER_SIZE = 60;
-inline constexpr glm::vec2 PLAYER_START_POSITION(200.f, 300.f);
-inline constexpr int PLAYER_MAX_ROTATE = 90;
-inline constexpr int PLAYER_MIN_ROTATE = -10;
-inline constexpr int GRAVITY = 3000;
-inline constexpr glm::vec4 hitBoxColor = glm::vec4(0.5f, 0.2f, 0.2f, 0.3f);
+constexpr int PLAYER_SIZE = 60;
+constexpr glm::vec2 PLAYER_START_POSITION(200.f, 300.f);
+constexpr int PLAYER_MAX_ROTATE = 90;
+constexpr int PLAYER_MIN_ROTATE = -10;
+constexpr int GRAVITY = 3000;
+constexpr glm::vec4 hitBoxColor(0.5f, 0.2f, 0.2f, 0.3f);
 
-inline constexpr int COIN_SIZE = 32;
+constexpr int COIN_SIZE = 32;
 
-inline constexpr float BACKGROUND_SPEED = 60.f;
-inline constexpr float BACKGROUND_ALPHA = 0.5f;
-inline constexpr float GROUND_SPEED = 300.f;
+constexpr float BACKGROUND_SPEED = 60.f;
+constexpr float BACKGROUND_ALPHA = 0.5f;
+constexpr float GROUND_SPEED = 300.f;
 
 enum class status : char {
 	notStarted,
@@ -61,20 +61,17 @@ namespace gb {
 	extern bool paused;
 	extern bool onScreen;
 	extern ui currentScreen;
+	extern std::unordered_map<ui, InterfaceObject*> gui;
 
 	// player
 	extern void* player;
+	extern int matchCoinCount;
+	extern int matchScore;
 	extern void playerKill();
-
-
-	// objects
-	extern std::vector<Pipes*> pipes;
-	extern std::unordered_map<ui, InterfaceObject*> gui;
 
 
 	// outros
 	extern status currentStatus;
-	extern float genPipesDelay;
 	extern bool debugMode;
 
 	// muda a interface ativa no momento e chama a funçao 'start'
@@ -97,4 +94,6 @@ namespace gb {
 
 	*/
 	extern float lerp(float a, float b, float t);
+
+	extern float interpolation(float start, float end, float duration, float startTime);
 }

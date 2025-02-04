@@ -7,14 +7,12 @@
 
 
 Player::Player() {
-	collision = new Collision();
-
-	size = glm::ivec2(PLAYER_SIZE);
+	size = glm::vec2(PLAYER_SIZE);
 	position = PLAYER_START_POSITION;
 
-	collision->size = glm::vec2(50, 40);
-	collision->position.x = position.x + 3.f;
-	collision->position.y = position.y + 5.f;
+	collision.size = glm::vec2(50, 40);
+	collision.position.x = position.x + 3.f;
+	collision.position.y = position.y + 5.f;
 
 	gb::player = this;
 }
@@ -35,13 +33,13 @@ void Player::update() {
 		position.y += velocity * gb::deltaTime;
 
 		// verifica se o jogador de bateu no "teto"
-		if (collision->position.y <= 0.f) {
+		if (collision.position.y <= 0.f) {
 			position.y = 0.f;
 			gb::currentStatus = status::Dead;
 		}
 	
 		// atualiza a hitbox do jogador
-		collision->position.y = position.y + 5.f;
+		collision.position.y = position.y + 5.f;
 
 		// rotaçao do player
 		rotate += glm::normalize(glm::vec2(velocity)).y * 220.f * gb::deltaTime;
@@ -53,8 +51,8 @@ void Player::update() {
 }
 
 bool Player::checkCollision(const GameObject* obj) const {
-	return (collision->position.x + collision->size.x >= obj->collision->position.x && collision->position.x <= obj->collision->position.x + obj->collision->size.x &&
-			collision->position.y + collision->size.y >= obj->collision->position.y && collision->position.y <= obj->collision->position.y + obj->collision->size.y);
+	return (collision.position.x + collision.size.x >= obj->collision.position.x && collision.position.x <= obj->collision.position.x + obj->collision.size.x &&
+			collision.position.y + collision.size.y >= obj->collision.position.y && collision.position.y <= obj->collision.position.y + obj->collision.size.y);
 }
 
 void Player::input(action action) {
