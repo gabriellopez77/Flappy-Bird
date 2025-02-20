@@ -3,8 +3,6 @@
 #include "../global.h"
 #include "../objects/Player.h"
 
-#include <iostream>
-
 Death_screen::Death_screen() :
 	playerBestScore_text(138, 323, 6, 7, 10),
 	playerScore_text(138, 323, 6, 7, 10),
@@ -13,32 +11,33 @@ Death_screen::Death_screen() :
 	id = ui::Death_screen;
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
-	gameOver_image.setNormalizedTex(395, 59, 96, 21);
 	gameOver_image.size = glm::vec2(384, 100);
-	gameOver_image.position = glm::vec2((SCREEN_WIDTH / 2) - (gameOver_image.size.x / 2), 50);
+	gameOver_image.position = glm::vec2(SCREEN_SIZE_HALF.x, 100.f);
+	gameOver_image.setNormalizedTex(395, 59, 96, 21);
 
-	panel_image.setNormalizedTex(3, 259, 113, 57);
 	panel_image.size = glm::vec2(452, 228);
-	panel_image.position = glm::vec2(SCREEN_WIDTH /2 - panel_image.size.x /2, 220);
+	panel_image.position = glm::vec2(SCREEN_SIZE_HALF.x, 320);
+	panel_image.setNormalizedTex(3, 259, 113, 57);
+
 	float panelX = panel_image.position.x;
 	float panelY = panel_image.position.y;
 
 	playerBestScore_text.size = glm::vec2(30, 35);
-	playerBestScore_text.position = glm::vec2(panelX + 90, panelY + 100);
+	playerBestScore_text.position = glm::vec2(panelX - 130.f, panelY + 10.f);
 
 	playerScore_text.size = glm::vec2(30, 35);
-	playerScore_text.position = glm::vec2(panelX + 220, panelY + 100);
+	playerScore_text.position = glm::vec2(panelX, panelY + 10.f);
 
 	coinCount_text.size = glm::vec2(30, 35);
-	coinCount_text.position = glm::vec2(panelX + 340, panelY + 100);
+	coinCount_text.position = glm::vec2(panelX + 130.f, panelY + 10.f);
 
-	respawn_button.setNormalizedTex(460, 483, 52, 29);
 	respawn_button.size = glm::vec2(156, 100);
-	respawn_button.position = glm::vec2(panelX + 50, panelY + panel_image.size.y + 30);
+	respawn_button.position = glm::vec2(SCREEN_SIZE_HALF.x - 88.f, SCREEN_SIZE.y - 250);
+	respawn_button.setNormalizedTex(460, 483, 52, 29);
 
-	house_button.setNormalizedTex(460, 455, 52, 29);
 	house_button.size = glm::vec2(156, 100);
-	house_button.position = glm::vec2(panelX + panel_image.size.x - house_button.size.x - 50, panelY + panel_image.size.y + 30);
+	house_button.position = glm::vec2(SCREEN_SIZE_HALF.x + 88.f, SCREEN_SIZE.y - 250);
+	house_button.setNormalizedTex(460, 455, 52, 29);
 }
 
 void Death_screen::start() {

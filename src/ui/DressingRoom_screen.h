@@ -15,9 +15,8 @@ public:
 	struct Item {
 		Item() :
 			itemPrice_text(138, 323, 6, 7, 10),
-			position(0.f)
-		{
-			birdSkin_image.setNormalizedTex(0, 0, 0, 0);
+			position(0.f) {
+
 			buyItem_button.setNormalizedTex(349, 498, 37, 14);
 			coin_image.setNormalizedTex(194, 258, 16, 16);
 		}

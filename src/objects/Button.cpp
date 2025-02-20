@@ -5,13 +5,15 @@
 #include "../Global.h"
 
 void Button::update() {
-	if (enabled) hover = checkMouseClick(gb::mousePosX, gb::mousePosY);
-	else hover = false;
+	if (enabled)
+		hover = checkMouseClick(gb::mousePosX, gb::mousePosY);
+	else
+		hover = false;
 
 	if (hover) gb::cursorState = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
 }
 
-bool Button::checkMouseClick(const double mouseX, const double mouseY) const {
-	return	mouseX >= position.x && mouseX <= position.x + size.x &&
-			mouseY >= position.y && mouseY <= position.y + size.y;
+bool Button::checkMouseClick(float mouseX, float mouseY) const {
+	return	mouseX >= position.x - size.x / 2.f && mouseX <= position.x + size.x / 2.f &&
+			mouseY >= position.y - size.y / 2.f && mouseY <= position.y + size.y / 2.f;
 }

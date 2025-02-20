@@ -1,12 +1,9 @@
 #include "GameObject.h"
 
+#include "../Dependencies/glm/gtc/matrix_transform.hpp"
 #include "../Dependencies/glad/glad.h"
 
 #include "Global.h"
-#include "../Dependencies/glm/gtc/matrix_transform.hpp"
-
-#include <iostream>
-
 
 void GameObject::draw() {
 	Sprite::draw();

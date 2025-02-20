@@ -30,6 +30,13 @@ size(0.f)
 void ml::Sprite::init(const char* texturePath) {
 	ml::Slice::init();
 
+	// definicoes do opengl
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	shader = Shader("dependencies/ml/shaders/sprite_vert.glsl", "dependencies/ml/shaders/sprite_frag.glsl");
 	glUseProgram(shader.id);
 
@@ -105,6 +112,7 @@ void ml::Sprite::draw() {
 		bindVAO(slice->vao);
 
 		glUniform1i(shader.useTextureLoc, true);
+		glUniform1f(shader.alphaLoc, alpha);
 
 		// vertex
 		glBindBuffer(GL_ARRAY_BUFFER, slice->vbo);
@@ -119,12 +127,7 @@ void ml::Sprite::draw() {
 	else {
 		model = glm::mat4(1.f);
 		model = glm::translate(model, glm::vec3(position, 0.f));
-		model = glm::rotate(model, 0.f, glm::vec3(0.f, 0.f, 1.f));
-
-		model = glm::translate(model, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0.f));
 		model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
-		model = glm::translate(model, glm::vec3(size.x * -0.5f, size.y * -0.5f, 0.f));
-
 		model = glm::scale(model, glm::vec3(size, 0.f));
 
 		glUniformMatrix4fv(shader.modelLoc, 1, GL_FALSE, &model[0][0]);

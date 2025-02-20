@@ -5,7 +5,7 @@
 class Button : public ml::Sprite {
 public:
 	void update();
-	bool checkMouseClick(double mouseX, double mouseY) const;
+	bool checkMouseClick(float mouseX, float mouseY) const;
 
 	bool hover = false;
 	bool enabled = true;

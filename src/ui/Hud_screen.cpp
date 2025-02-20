@@ -3,8 +3,6 @@
 #include "../Global.h"
 #include "../objects/Player.h"
 
-#include <iostream>
-
 Hud::Hud() :
 	coinCount_text(138, 323, 6, 7, 10),
 	score_text(292, 158, 12, 18, 16)
@@ -13,18 +11,18 @@ Hud::Hud() :
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	coin_image.size = glm::vec2(48);
-	coin_image.position = glm::vec2(20, 30);
+	coin_image.position = glm::vec2(40, 60);
 	coin_image.setNormalizedTex(194, 258, 16, 16);
 
 	pause_button.size = glm::vec2(52, 56);
-	pause_button.position = glm::vec2(SCREEN_WIDTH - pause_button.size.x - 30, 30);
+	pause_button.position = glm::vec2(SCREEN_SIZE.x - pause_button.size.x / 2.f - 32.f, 60);
 	pause_button.setNormalizedTex(121, 306, 13, 14);
 
 	coinCount_text.size = glm::vec2(30, 35);
-	coinCount_text.position = glm::vec2(71, 35);
+	coinCount_text.position = glm::vec2(coin_image.position.x + 50.f, coin_image.position.y);
 
 	score_text.size = glm::vec2(48, 72);
-	score_text.position = glm::vec2((SCREEN_WIDTH / 2) - (24 * score_text.text.size()), 120);
+	score_text.position = glm::vec2(SCREEN_SIZE_HALF.x - (24 * score_text.text.size()), 120);
 }
 
 void Hud::start() {
@@ -38,7 +36,7 @@ void Hud::update() {
 		if (gb::currentStatus != status::Dead)
 			gb::changeCurrentInterface(ui::Pause_screen);
 
-	// atualiza os textos somente se ouver uma alteracao (para evitar alocacoes desnecessarias de memoria)
+	// atualiza os textos somente se ouver uma alteracao. (para evitar alocacoes desnecessarias de memoria)
 	if (lastCoinCount != gb::matchCoinCount) {
 		if (lastCoinCount < gb::matchCoinCount) {
 			animation = true;
@@ -52,6 +50,7 @@ void Hud::update() {
 	if (lastScore != gb::matchScore) {
 		lastScore = gb::matchScore;
 		score_text.text = std::to_string(lastScore);
+		score_text.position.x = SCREEN_SIZE_HALF.x - (24 * score_text.text.size());
 	}
 
 	// anima o sprite do appleView

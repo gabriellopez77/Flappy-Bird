@@ -30,12 +30,12 @@ int main() {
 	// impede o redimensionamento da janela
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - v0.0.8", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Flappy Bird - v0.0.8", NULL, NULL);
 
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	// centraliza a janela no centro da tela
-	glfwSetWindowPos(window, mode->width / 2 - SCREEN_WIDTH /2, mode->height / 2 - SCREEN_HEIGHT /2);
+	glfwSetWindowPos(window, mode->width / 2 - SCREEN_SIZE.x /2, mode->height / 2 - SCREEN_SIZE.y /2);
 
 	gb::window = window;
 
@@ -48,21 +48,23 @@ int main() {
 	// carrega o glad
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-	// definiçoes do opengl
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	// GLFW callbacks
 	glfwSetMouseButtonCallback(window, mouse_click_callback);
 	glfwSetCursorPosCallback(window, mouse_move_callback);
 
+
+
 	ml::Sprite::init("assets/sprites.png");
 
+	glClearColor(0.f, 0.f, 0.f, 0.f);
+	glViewport(0.f, 0.f, SCREEN_SIZE.x, SCREEN_SIZE.y);
+	glm::mat4 projection = glm::ortho(0.0f, SCREEN_SIZE.x, SCREEN_SIZE.y, 0.f, -1.0f, 1.f);
+	glUniformMatrix4fv(glGetUniformLocation(ml::Sprite::shader.id, "projection"), 1, GL_FALSE, &projection[0][0]);
+
+
 	GameObject white_blink;
-	white_blink.size = glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	white_blink.size = glm::vec2(SCREEN_SIZE.x, SCREEN_SIZE.y);
+	white_blink.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE_HALF.y);
 	white_blink.color = glm::vec3(1.f, 1.f, 1.f);
 	white_blink.alpha = 0.f;
 
@@ -85,15 +87,9 @@ int main() {
 
 	// fundo preto das interfaces
 	GameObject screen_background;
-	screen_background.size = glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen_background.size = glm::vec2(SCREEN_SIZE.x, SCREEN_SIZE.y);
+	screen_background.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE_HALF.y);
 	screen_background.alpha = BACKGROUND_ALPHA;
-
-
-	glClearColor(0.f, 0.f, 0.f, 0.f);
-
-	glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glm::mat4 projection = glm::ortho(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.f, -1.0f, 1.f);
-	glUniformMatrix4fv(glGetUniformLocation(ml::Sprite::shader.id, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	float deathTime = 0.f;
 	bool piscar = true;

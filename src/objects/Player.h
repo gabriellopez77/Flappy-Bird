@@ -20,10 +20,10 @@ public:
 	float velocity = 0.f;
 
 	// quantidade total de moedas
-	unsigned short coinCount = 0;
+	unsigned int coinCount = 0;
 
 	// melhor pontuação do jogador
-	unsigned short bestScore = 0;
+	unsigned int bestScore = 0;
 
 	// tipo de skin do jogador
 	unsigned char skinType = 0;

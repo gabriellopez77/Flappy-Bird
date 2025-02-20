@@ -26,13 +26,13 @@ namespace gb {
 	// interfaces
 	bool paused = false;
 	bool onScreen = false;
-	ui currentScreen = ui::Main_screen;
+	ui currentScreen = ui::Empty;
 	std::unordered_map<ui, InterfaceObject*> gui;
 
 
 	// player
 	void* player = nullptr;
-	int matchCoinCount; //quantidade de moedas por partidas
+	int matchCoinCount; // quantidade de moedas por partida
 	int matchScore; 	// pontuação do jogador por partida
 
 	void playerKill() {
