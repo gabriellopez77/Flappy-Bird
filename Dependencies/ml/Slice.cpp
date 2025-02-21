@@ -77,15 +77,15 @@ void ml::Slice::setNormalizedTex(int posX, int posY, int width, int height, int 
 }
 
 void ml::Slice::setVertexSize(float sizeX, float sizeY) {
-	float x1 = sizeX * -0.5f;
-	float x2 = x1 + boardSize;
-	float x3 = (sizeX * 0.5f) - boardSize;
-	float x4 = sizeX * 0.5f;
+	float x1 = 0.f;
+	float x2 = boardSize;
+	float x3 = sizeX - boardSize;
+	float x4 = sizeX;
 
-	float y1 = sizeY * -0.5f;
-	float y2 = y1 + boardSize;
-	float y3 = (sizeY * 0.5f) - boardSize;
-	float y4 = sizeY * 0.5f;
+	float y1 = 0.f;
+	float y2 = boardSize;
+	float y3 = sizeY - boardSize;
+	float y4 = sizeY;
 
 	vertices[8] = { {x3, y3}, {x3, y4}, {x4, y4}, {x4, y3} }; // 1
 	vertices[7] = { {x2, y3}, {x2, y4}, {x3, y4}, {x3, y3} }; // 2

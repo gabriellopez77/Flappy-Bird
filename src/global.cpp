@@ -51,7 +51,7 @@ namespace gb {
 
 	// outros
 	status currentStatus = status::notStarted;
-	bool debugMode = false;
+	bool debugMode = true;
 
 	void changeCurrentInterface(ui interface) {
 		if (interface != ui::Hud_screen)

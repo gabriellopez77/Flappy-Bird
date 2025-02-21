@@ -16,13 +16,11 @@ constexpr float BACKGROUND_SPEED = 60.f;
 constexpr float BACKGROUND_ALPHA = 0.5f;
 constexpr float GROUND_SPEED = 300.f;
 
-constexpr float PIPE_SPAWN_POS_MIN = 475.f;
-constexpr float PIPE_SPAWN_POS_MAX = 800.f;
 constexpr glm::vec2 PIPE_SIZE(90.f, 462);
 constexpr glm::vec2 PIPE_SIZE_HALF(PIPE_SIZE.x / 2.f, PIPE_SIZE.y / 2.f);
-constexpr float PIPE_MIN_POS = 150.f;
-constexpr float PIPE_MAX_POS = SCREEN_SIZE.y - GROUND_SIZE.y - 150.f;
 constexpr glm::vec2 PIPE_SPACING(300.f, 180.f);
+constexpr float PIPE_SPAWN_POS_MIN = 240.f;
+constexpr float PIPE_SPAWN_POS_MAX = 580.f;
 
 constexpr float PLAYER_SIZE = 60.f;
 constexpr glm::vec2 PLAYER_START_POSITION(200.f, 300.f);
@@ -31,6 +29,7 @@ constexpr float PLAYER_MIN_ROTATE = -10.f;
 constexpr float GRAVITY = 3000.f;
 constexpr glm::vec4 hitBoxColor(0.5f, 0.2f, 0.2f, 0.3f);
 
+constexpr glm::vec2 BUTTONS_SIZE(156.f, 100.f);
 constexpr float COIN_SIZE = 32.f;
 
 

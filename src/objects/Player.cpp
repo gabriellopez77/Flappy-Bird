@@ -50,10 +50,10 @@ void Player::update() {
 }
 
 bool Player::checkCollision(const GameObject* obj) const {
-	return (collision.position.x + collision.size.x / 2.f > obj->collision.position.x - obj->collision.size.x / 2.f && 
-			collision.position.x < obj->collision.position.x + obj->collision.size.x / 2.f &&
-			collision.position.y + collision.size.y / 2.f > obj->collision.position.y - obj->collision.size.y / 2.f && 
-			collision.position.y < obj->collision.position.y + obj->collision.size.y / 2.f);
+	return (collision.position.x + collision.size.x > obj->collision.position.x &&
+			collision.position.x < obj->collision.position.x + obj->collision.size.x &&
+			collision.position.y + collision.size.y > obj->collision.position.y && 
+			collision.position.y < obj->collision.position.y + obj->collision.size.y);
 }
 
 void Player::input(action action) {

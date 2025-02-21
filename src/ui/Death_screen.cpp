@@ -12,31 +12,31 @@ Death_screen::Death_screen() :
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	gameOver_image.size = glm::vec2(384, 100);
-	gameOver_image.position = glm::vec2(SCREEN_SIZE_HALF.x, 100.f);
+	gameOver_image.position = glm::vec2(SCREEN_SIZE_HALF.x - gameOver_image.size.x / 2, 50.f);
 	gameOver_image.setNormalizedTex(395, 59, 96, 21);
 
 	panel_image.size = glm::vec2(452, 228);
-	panel_image.position = glm::vec2(SCREEN_SIZE_HALF.x, 320);
+	panel_image.position = glm::vec2(SCREEN_SIZE_HALF.x - panel_image.size.x / 2.f, 220.f);
 	panel_image.setNormalizedTex(3, 259, 113, 57);
 
 	float panelX = panel_image.position.x;
 	float panelY = panel_image.position.y;
 
 	playerBestScore_text.size = glm::vec2(30, 35);
-	playerBestScore_text.position = glm::vec2(panelX - 130.f, panelY + 10.f);
+	playerBestScore_text.position = glm::vec2(panelX + 90.f, panelY + 100.f);
 
 	playerScore_text.size = glm::vec2(30, 35);
-	playerScore_text.position = glm::vec2(panelX, panelY + 10.f);
+	playerScore_text.position = glm::vec2(panelX + 220.f, panelY + 100.f);
 
 	coinCount_text.size = glm::vec2(30, 35);
-	coinCount_text.position = glm::vec2(panelX + 130.f, panelY + 10.f);
+	coinCount_text.position = glm::vec2(panelX + 340.f, panelY + 100.f);
 
 	respawn_button.size = glm::vec2(156, 100);
-	respawn_button.position = glm::vec2(SCREEN_SIZE_HALF.x - 88.f, SCREEN_SIZE.y - 250);
+	respawn_button.position = glm::vec2(SCREEN_SIZE_HALF.x - BUTTONS_SIZE.x / 2.f - 88.f, SCREEN_SIZE.y - 300);
 	respawn_button.setNormalizedTex(460, 483, 52, 29);
 
 	house_button.size = glm::vec2(156, 100);
-	house_button.position = glm::vec2(SCREEN_SIZE_HALF.x + 88.f, SCREEN_SIZE.y - 250);
+	house_button.position = glm::vec2(SCREEN_SIZE_HALF.x - BUTTONS_SIZE.x / 2.f + 88.f, SCREEN_SIZE.y - 300);
 	house_button.setNormalizedTex(460, 455, 52, 29);
 }
 

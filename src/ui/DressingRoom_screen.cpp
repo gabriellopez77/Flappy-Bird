@@ -9,39 +9,40 @@ DressingRoom::DressingRoom() :
 	id = ui::DressingRoom_screen;
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
-	panel_image.size = glm::vec2(452, 228);
-	panel_image.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE_HALF.y);
-	panel_image.setNormalizedTex(235, 455, 113, 57);
+	panel_image.size = glm::vec2(450.f, 300.f);
+	panel_image.position = glm::vec2(SCREEN_SIZE_HALF.x- panel_image.size.x / 2.f, SCREEN_SIZE_HALF.y - panel_image.size.y / 2.f);
+	panel_image.setSlice();
+	panel_image.slice->setNormalizedTex(300, 194, 11, 11, 5);
 
 	float panelX = panel_image.position.x;
 	float panelY = panel_image.position.y;
 
-	coinCount_image.size = glm::vec2(64);
-	coinCount_image.position = glm::vec2(panelX, panelY - 180.f);
+	coinCount_image.size = glm::vec2(48.f);
+	coinCount_image.position = glm::vec2(panelX + 20.f, panelY + 20.f);
 	coinCount_image.setNormalizedTex(194, 258, 16, 16);
 
 	coinCount_text.size = glm::vec2(30, 35);
-	coinCount_text.position = glm::vec2(coinCount_image.position.x + coinCount_image.size.x + 20, coinCount_image.position.y);
+	coinCount_text.position = glm::vec2(coinCount_image.position.x + coinCount_image.size.x + 20.f, coinCount_image.position.y);
 
 	close_button.size = glm::vec2(156, 100);
-	close_button.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE.y - 180);
+	close_button.position = glm::vec2(SCREEN_SIZE_HALF.x - close_button.size.x / 2.f, SCREEN_SIZE.y - 180.f);
 	close_button.setNormalizedTex(460, 483, 52, 29);
 
 
 	Item& item1 = item_list[0];
-	item1.position = glm::vec2(panelX - 125.f, panelY + 70.f);
+	item1.position = glm::vec2(panelX + 36.f, panelY + 230.f);
 	item1.birdSkin_image.setNormalizedTex(2, 487, 20, 20);
 	item1.purchased = true;
 
 	item1.itemPrice_text.size = glm::vec2(24, 28);
-	item1.itemPrice_text.position = glm::vec2(item1.position.x - 25.f, item1.position.y - 40.f);
+	item1.itemPrice_text.position = glm::vec2(item1.position.x, item1.position.y - 38.f);
 	item1.itemPrice_text.text = std::to_string(item1.price);
 
 	item1.buyItem_button.size = glm::vec2(111, 42);
 	item1.buyItem_button.position = glm::vec2(item1.position.x, item1.position.y);
 
 	item1.birdSkin_image.size = glm::vec2(PLAYER_SIZE);	
-	item1.birdSkin_image.position = glm::vec2(item1.position.x, item1.position.y - 100);
+	item1.birdSkin_image.position = glm::vec2(item1.buyItem_button.position.x + item1.buyItem_button.size.x / 2 - PLAYER_SIZE / 2, item1.position.y - 100);
 
 
 	Item& item2 = item_list[1];
@@ -51,10 +52,10 @@ DressingRoom::DressingRoom() :
 	item2.price = 50;
 
 	item2.coin_image.size = glm::vec2(32);
-	item2.coin_image.position = glm::vec2(item2.position.x - 40.f, item1.position.y - 40.f);
+	item2.coin_image.position = glm::vec2(item2.position.x, item1.position.y - 40.f);
 
 	item2.itemPrice_text.size = glm::vec2(24, 28);
-	item2.itemPrice_text.position = glm::vec2(item2.position.x, item2.coin_image.position.y);
+	item2.itemPrice_text.position = glm::vec2(item2.position.x + 40.f, item2.coin_image.position.y);
 	item2.itemPrice_text.text = std::to_string(item2.price);
 
 	item2.buyItem_button.size = glm::vec2(111, 42);
@@ -63,7 +64,7 @@ DressingRoom::DressingRoom() :
 	item2.buyItem_button.alpha = 0.6f;
 
 	item2.birdSkin_image.size = glm::vec2(PLAYER_SIZE);
-	item2.birdSkin_image.position = glm::vec2(item2.position.x, item2.position.y - 100);
+	item2.birdSkin_image.position = glm::vec2(item2.buyItem_button.position.x + item2.buyItem_button.size.x / 2 - PLAYER_SIZE / 2, item2.position.y - 100);
 	item2.birdSkin_image.alpha = 0.6f;
 
 
@@ -74,10 +75,10 @@ DressingRoom::DressingRoom() :
 	item3.price = 100;
 
 	item3.coin_image.size = glm::vec2(32);
-	item3.coin_image.position = glm::vec2(item3.position.x - 40.f, item2.coin_image.position.y);
+	item3.coin_image.position = glm::vec2(item3.position.x, item2.coin_image.position.y);
 
 	item3.itemPrice_text.size = glm::vec2(24, 28);
-	item3.itemPrice_text.position = glm::vec2(item3.position.x, item2.coin_image.position.y);
+	item3.itemPrice_text.position = glm::vec2(item3.position.x + 40.f, item2.coin_image.position.y);
 	item3.itemPrice_text.text = std::to_string(item3.price);
 
 	item3.buyItem_button.size = glm::vec2(111, 42);
@@ -86,7 +87,7 @@ DressingRoom::DressingRoom() :
 	item3.buyItem_button.alpha = 0.6f;
 
 	item3.birdSkin_image.size = glm::vec2(PLAYER_SIZE);
-	item3.birdSkin_image.position = glm::vec2(item3.position.x, item1.position.y - 100);
+	item3.birdSkin_image.position = glm::vec2(item3.buyItem_button.position.x + item3.buyItem_button.size.x / 2 - PLAYER_SIZE / 2, item3.position.y - 100);
 	item3.birdSkin_image.alpha = 0.6f;
 
 
@@ -95,7 +96,7 @@ DressingRoom::DressingRoom() :
 	selectedItem_image.setNormalizedTex(292, 198, 7, 7);
 
 	currentSelected = &item_list[((Player*)gb::player)->skinType];
-	selectedItem_image.position = glm::vec2(currentSelected->birdSkin_image.position.x, 310);
+	selectedItem_image.position = glm::vec2(item1.birdSkin_image.position.x + selectedItem_image.size.x / 2.f, item1.birdSkin_image.position.y - 40.f);
 	currentSelected->buyItem_button.enabled = false;
 	currentSelected->buyItem_button.alpha = 0.6f;
 	currentSelected->buyItem_button.setNormalizedTex(349, 483, 37, 14);
@@ -131,6 +132,8 @@ void DressingRoom::update() {
 			if (!obj.purchased) {
 				pl->coinCount -= obj.price;
 				obj.purchased = true;
+				// atualiza a quantidade de moedas do jogador
+				coinCount_text.text = std::to_string(((Player*)gb::player)->coinCount);
 			}
 
 			// muda o estado do item clicado para desabilitado
@@ -154,7 +157,7 @@ void DressingRoom::update() {
 			pl->skinType = currentSelected->skinType;
 
 			// muda a posicao do icone verde
-			selectedItem_image.position.x = currentSelected->birdSkin_image.position.x;
+			selectedItem_image.position.x = currentSelected->birdSkin_image.position.x + selectedItem_image.size.x / 2.f;
 		}
 	}
 }

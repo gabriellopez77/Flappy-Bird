@@ -14,7 +14,6 @@ namespace ml {
 		static void init();
 
 		void setNormalizedTex(int posX, int posY, int width, int height, int corner, int pixelSize = 3);
-		void setVertexSize(float sizeX, float sizeY);
 
 		quad vertices[9];
 		quad tex[9];
@@ -24,6 +23,8 @@ namespace ml {
 		static const unsigned int indices[54];
 
 	private:
+		void setVertexSize(float sizeX, float sizeY);
+
 		glm::vec2 size = glm::vec2(0.f);
 	};
 }

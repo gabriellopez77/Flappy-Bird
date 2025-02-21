@@ -7,7 +7,7 @@ Pause::Pause() {
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	unpause_button.size = glm::vec2(52, 56);
-	unpause_button.position = glm::vec2(SCREEN_SIZE.x - unpause_button.size.x / 2.f - 32.f, 60);
+	unpause_button.position = glm::vec2(SCREEN_SIZE.x - unpause_button.size.x - 30.f, 30);
 	unpause_button.setNormalizedTex(121, 321, 13, 14);
 }
 

@@ -17,10 +17,17 @@
 #include "ui/Pause_screen.h"
 #include "ui/Start_screen.h"
 
+#include <iostream>
+
 void mouse_click_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
 void inputs();
 
+int id = 0;
+void* operator new(size_t bytes) {
+	std::cout << bytes << " " << id++ << '\n';
+	return malloc(bytes);
+}
 int main() {
 	glfwInit();
 	glfwInitHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -62,9 +69,8 @@ int main() {
 	glUniformMatrix4fv(glGetUniformLocation(ml::Sprite::shader.id, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 
-	GameObject white_blink;
+	ml::Sprite white_blink;
 	white_blink.size = glm::vec2(SCREEN_SIZE.x, SCREEN_SIZE.y);
-	white_blink.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE_HALF.y);
 	white_blink.color = glm::vec3(1.f, 1.f, 1.f);
 	white_blink.alpha = 0.f;
 
@@ -86,9 +92,8 @@ int main() {
 	Death_screen death_screen;
 
 	// fundo preto das interfaces
-	GameObject screen_background;
+	ml::Sprite screen_background;
 	screen_background.size = glm::vec2(SCREEN_SIZE.x, SCREEN_SIZE.y);
-	screen_background.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE_HALF.y);
 	screen_background.alpha = BACKGROUND_ALPHA;
 
 	float deathTime = 0.f;
@@ -140,8 +145,8 @@ int main() {
 		// desenha os objetos
 		scene.drawBackground();
 		Pipes::drawPipes();
-		player.draw();
 		scene.drawGround();
+		player.draw();
 	
 		if (gb::onScreen)
 			screen_background.draw();

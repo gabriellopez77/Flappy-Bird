@@ -8,27 +8,27 @@ Main_screen::Main_screen() {
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	gameTitle_image.size = glm::vec2(356, 96);
-	gameTitle_image.position = glm::vec2(SCREEN_SIZE_HALF.x, 100);
+	gameTitle_image.position = glm::vec2(SCREEN_SIZE_HALF.x - gameTitle_image.size.x / 2.f, 50.f);
 	gameTitle_image.setNormalizedTex(351, 91, 89, 24);
 
-	start_button.size = glm::vec2(156, 100);
-	start_button.position = glm::vec2(SCREEN_SIZE_HALF.x - 88.f, SCREEN_SIZE.y - 300);
+	start_button.size = BUTTONS_SIZE;
+	start_button.position = glm::vec2(SCREEN_SIZE_HALF.x - BUTTONS_SIZE.x / 2.f - 88.f, SCREEN_SIZE.y - 300);
 	start_button.setNormalizedTex(460, 483, 52, 29);
 
-	brush_button.size = glm::vec2(156, 100);
-	brush_button.position = glm::vec2(SCREEN_SIZE_HALF.x + 88.f, SCREEN_SIZE.y - 300);
+	brush_button.size = BUTTONS_SIZE;
+	brush_button.position = glm::vec2(SCREEN_SIZE_HALF.x - BUTTONS_SIZE.x /2.f + 88.f, SCREEN_SIZE.y - 300);
 	brush_button.setNormalizedTex(460, 427, 52, 29);
 
-	exit_button.size = glm::vec2(156, 100);
-	exit_button.position = glm::vec2(SCREEN_SIZE_HALF.x, SCREEN_SIZE.y - 180);
+	exit_button.size = BUTTONS_SIZE;
+	exit_button.position = glm::vec2(SCREEN_SIZE_HALF.x - BUTTONS_SIZE.x /2.f, SCREEN_SIZE.y - 180);
 	exit_button.setNormalizedTex(460, 399, 52, 29);
 
 	versionName_image.size = glm::vec2(57 * 4, 5 * 4);
-	versionName_image.position = glm::vec2(30.f, SCREEN_SIZE.x - versionName_image.size.y - 10.f);
+	versionName_image.position = glm::vec2(10.f, SCREEN_SIZE.x - versionName_image.size.y - 10.f);
 	versionName_image.setNormalizedTex(443, 92, 57, 5);
 
 	versionNumber_image.size = glm::vec2(19 * 4, 7 * 4);
-	versionNumber_image.position = glm::vec2(SCREEN_SIZE.x - 60, SCREEN_SIZE.y - versionNumber_image.size.y - 10.f);
+	versionNumber_image.position = glm::vec2(SCREEN_SIZE.x - versionNumber_image.size.x - 10.f, SCREEN_SIZE.y - versionNumber_image.size.y - 10.f);
 	versionNumber_image.setNormalizedTex(443, 98, 19, 7);
 }
 

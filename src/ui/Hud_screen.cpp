@@ -11,18 +11,18 @@ Hud::Hud() :
 	gb::gui.insert(std::pair<ui, InterfaceObject*>(id, this));
 
 	coin_image.size = glm::vec2(48);
-	coin_image.position = glm::vec2(40, 60);
+	coin_image.position = glm::vec2(40.f, 40.f);
 	coin_image.setNormalizedTex(194, 258, 16, 16);
 
-	pause_button.size = glm::vec2(52, 56);
-	pause_button.position = glm::vec2(SCREEN_SIZE.x - pause_button.size.x / 2.f - 32.f, 60);
-	pause_button.setNormalizedTex(121, 306, 13, 14);
-
 	coinCount_text.size = glm::vec2(30, 35);
-	coinCount_text.position = glm::vec2(coin_image.position.x + 50.f, coin_image.position.y);
+	coinCount_text.position = glm::vec2(coin_image.position.x + 60.f, 50.f);
 
 	score_text.size = glm::vec2(48, 72);
 	score_text.position = glm::vec2(SCREEN_SIZE_HALF.x - (24 * score_text.text.size()), 120);
+
+	pause_button.size = glm::vec2(52, 56);
+	pause_button.position = glm::vec2(SCREEN_SIZE.x - pause_button.size.x - 30.f, 30);
+	pause_button.setNormalizedTex(121, 306, 13, 14);
 }
 
 void Hud::start() {

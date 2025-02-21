@@ -9,6 +9,7 @@ namespace ml {
 	class Sprite {
 	public:
 		Sprite();
+		~Sprite();
 
 		virtual void draw();
 
@@ -25,12 +26,12 @@ namespace ml {
 		static ml::Shader shader;
 		ml::Slice* slice = nullptr;
 		glm::vec2 position;
-		glm::vec3 color;
 		glm::vec2 size;
+		glm::vec3 color;
 		float rotate = 0.f;
 		float alpha = 1.f;
-		float texCoords[8] = { 0 };
 
+		float texCoords[8] = { 0 };
 	protected:
 		float animationDelayTime = 0.f;
 		unsigned short animationStage = 0;

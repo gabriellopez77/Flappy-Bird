@@ -14,6 +14,6 @@ void Button::update() {
 }
 
 bool Button::checkMouseClick(float mouseX, float mouseY) const {
-	return	mouseX >= position.x - size.x / 2.f && mouseX <= position.x + size.x / 2.f &&
-			mouseY >= position.y - size.y / 2.f && mouseY <= position.y + size.y / 2.f;
+	return	mouseX >= position.x && mouseX <= position.x + size.x &&
+			mouseY >= position.y && mouseY <= position.y + size.y;
 }

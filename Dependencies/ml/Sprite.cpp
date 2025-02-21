@@ -27,6 +27,11 @@ position(0.f),
 size(0.f)
 {
 }
+
+ml::Sprite::~Sprite() {
+	delete slice;
+}
+
 void ml::Sprite::init(const char* texturePath) {
 	ml::Slice::init();
 
@@ -105,7 +110,11 @@ void ml::Sprite::draw() {
 	if (slice) {
 		model = glm::mat4(1.f);
 		model = glm::translate(model, glm::vec3(position, 0.f));
-		model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+		if (rotate != 0.f) {
+			model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+			model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+			model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+		}
 		model = glm::scale(model, glm::vec3(1.f, 1.f, 0.f));
 		glUniformMatrix4fv(shader.modelLoc, 1, GL_FALSE, &model[0][0]);
 
@@ -127,7 +136,11 @@ void ml::Sprite::draw() {
 	else {
 		model = glm::mat4(1.f);
 		model = glm::translate(model, glm::vec3(position, 0.f));
-		model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+		if (rotate != 0.f) {
+			model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+			model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.f, 0.f, 1.f));
+			model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+		}
 		model = glm::scale(model, glm::vec3(size, 0.f));
 
 		glUniformMatrix4fv(shader.modelLoc, 1, GL_FALSE, &model[0][0]);

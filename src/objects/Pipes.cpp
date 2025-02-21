@@ -24,6 +24,7 @@ void Pipes::draw() {
 	pipeBottom.draw();
 	if (coinVisible)
 	coin.draw();
+	scoreWall.draw();
 }
 
 
@@ -46,8 +47,8 @@ void Pipes::update() {
 	// logica dos tubos laranja
 	if (orange) {
 		// inverte o eixo Y dos pipes laranja se chegarem no limite de suas posições
-		if (scoreWall.position.y > PIPE_MAX_POS) {
-			float distance = scoreWall.position.y - PIPE_MAX_POS;
+		if (pipeBottom.position.y > PIPE_SPAWN_POS_MAX) {
+			float distance = pipeBottom.position.y - PIPE_SPAWN_POS_MAX;
 
 			pipeBottom.position.y -= distance;
 			pipeTop.position.y -= distance;
@@ -55,8 +56,8 @@ void Pipes::update() {
 			scoreWall.position.y -= distance;
 			forceY = -forceY;
 		}
-		else if (scoreWall.position.y < PIPE_MIN_POS) {
-			float distance = PIPE_MIN_POS - scoreWall.position.y;
+		else if (pipeBottom.position.y < PIPE_SPAWN_POS_MIN) {
+			float distance = PIPE_SPAWN_POS_MIN - pipeBottom.position.y;
 
 			pipeBottom.position.y += distance;
 			pipeTop.position.y += distance;
@@ -145,20 +146,20 @@ void Pipes::resetPipes() {
 			p.pipeBottom.setNormalizedTex(84, 323, 26, 160);
 		}
 
-		p.pipeBottom.position.x = SCREEN_SIZE.x + PIPE_SIZE_HALF.y;
+		p.pipeBottom.position.x = SCREEN_SIZE.x;
 		p.pipeBottom.position.y = gb::randNum(PIPE_SPAWN_POS_MIN, PIPE_SPAWN_POS_MAX);
 		p.pipeBottom.collision.position = p.pipeBottom.position;
 
-		p.pipeTop.position.x = SCREEN_SIZE.x + PIPE_SIZE_HALF.y;
+		p.pipeTop.position.x = SCREEN_SIZE.x;
 		p.pipeTop.position.y = (p.pipeBottom.position.y - PIPE_SPACING.y) - PIPE_SIZE.y;
 		p.pipeTop.collision.position = p.pipeTop.position;
 
-		p.scoreWall.position.x = p.pipeBottom.position.x + PIPE_SIZE_HALF.x - p.scoreWall.size.x / 2.f;
-		p.scoreWall.position.y = p.pipeBottom.position.y - PIPE_SIZE_HALF.y - PIPE_SPACING.y / 2.f;
+		p.scoreWall.position.x = p.pipeBottom.position.x + p.pipeBottom.size.x - p.scoreWall.size.x;
+		p.scoreWall.position.y = p.pipeBottom.position.y - PIPE_SPACING.y;
 		p.scoreWall.collision.position = p.scoreWall.position;
 
-		p.coin.position.x = p.pipeBottom.position.x;
-		p.coin.position.y = gb::randNum(p.pipeBottom.position.y - PIPE_SIZE_HALF.y - PIPE_SPACING.y + COIN_SIZE /2.f, p.pipeBottom.position.y - PIPE_SIZE_HALF.y - COIN_SIZE / 2.f);
+		p.coin.position.x = p.pipeBottom.position.x + COIN_SIZE;
+		p.coin.position.y = gb::randNum(p.pipeTop.position.y + PIPE_SIZE.y, p.pipeBottom.position.y - COIN_SIZE);
 		p.coin.collision.position = p.coin.position;
 
 
@@ -187,26 +188,26 @@ void Pipes::reset() {
 		pipeBottom.setNormalizedTex(84, 323, 26, 160);
 	}
 
-	pipeBottom.position.x = SCREEN_SIZE.x + PIPE_SIZE_HALF.x;
+	pipeBottom.position.x = SCREEN_SIZE.x;
 	pipeBottom.position.y = gb::randNum(PIPE_SPAWN_POS_MIN, PIPE_SPAWN_POS_MAX);
 	pipeBottom.collision.position = pipeBottom.position;
 
-	pipeTop.position.x = SCREEN_SIZE.x + PIPE_SIZE_HALF.x;
+	pipeTop.position.x = SCREEN_SIZE.x;
 	pipeTop.position.y = (pipeBottom.position.y - PIPE_SPACING.y) - PIPE_SIZE.y;
 	pipeTop.collision.position = pipeTop.position;
 
-	coin.position.x = pipeBottom.position.x;
-	coin.position.y = gb::randNum(pipeBottom.position.y - PIPE_SIZE_HALF.y - PIPE_SPACING.y + COIN_SIZE / 2.f, pipeBottom.position.y - PIPE_SIZE_HALF.y - COIN_SIZE / 2.f);
+	coin.position.x = pipeBottom.position.x + COIN_SIZE;
+	coin.position.y = gb::randNum(pipeTop.position.y + PIPE_SIZE.y, pipeBottom.position.y - COIN_SIZE);
 	coin.collision.position = coin.position;
 
-	scoreWall.position.x = pipeBottom.position.x + PIPE_SIZE_HALF.x - scoreWall.size.x / 2.f;
-	scoreWall.position.y = pipeBottom.position.y - PIPE_SIZE_HALF.y - PIPE_SPACING.y / 2.f;
+	scoreWall.position.x = pipeBottom.position.x + pipeBottom.size.x - scoreWall.size.x;
+	scoreWall.position.y = pipeBottom.position.y - PIPE_SPACING.y;
 	scoreWall.collision.position = scoreWall.position;
 }
 
 void Pipes::updatePipes() {
 	for (int i = 0; i < 3; i++) {
-		if (pipes[i].pipeBottom.position.x - pipes[i].pipeBottom.size.x / 2.f + PIPE_SIZE.x < 0.f)
+		if (pipes[i].pipeBottom.position.x + PIPE_SIZE.x < 0.f)
 			pipes[i].reset();
 		else
 			pipes[i].update();
